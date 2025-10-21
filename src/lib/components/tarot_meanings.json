@@ -1,0 +1,470 @@
+[
+  {
+    "name": "The Fool",
+    "suit": "Major Arcana",
+    "upright": "Beginnings, innocence, leap of faith, spontaneity, free spirit.",
+    "reversed": "Recklessness, naivete, poor judgment, hesitation, folly."
+  },
+  {
+    "name": "The Magician",
+    "suit": "Major Arcana",
+    "upright": "Willpower, manifestation, skill, resourcefulness, focused action.",
+    "reversed": "Manipulation, trickery, unused potential, scattered energy."
+  },
+  {
+    "name": "The High Priestess",
+    "suit": "Major Arcana",
+    "upright": "Intuition, mystery, inner knowing, sacred silence, the subconscious.",
+    "reversed": "Secrets, withdrawal, hidden motives, disconnect from intuition."
+  },
+  {
+    "name": "The Empress",
+    "suit": "Major Arcana",
+    "upright": "Fertility, abundance, nurturing, beauty, creativity.",
+    "reversed": "Dependence, smothering, creative block, neglected self-care."
+  },
+  {
+    "name": "The Emperor",
+    "suit": "Major Arcana",
+    "upright": "Authority, structure, stability, leadership, discipline.",
+    "reversed": "Rigidity, domination, inflexibility, power struggles."
+  },
+  {
+    "name": "The Hierophant",
+    "suit": "Major Arcana",
+    "upright": "Tradition, spiritual guidance, conformity, teachings, institutions.",
+    "reversed": "Rebellion, unconventional beliefs, personal truth, nonconformity."
+  },
+  {
+    "name": "The Lovers",
+    "suit": "Major Arcana",
+    "upright": "Union, choice, harmony, attraction, values alignment.",
+    "reversed": "Disharmony, misalignment, temptation, difficult choices."
+  },
+  {
+    "name": "The Chariot",
+    "suit": "Major Arcana",
+    "upright": "Determination, control, victory, willpower, direction.",
+    "reversed": "Lack of control, aggression, scattered aim, stalled progress."
+  },
+  {
+    "name": "Strength",
+    "suit": "Major Arcana",
+    "upright": "Courage, inner strength, compassion, resilience, quiet power.",
+    "reversed": "Self-doubt, insecurity, raw emotion, lack of confidence."
+  },
+  {
+    "name": "The Hermit",
+    "suit": "Major Arcana",
+    "upright": "Soul-searching, wisdom, solitude, guidance, introspection.",
+    "reversed": "Isolation, withdrawal, loneliness, refusal to look within."
+  },
+  {
+    "name": "Wheel of Fortune",
+    "suit": "Major Arcana",
+    "upright": "Cycles, fate, change, luck, turning point.",
+    "reversed": "Resistance to change, setbacks, external forces, bad timing."
+  },
+  {
+    "name": "Justice",
+    "suit": "Major Arcana",
+    "upright": "Fairness, truth, balance, accountability, cause and effect.",
+    "reversed": "Injustice, bias, dishonesty, imbalance, avoidance of truth."
+  },
+  {
+    "name": "The Hanged Man",
+    "suit": "Major Arcana",
+    "upright": "Surrender, new perspective, pause, letting go, sacrifice.",
+    "reversed": "Stagnation, martyrdom, indecision, missed insight."
+  },
+  {
+    "name": "Death",
+    "suit": "Major Arcana",
+    "upright": "Endings, transformation, release, transition, renewal.",
+    "reversed": "Resistance to change, fear of endings, clinging to the old."
+  },
+  {
+    "name": "Temperance",
+    "suit": "Major Arcana",
+    "upright": "Balance, patience, moderation, harmony, healing.",
+    "reversed": "Excess, imbalance, impatience, lack of vision."
+  },
+  {
+    "name": "The Devil",
+    "suit": "Major Arcana",
+    "upright": "Bondage, materialism, shadow, temptation, attachment.",
+    "reversed": "Release, liberation, reclaiming power, detachment."
+  },
+  {
+    "name": "The Tower",
+    "suit": "Major Arcana",
+    "upright": "Upheaval, sudden change, revelation, breakdown, awakening.",
+    "reversed": "Fear of change, averting disaster, delayed catastrophe."
+  },
+  {
+    "name": "The Star",
+    "suit": "Major Arcana",
+    "upright": "Hope, inspiration, renewal, serenity, guidance.",
+    "reversed": "Doubt, disconnection, lack of faith, pessimism."
+  },
+  {
+    "name": "The Moon",
+    "suit": "Major Arcana",
+    "upright": "Illusion, intuition, dreams, uncertainty, the unknown.",
+    "reversed": "Clarity emerging, releasing fear, unveiling deception."
+  },
+  {
+    "name": "The Sun",
+    "suit": "Major Arcana",
+    "upright": "Joy, success, vitality, positivity, enlightenment.",
+    "reversed": "Temporary gloom, inflated ego, delays to success."
+  },
+  {
+    "name": "Judgment",
+    "suit": "Major Arcana",
+    "upright": "Awakening, reckoning, rebirth, inner calling, evaluation.",
+    "reversed": "Self-doubt, harsh judgment, ignoring the call, stagnation."
+  },
+  {
+    "name": "The World",
+    "suit": "Major Arcana",
+    "upright": "Completion, integration, achievement, wholeness, travel.",
+    "reversed": "Incomplete, delays, lack of closure, loose ends."
+  },
+  {
+    "name": "Ace of Flames",
+    "suit": "Flames",
+    "upright": "Inspiration, new energy, creative spark, initiative, potential.",
+    "reversed": "Delays, lack of direction, missed spark, scattered passion."
+  },
+  {
+    "name": "Two of Flames",
+    "suit": "Flames",
+    "upright": "Planning, future vision, decisions, first steps, potential paths.",
+    "reversed": "Fear of the unknown, indecision, playing small, hesitation."
+  },
+  {
+    "name": "Three of Flames",
+    "suit": "Flames",
+    "upright": "Expansion, foresight, progress, exploration, momentum.",
+    "reversed": "Delays, obstacles, limited outlook, stalled growth."
+  },
+  {
+    "name": "Four of Flames",
+    "suit": "Flames",
+    "upright": "Celebration, homecoming, community, foundation, harmony.",
+    "reversed": "Tension at home, instability, canceled celebration, insecurity."
+  },
+  {
+    "name": "Five of Flames",
+    "suit": "Flames",
+    "upright": "Competition, conflict, rivalry, testing, friction.",
+    "reversed": "Avoiding conflict, inner tension, resolution, compromise."
+  },
+  {
+    "name": "Six of Flames",
+    "suit": "Flames",
+    "upright": "Victory, recognition, success, acclaim, progress.",
+    "reversed": "Fall from favor, pride, hollow victory, lack of support."
+  },
+  {
+    "name": "Seven of Flames",
+    "suit": "Flames",
+    "upright": "Defense, perseverance, standing ground, challenge.",
+    "reversed": "Exhaustion, overwhelm, giving up ground, compromise."
+  },
+  {
+    "name": "Eight of Flames",
+    "suit": "Flames",
+    "upright": "Swift movement, messages, rapid progress, alignment.",
+    "reversed": "Delays, frustration, miscommunication, scatter."
+  },
+  {
+    "name": "Nine of Flames",
+    "suit": "Flames",
+    "upright": "Resilience, persistence, last defense, caution, stamina.",
+    "reversed": "Fatigue, defensiveness, paranoia, refusing help."
+  },
+  {
+    "name": "Ten of Flames",
+    "suit": "Flames",
+    "upright": "Burden, responsibility, hard work, stress, duty.",
+    "reversed": "Release, delegating, burnout, dropping the load."
+  },
+  {
+    "name": "Page of Flames",
+    "suit": "Flames",
+    "upright": "Enthusiasm, fresh ideas, spark of passion, discovery.",
+    "reversed": "Restlessness, setbacks, unreliable plans, distraction."
+  },
+  {
+    "name": "Knight of Flames",
+    "suit": "Flames",
+    "upright": "Action, adventure, bold pursuit, charisma, momentum.",
+    "reversed": "Impulsiveness, recklessness, scattered energy, delays."
+  },
+  {
+    "name": "Queen of Flames",
+    "suit": "Flames",
+    "upright": "Confidence, warmth, leadership, creativity, influence.",
+    "reversed": "Jealousy, demanding nature, domineering, burnout."
+  },
+  {
+    "name": "King of Flames",
+    "suit": "Flames",
+    "upright": "Vision, authority, enterprise, mastery, inspiration.",
+    "reversed": "Tyranny, impulsive rule, ruthlessness, cold ambition."
+  },
+  {
+    "name": "Ace of Tides",
+    "suit": "Tides",
+    "upright": "New feelings, love, intuition, compassion, open heart.",
+    "reversed": "Emotional block, repressed feelings, emptiness, disappointment."
+  },
+  {
+    "name": "Two of Tides",
+    "suit": "Tides",
+    "upright": "Partnership, attraction, harmony, reconciliation, union.",
+    "reversed": "Imbalance, separation, misunderstanding, tension."
+  },
+  {
+    "name": "Three of Tides",
+    "suit": "Tides",
+    "upright": "Friendship, joy, community, celebration, support.",
+    "reversed": "Overindulgence, gossip, third-party issues, isolation."
+  },
+  {
+    "name": "Four of Tides",
+    "suit": "Tides",
+    "upright": "Apathy, contemplation, reevaluation, emotional withdrawal.",
+    "reversed": "New interest, acceptance, reengagement, fresh outlook."
+  },
+  {
+    "name": "Five of Tides",
+    "suit": "Tides",
+    "upright": "Regret, loss, grief, disappointment, focusing on the past.",
+    "reversed": "Acceptance, healing, moving on, finding the remaining good."
+  },
+  {
+    "name": "Six of Tides",
+    "suit": "Tides",
+    "upright": "Nostalgia, innocence, kindness, reunion, simple joys.",
+    "reversed": "Living in the past, clinging, naivete, unrealistic memory."
+  },
+  {
+    "name": "Seven of Tides",
+    "suit": "Tides",
+    "upright": "Choices, fantasies, temptation, wishful thinking, illusion.",
+    "reversed": "Clarity, realism, decisive choice, prioritized focus."
+  },
+  {
+    "name": "Eight of Tides",
+    "suit": "Tides",
+    "upright": "Departure, withdrawal, seeking meaning, letting go.",
+    "reversed": "Aimless drifting, fear of change, stuck emotions."
+  },
+  {
+    "name": "Nine of Tides",
+    "suit": "Tides",
+    "upright": "Satisfaction, contentment, wish fulfilled, comfort, pleasure.",
+    "reversed": "Overindulgence, smugness, dissatisfaction, hollow pleasure."
+  },
+  {
+    "name": "Ten of Tides",
+    "suit": "Tides",
+    "upright": "Emotional fulfillment, family harmony, lasting happiness.",
+    "reversed": "Discord, strained ties, broken peace, fleeting joy."
+  },
+  {
+    "name": "Page of Tides",
+    "suit": "Tides",
+    "upright": "Sensitivity, messages of love, curiosity, artistic mood.",
+    "reversed": "Emotional immaturity, insecurity, moodiness, blocked intuition."
+  },
+  {
+    "name": "Knight of Tides",
+    "suit": "Tides",
+    "upright": "Romance, pursuit of the heart, idealism, arrival of offers.",
+    "reversed": "Unreliable, overly idealistic, mood swings, escapism."
+  },
+  {
+    "name": "Queen of Tides",
+    "suit": "Tides",
+    "upright": "Compassion, intuition, emotional depth, empathy, care.",
+    "reversed": "Overemotional, codependency, poor boundaries, smothering."
+  },
+  {
+    "name": "King of Tides",
+    "suit": "Tides",
+    "upright": "Emotional balance, wisdom, diplomacy, calm leadership.",
+    "reversed": "Coldness, manipulation, mood control, emotional distance."
+  },
+  {
+    "name": "Ace of Stones",
+    "suit": "Stones",
+    "upright": "New prosperity, opportunity, material seed, practicality.",
+    "reversed": "Lost opportunity, poor planning, short-term thinking."
+  },
+  {
+    "name": "Two of Stones",
+    "suit": "Stones",
+    "upright": "Balance, adaptability, time/money juggling, flexibility.",
+    "reversed": "Overwhelm, disorganization, imbalance, financial stress."
+  },
+  {
+    "name": "Three of Stones",
+    "suit": "Stones",
+    "upright": "Teamwork, skill, craftsmanship, collaboration, planning.",
+    "reversed": "Poor workmanship, lack of teamwork, shortcuts, discord."
+  },
+  {
+    "name": "Four of Stones",
+    "suit": "Stones",
+    "upright": "Security, saving, control, conservatism, possessiveness.",
+    "reversed": "Greed, miserliness, insecurity, loosened grip."
+  },
+  {
+    "name": "Five of Stones",
+    "suit": "Stones",
+    "upright": "Hardship, loss, financial worry, exclusion, struggle.",
+    "reversed": "Recovery, assistance, improvement, new resources."
+  },
+  {
+    "name": "Six of Stones",
+    "suit": "Stones",
+    "upright": "Generosity, charity, sharing, fairness, support.",
+    "reversed": "Strings attached, debt, inequality, ulterior motives."
+  },
+  {
+    "name": "Seven of Stones",
+    "suit": "Stones",
+    "upright": "Assessment, patience, long-term view, cultivation.",
+    "reversed": "Impatience, lack of reward, misdirected effort, doubt."
+  },
+  {
+    "name": "Eight of Stones",
+    "suit": "Stones",
+    "upright": "Apprenticeship, mastery through practice, diligence.",
+    "reversed": "Perfectionism, repetitive toil, lack of passion, stagnation."
+  },
+  {
+    "name": "Nine of Stones",
+    "suit": "Stones",
+    "upright": "Self-sufficiency, luxury, independence, refinement.",
+    "reversed": "Overdependence, setbacks, work-life imbalance, losses."
+  },
+  {
+    "name": "Ten of Stones",
+    "suit": "Stones",
+    "upright": "Legacy, wealth, family, long-term success, inheritance.",
+    "reversed": "Instability, fleeting wealth, family strain, financial risk."
+  },
+  {
+    "name": "Page of Stones",
+    "suit": "Stones",
+    "upright": "Study, opportunity news, practicality, new job/skill.",
+    "reversed": "Procrastination, short-sightedness, missed chances."
+  },
+  {
+    "name": "Knight of Stones",
+    "suit": "Stones",
+    "upright": "Steady progress, reliability, routine, persistence.",
+    "reversed": "Stagnation, laziness, resistance to change, work without aim."
+  },
+  {
+    "name": "Queen of Stones",
+    "suit": "Stones",
+    "upright": "Nurture, resourcefulness, comfort, sensibility, prosperity.",
+    "reversed": "Overprotective, smothering, neglect of self, materialism."
+  },
+  {
+    "name": "King of Stones",
+    "suit": "Stones",
+    "upright": "Security, abundance, grounded leadership, enterprise.",
+    "reversed": "Stubbornness, possessiveness, greed, rigid control."
+  },
+  {
+    "name": "Ace of Winds",
+    "suit": "Winds",
+    "upright": "Breakthrough, clarity, new idea, truth, mental focus.",
+    "reversed": "Confusion, misinformation, clouded judgment, delays."
+  },
+  {
+    "name": "Two of Winds",
+    "suit": "Winds",
+    "upright": "Stalemate, difficult choice, balance of forces, avoidance.",
+    "reversed": "Indecision ends, information revealed, emotional overwhelm."
+  },
+  {
+    "name": "Three of Winds",
+    "suit": "Winds",
+    "upright": "Heartbreak, sorrow, separation, grief, release.",
+    "reversed": "Recovery, forgiveness, reconciliation, moving forward."
+  },
+  {
+    "name": "Four of Winds",
+    "suit": "Winds",
+    "upright": "Rest, recovery, contemplation, restoration, pause.",
+    "reversed": "Restlessness, burnout, refusal to heal, delayed recovery."
+  },
+  {
+    "name": "Five of Winds",
+    "suit": "Winds",
+    "upright": "Conflict, defeat, hollow victory, discord, tension.",
+    "reversed": "Making amends, compromise, learning from losses."
+  },
+  {
+    "name": "Six of Winds",
+    "suit": "Winds",
+    "upright": "Transition, moving on, healing journey, calm after storm.",
+    "reversed": "Unfinished business, stuckness, troubled passage."
+  },
+  {
+    "name": "Seven of Winds",
+    "suit": "Winds",
+    "upright": "Strategy, stealth, independence, cunning, tact.",
+    "reversed": "Getting caught, conscience, coming clean, poor strategy."
+  },
+  {
+    "name": "Eight of Winds",
+    "suit": "Winds",
+    "upright": "Restriction, fear, paralysis, self-imposed limits.",
+    "reversed": "Release, empowerment, seeing options, freedom."
+  },
+  {
+    "name": "Nine of Winds",
+    "suit": "Winds",
+    "upright": "Anxiety, nightmares, worry, guilt, overthinking.",
+    "reversed": "Relief, perspective, solutions, light after darkness."
+  },
+  {
+    "name": "Ten of Winds",
+    "suit": "Winds",
+    "upright": "Ruin, endings, collapse, rock bottom, surrender.",
+    "reversed": "Recovery, resilience, dawn after night, regeneration."
+  },
+  {
+    "name": "Page of Winds",
+    "suit": "Winds",
+    "upright": "Curiosity, study, vigilance, new ideas, messages.",
+    "reversed": "Gossip, haste, defensiveness, miscommunication."
+  },
+  {
+    "name": "Knight of Winds",
+    "suit": "Winds",
+    "upright": "Swift action, ambition, directness, pursuit of truth.",
+    "reversed": "Rashness, cruelty, scattered focus, burnout."
+  },
+  {
+    "name": "Queen of Winds",
+    "suit": "Winds",
+    "upright": "Perception, independence, clear judgment, honesty.",
+    "reversed": "Coldness, harshness, bitterness, misjudgment."
+  },
+  {
+    "name": "King of Winds",
+    "suit": "Winds",
+    "upright": "Intellect, authority, strategy, truth, ethical rule.",
+    "reversed": "Tyranny, manipulation, rigidity, misuse of power."
+  }
+]
