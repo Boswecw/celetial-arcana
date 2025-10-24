@@ -1,0 +1,118 @@
+{
+  "meta": {
+    "question": "How well will my first book sale?",
+    "timeframe": "next 30 days",
+    "spread_name": "Past-Present-Future",
+    "timestamp": "2025-10-23T16:44:43.587808Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": [
+        "Earth",
+        "Air"
+      ],
+      "notable_aspects": [
+        {
+          "aspect": "Sun conjunct Mercury",
+          "orb": "1°",
+          "interpretation": "Heightened communication and insight; clarity of thought."
+        },
+        {
+          "aspect": "Moon trine Pluto",
+          "orb": "2°",
+          "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+        },
+        {
+          "aspect": "Venus sextile Mars",
+          "orb": "3°",
+          "interpretation": "Creative harmony between desire and action."
+        }
+      ],
+      "lunar_phase": "Full Moon"
+    },
+    "themes": [
+      "Release, balance, and integration of emotional truth with practical progress"
+    ]
+  },
+  "spread_summary": {
+    "layout": [
+      "Past: The Hermit",
+      "Present: The Lovers",
+      "Future: Ten of Pentacles"
+    ],
+    "card_elements_count": {
+      "Fire": 0,
+      "Earth": 2,
+      "Air": 1,
+      "Water": 0
+    },
+    "majors_count": 2
+  },
+  "resonance": {
+    "matches": [
+      {
+        "type": "Astro-Tarot",
+        "detail": "The Hermit's introspective energy aligns with the Sun's heightened insight.",
+        "why": "Both emphasize self-reflection and clarity."
+      },
+      {
+        "type": "Tarot-Astro",
+        "detail": "The Lovers' reversed position resonates with the Moon's emotional renewal, highlighting the importance of balancing desires with practicality.",
+        "why": "This connection underscores the need for emotional intelligence in decision-making."
+      }
+    ],
+    "tensions": [
+      {
+        "type": "Astro-Tarot",
+        "detail": "The Ten of Pentacles' upright position may create tension with The Hermit's introspective nature, suggesting a need to balance practicality with self-reflection.",
+        "why": "This contrast highlights the importance of integrating emotional truth with practical progress."
+      }
+    ],
+    "element_balance": {
+      "astro": "Earth",
+      "tarot": "Fire:0; Earth:2; Air:1; Water:0",
+      "comment": "The emphasis on Earth elements in both astrology and tarot suggests a focus on stability, security, and grounding in your book sale journey."
+    }
+  },
+  "interpretation": {
+    "theme": "Integration of emotional truth with practical progress",
+    "positions": [
+      {
+        "card": "The Hermit",
+        "position": "Past",
+        "element": "Earth",
+        "insight": "Your past experiences have prepared you for this moment, and self-reflection will help clarify your thoughts."
+      },
+      {
+        "card": "The Lovers",
+        "position": "Present",
+        "element": "Air",
+        "insight": "In the present, balance your desires with practicality to ensure a harmonious outcome."
+      },
+      {
+        "card": "Ten of Pentacles",
+        "position": "Future",
+        "element": "Earth",
+        "insight": "Your future success is rooted in stability and security, which can be achieved by integrating emotional truth with practical progress."
+      }
+    ],
+    "timing": [
+      "The next 30 days will be crucial for setting the stage for your book sale's success"
+    ],
+    "action_items": [
+      "Take time to reflect on past experiences and clarify your thoughts.",
+      "Balance desires with practicality in the present to ensure a harmonious outcome.",
+      "Focus on stability and security in the future, integrating emotional truth with practical progress."
+    ],
+    "affirmations": [
+      "I trust my inner wisdom and am prepared for success."
+    ]
+  },
+  "confidence": {
+    "overall": 0.8,
+    "notes": "The alignment of astrological themes with tarot cards suggests a strong foundation for your book sale's success, but it's essential to balance emotional truth with practical progress."
+  }
+}

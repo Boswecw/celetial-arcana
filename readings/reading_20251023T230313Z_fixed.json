@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "question": "How well will my new book sale?",
+    "timeframe": "next 30 days",
+    "spread_name": "Past-Present-Future Spread",
+    "timestamp": "2025-10-23T23:03:13.829470Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": [
+        "Earth",
+        "Air"
+      ],
+      "notable_aspects": [
+        {
+          "aspect": "Sun conjunct Mercury",
+          "orb": "1°",
+          "interpretation": "Heightened communication and insight; clarity of thought."
+        },
+        {
+          "aspect": "Moon trine Pluto",
+          "orb": "2°",
+          "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+        },
+        {
+          "aspect": "Venus sextile Mars",
+          "orb": "3°",
+          "interpretation": "Creative harmony between desire and action."
+        }
+      ],
+      "lunar_phase": "Full Moon"
+    },
+    "themes": [
+      "Release, balance, and integration of emotional truth with practical progress"
+    ]
+  },
+  "spread_summary": {
+    "layout": [
+      "Past: The Hermit",
+      "Present: The Lovers (reversed)",
+      "Future: Ten of Pentacles"
+    ],
+    "card_elements_count": {
+      "Fire": 0,
+      "Earth": 2,
+      "Air": 1,
+      "Water": 0
+    },
+    "majors_count": 2
+  },
+  "resonance": {
+    "matches": [
+      {
+        "type": "Astro-Tarot",
+        "detail": "The Hermit's introspective energy aligns with the Sun's heightened insight and Mercury's clarity of thought.",
+        "why": "Emphasizes the importance of inner reflection in decision-making."
+      }
+    ],
+    "tensions": [],
+    "element_balance": {
+      "astro": "Earth, Air",
+      "tarot": "Fire:0; Earth:2; Air:1; Water:0",
+      "comment": "Balancing emotional truth with practical progress"
+    }
+  },
+  "interpretation": {
+    "theme": "Integration and release",
+    "positions": [
+      {
+        "card": "The Hermit",
+        "position": "Past",
+        "element": "Earth",
+        "insight": "Reflect on past experiences to gain clarity for future decisions."
+      },
+      {
+        "card": "The Lovers (reversed)",
+        "position": "Present",
+        "element": "Air",
+        "insight": "Re-evaluate current relationships and desires, considering the potential consequences."
+      },
+      {
+        "card": "Ten of Pentacles",
+        "position": "Future",
+        "element": "Earth",
+        "insight": "Visualize a stable and secure future, grounded in practicality and emotional fulfillment."
+      }
+    ],
+    "timing": [
+      "Next 30 days"
+    ],
+    "action_items": [
+      "Take time for introspection and self-reflection.",
+      "Re-evaluate current relationships and desires.",
+      "Visualize a stable and secure future."
+    ],
+    "affirmations": [
+      "I trust my inner wisdom to guide me.",
+      "I release emotional baggage and align with my true desires.",
+      "I manifest a fulfilling and practical future."
+    ]
+  },
+  "confidence": {
+    "overall": 0.8,
+    "notes": "The astrological influences suggest a strong connection between the tarot cards, emphasizing the importance of introspection, re-evaluation, and visualization for a successful book sale."
+  }
+}

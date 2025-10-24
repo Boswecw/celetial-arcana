@@ -1,0 +1,114 @@
+{
+  "meta": {
+    "question": "How well will my first book Sale?",
+    "timeframe": "next 30 days",
+    "spread_name": "",
+    "timestamp": "2025-10-23T17:17:11.913196Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": [
+        "Earth",
+        "Air"
+      ],
+      "notable_aspects": [
+        {
+          "aspect": "Sun conjunct Mercury",
+          "orb": "1°",
+          "interpretation": "Heightened communication and insight; clarity of thought."
+        },
+        {
+          "aspect": "Moon trine Pluto",
+          "orb": "2°",
+          "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+        },
+        {
+          "aspect": "Venus sextile Mars",
+          "orb": "3°",
+          "interpretation": "Creative harmony between desire and action."
+        }
+      ],
+      "lunar_phase": "Full Moon"
+    },
+    "themes": [
+      "Release, balance, and integration of emotional truth with practical progress"
+    ]
+  },
+  "spread_summary": {
+    "layout": [
+      "Past: The Hermit",
+      "Present: The Lovers (reversed)",
+      "Future: Ten of Pentacles"
+    ],
+    "card_elements_count": {
+      "Fire": 0,
+      "Earth": 2,
+      "Air": 1,
+      "Water": 0
+    },
+    "majors_count": 2
+  },
+  "resonance": {
+    "matches": [
+      {
+        "type": "Astro-Tarot",
+        "detail": "The Hermit's introspective energy aligns with the Sun's clarity and Mercury's insight.",
+        "why": "Heightened communication and self-reflection"
+      }
+    ],
+    "tensions": [
+      {
+        "type": "Tarot-Astro",
+        "detail": "The Lovers' reversed position may indicate a need to balance creative harmony with practical progress, as the Moon trines Pluto.",
+        "why": "Emotional renewal and subconscious empowerment"
+      }
+    ],
+    "element_balance": {
+      "astro": "Earth",
+      "tarot": "Fire:0; Earth:2; Air:1; Water:0",
+      "comment": "Practical grounding and stability"
+    }
+  },
+  "interpretation": {
+    "theme": "Integration of emotional truth with practical progress",
+    "positions": [
+      {
+        "card": "The Hermit",
+        "position": "Past",
+        "element": "Earth",
+        "insight": "Reflect on past experiences and emotions to clarify your current perspective."
+      },
+      {
+        "card": "The Lovers (reversed)",
+        "position": "Present",
+        "element": "Air",
+        "insight": "Balance creative harmony with practical progress, acknowledging the need for emotional renewal."
+      },
+      {
+        "card": "Ten of Pentacles",
+        "position": "Future",
+        "element": "Earth",
+        "insight": "Look forward to a stable and grounded future, where your hard work and dedication will be rewarded."
+      }
+    ],
+    "timing": [
+      "Next 30 days"
+    ],
+    "action_items": [
+      "Reflect on past experiences and emotions",
+      "Balance creative harmony with practical progress",
+      "Focus on long-term goals and stability"
+    ],
+    "affirmations": [
+      "I trust my intuition and emotional intelligence.",
+      "I balance creativity with practicality, finding harmony in all aspects of life."
+    ]
+  },
+  "confidence": {
+    "overall": 0.8,
+    "notes": "The astrological influences suggest a strong connection between the tarot cards, indicating a high level of confidence in this reading's accuracy."
+  }
+}

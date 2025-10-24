@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "question": "What should I focus on?",
+    "timeframe": "next 30 days",
+    "spread_name": "Custom Spread",
+    "timestamp": "2025-10-23T07:05:24.936478Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": [
+        "Earth",
+        "Air"
+      ],
+      "notable_aspects": [
+        {
+          "aspect": "Sun conjunct Mercury",
+          "orb": "1°",
+          "interpretation": "Heightened communication and insight; clarity of thought."
+        },
+        {
+          "aspect": "Moon trine Pluto",
+          "orb": "2°",
+          "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+        },
+        {
+          "aspect": "Venus sextile Mars",
+          "orb": "3°",
+          "interpretation": "Creative harmony between desire and action."
+        }
+      ],
+      "lunar_phase": "Full Moon"
+    },
+    "themes": [
+      "Release, balance, and integration"
+    ]
+  },
+  "spread_summary": {
+    "layout": [
+      "Past: The Hermit",
+      "Present: The Lovers",
+      "Future: Ten of Pentacles"
+    ],
+    "card_elements_count": {
+      "Fire": 0,
+      "Earth": 2,
+      "Air": 1,
+      "Water": 0
+    },
+    "majors_count": 2
+  },
+  "resonance": {
+    "matches": [
+      {
+        "type": "Astro-Tarot Synthesis",
+        "detail": "The Hermit's guidance in the Past and Ten of Pentacles' manifestation in the Future support The Lovers' reversed message in the Present.",
+        "why": "Integration of emotional truth with practical progress"
+      }
+    ],
+    "tensions": [
+      {
+        "type": "Internal Conflict",
+        "detail": "The Lovers' reversal may indicate inner turmoil or self-doubt, which can be addressed through introspection and self-compassion.",
+        "why": "Emotional renewal and subconscious empowerment"
+      }
+    ],
+    "element_balance": {
+      "astro": "Earth",
+      "tarot": "Fire:0; Earth:2; Air:1; Water:0",
+      "comment": "Balance between practicality and creativity"
+    }
+  },
+  "interpretation": {
+    "theme": "Integration of emotional truth with practical progress",
+    "positions": [
+      {
+        "card": "The Hermit",
+        "position": "Past",
+        "element": "Earth",
+        "insight": "Guidance from within"
+      },
+      {
+        "card": "The Lovers",
+        "position": "Present",
+        "element": "Air",
+        "insight": "Inner turmoil or self-doubt"
+      },
+      {
+        "card": "Ten of Pentacles",
+        "position": "Future",
+        "element": "Earth",
+        "insight": "Manifestation and success"
+      }
+    ],
+    "timing": [
+      "Release, balance, and integration"
+    ],
+    "action_items": [
+      "Introspection and self-compassion",
+      "Practical progress and manifestation"
+    ],
+    "affirmations": [
+      "I trust my inner guidance.",
+      "I am worthy of love and success."
+    ]
+  },
+  "confidence": {
+    "overall": 0.8,
+    "notes": "The Full Moon energy highlights the importance of release, balance, and integration."
+  }
+}

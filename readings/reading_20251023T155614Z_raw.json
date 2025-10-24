@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "question": "Will my book Sale?",
+    "timeframe": "next 30 days",
+    "spread_name": null,
+    "timestamp": "2025-10-23T15:56:14.822868Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": [
+        "Earth",
+        "Air"
+      ],
+      "notable_aspects": [
+        {
+          "aspect": "Sun conjunct Mercury",
+          "orb": "1°",
+          "interpretation": "Heightened communication and insight; clarity of thought."
+        },
+        {
+          "aspect": "Moon trine Pluto",
+          "orb": "2°",
+          "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+        },
+        {
+          "aspect": "Venus sextile Mars",
+          "orb": "3°",
+          "interpretation": "Creative harmony between desire and action."
+        }
+      ],
+      "lunar_phase": "Full Moon"
+    },
+    "themes": [
+      "Release, balance, and integration"
+    ]
+  },
+  "spread_summary": {
+    "layout": [
+      "Past: The Hermit",
+      "Present: The Lovers (reversed)",
+      "Future: Ten of Pentacles"
+    ],
+    "card_elements_count": {
+      "Fire": 0,
+      "Earth": 2,
+      "Air": 1,
+      "Water": 0
+    },
+    "majors_count": 1
+  },
+  "resonance": {
+    "matches": [
+      {
+        "type": "Astro-Tarot",
+        "detail": "Release, balance, and integration",
+        "why": "Full Moon energy highlights the importance of emotional truth in practical progress"
+      }
+    ],
+    "tensions": [],
+    "element_balance": {
+      "astro": "Earth",
+      "tarot": "Fire:0; Earth:2; Air:1; Water:0",
+      "comment": "Balance between emotional release and creative harmony"
+    }
+  },
+  "interpretation": {
+    "theme": "Release, balance, and integration",
+    "positions": [
+      {
+        "card": "The Hermit",
+        "position": "Past",
+        "element": "Earth",
+        "insight": "Reflect on past experiences to gain clarity"
+      },
+      {
+        "card": "The Lovers (reversed)",
+        "position": "Present",
+        "element": "Air",
+        "insight": "Current relationships may be out of balance; re-evaluate priorities"
+      },
+      {
+        "card": "Ten of Pentacles",
+        "position": "Future",
+        "element": "Earth",
+        "insight": "A stable and secure future awaits, with a focus on material success"
+      }
+    ],
+    "timing": [
+      "next 30 days"
+    ],
+    "action_items": [
+      "Re-evaluate current relationships; focus on emotional truth in practical progress"
+    ],
+    "affirmations": [
+      "I trust my intuition to guide me towards balance and integration"
+    ]
+  },
+  "confidence": {
+    "overall": 0.8,
+    "notes": "The reading suggests a clear path forward, with the potential for material success"
+  }
+}

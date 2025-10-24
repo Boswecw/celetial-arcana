@@ -1,0 +1,987 @@
+{
+  "meta": {
+    "source": "constellation_knowledge_faith.json",
+    "version": "1.0.0-faith",
+    "generated_at": "2025-10-22T21:54:57.205721Z",
+    "style": "faith-aware, inclusive, non-dogmatic",
+    "fields": [
+      "name",
+      "meanings.archetype",
+      "meanings.virtue",
+      "meanings.shadow",
+      "meanings.quest",
+      "meanings.lesson",
+      "meanings.omen"
+    ]
+  },
+  "constellations": {
+    "Andromeda": {
+      "name": "Andromeda",
+      "meanings": {
+        "archetype": "Andromeda reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Andromeda rekindles faith’s courage—the quiet certainty that grace sustains each brave step.",
+        "shadow": "Under Andromeda, beware the shadow of pride—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Andromeda is to align will with purpose., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A door of grace opens when faith moves your hand."
+      }
+    },
+    "Antlia": {
+      "name": "Antlia",
+      "meanings": {
+        "archetype": "Antlia reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Antlia rekindles patient trust in divine timing.",
+        "shadow": "Under Antlia, beware the shadow of impulsiveness—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Antlia is to heal an old wound., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "In silence, the faithful answer is revealed."
+      }
+    },
+    "Apus": {
+      "name": "Apus",
+      "meanings": {
+        "archetype": "Apus reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Apus rekindles living wisdom, born of prayerful listening.",
+        "shadow": "Under Apus, beware the shadow of doubt—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Apus is to speak truth with grace., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "By grace, a guiding mentor appears when needed."
+      }
+    },
+    "Aquarius": {
+      "name": "Aquarius",
+      "meanings": {
+        "archetype": "Aquarius reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Aquarius rekindles creative flow offered in service.",
+        "shadow": "Under Aquarius, beware the shadow of rigidity—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Aquarius is to build what lasts., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A timely message confirms the way by grace."
+      }
+    },
+    "Aquila": {
+      "name": "Aquila",
+      "meanings": {
+        "archetype": "Aquila reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Aquila rekindles devoted love and steady prayer.",
+        "shadow": "Under Aquila, beware the shadow of escapism—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Aquila is to release what no longer serves., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "Old patterns shatter; grace clears the air."
+      }
+    },
+    "Ara": {
+      "name": "Ara",
+      "meanings": {
+        "archetype": "Ara reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Ara rekindles disciplined devotion.",
+        "shadow": "Under Ara, beware the shadow of envy—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Ara is to cross a threshold of growth., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "Your name is spoken with favor; providence has prepared the room."
+      }
+    },
+    "Aries": {
+      "name": "Aries",
+      "meanings": {
+        "archetype": "Aries reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Aries rekindles just and compassionate action.",
+        "shadow": "Under Aries, beware the shadow of fear of change—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Aries is to reconcile head and heart., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "An overlooked gift is called forth by grace."
+      }
+    },
+    "Auriga": {
+      "name": "Auriga",
+      "meanings": {
+        "archetype": "Auriga reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Auriga rekindles merciful strength.",
+        "shadow": "Under Auriga, beware the shadow of overcontrol—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Auriga is to protect the vulnerable., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "The tide turns; favor goes before you."
+      }
+    },
+    "Boötes": {
+      "name": "Boötes",
+      "meanings": {
+        "archetype": "Boötes reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Boötes rekindles clear seeing and truthful speech.",
+        "shadow": "Under Boötes, beware the shadow of self-deception—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Boötes is to master your craft., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A small act of faith unlocks a great gate."
+      }
+    },
+    "Caelum": {
+      "name": "Caelum",
+      "meanings": {
+        "archetype": "Caelum reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Caelum rekindles temperance and holy balance.",
+        "shadow": "Under Caelum, beware the shadow of complacency—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Caelum is to begin again with courage., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A seeming detour becomes the faithful path."
+      }
+    },
+    "Camelopardalis": {
+      "name": "Camelopardalis",
+      "meanings": {
+        "archetype": "Camelopardalis reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Camelopardalis rekindles joy rooted in gratitude.",
+        "shadow": "Under Camelopardalis, beware the shadow of isolation—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Camelopardalis is to seek wise counsel., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "Reunion restores what was lost—grace mends."
+      }
+    },
+    "Cancer": {
+      "name": "Cancer",
+      "meanings": {
+        "archetype": "Cancer reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Cancer rekindles humble strength and reverence.",
+        "shadow": "Under Cancer, beware the shadow of overindulgence—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Cancer is to endure through the season., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "In the night, clarity is given."
+      }
+    },
+    "Canes Venatici": {
+      "name": "Canes Venatici",
+      "meanings": {
+        "archetype": "Canes Venatici reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Canes Venatici rekindles faith and steadfast trust.",
+        "shadow": "Under Canes Venatici, beware the shadow of obsession—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Canes Venatici is to transform loss into wisdom., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "An ancient fear dissolves in the light of day."
+      }
+    },
+    "Canis Major": {
+      "name": "Canis Major",
+      "meanings": {
+        "archetype": "Canis Major reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Canis Major rekindles perseverance anchored in hope.",
+        "shadow": "Under Canis Major, beware the shadow of martyrdom—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Canis Major is to follow the call beyond comfort., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "The right ally steps forward in providence."
+      }
+    },
+    "Canis Minor": {
+      "name": "Canis Minor",
+      "meanings": {
+        "archetype": "Canis Minor reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Canis Minor rekindles integrity before God and neighbor.",
+        "shadow": "Under Canis Minor, beware the shadow of apathy—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Canis Minor is to restore trust., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "What was hidden aligns in plain sight; truth is revealed."
+      }
+    },
+    "Capricornus": {
+      "name": "Capricornus",
+      "meanings": {
+        "archetype": "Capricornus reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Capricornus rekindles holy curiosity.",
+        "shadow": "Under Capricornus, beware the shadow of arrogance—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Capricornus is to make art of your experience., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A long wait ripens into harvest by divine timing."
+      }
+    },
+    "Carina": {
+      "name": "Carina",
+      "meanings": {
+        "archetype": "Carina reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Carina rekindles resilience through grace.",
+        "shadow": "Under Carina, beware the shadow of impatience—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Carina is to walk the narrow path faithfully., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "The deadline becomes a launch by grace."
+      }
+    },
+    "Cassiopeia": {
+      "name": "Cassiopeia",
+      "meanings": {
+        "archetype": "Cassiopeia reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Cassiopeia rekindles compassion that heals.",
+        "shadow": "Under Cassiopeia, beware the shadow of restlessness—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Cassiopeia is to champion the common good., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "Watch for a gentle sign of grace confirming your next step."
+      }
+    },
+    "Centaurus": {
+      "name": "Centaurus",
+      "meanings": {
+        "archetype": "Centaurus reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Centaurus rekindles vision guided by Spirit.",
+        "shadow": "Under Centaurus, beware the shadow of detachment—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Centaurus is to learn the language of your intuition., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A humble beginning bears royal fruit."
+      }
+    },
+    "Cepheus": {
+      "name": "Cepheus",
+      "meanings": {
+        "archetype": "Cepheus reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Cepheus rekindles sacred balance.",
+        "shadow": "Under Cepheus, beware the shadow of melancholy—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Cepheus is to celebrate the light you carry., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "An ending does not wound; it frees by grace."
+      }
+    },
+    "Cetus": {
+      "name": "Cetus",
+      "meanings": {
+        "archetype": "Cetus reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Cetus rekindles faith’s courage—the quiet certainty that grace sustains each brave step.",
+        "shadow": "Under Cetus, beware the shadow of pride—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Cetus is to align will with purpose., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A door of grace opens when faith moves your hand."
+      }
+    },
+    "Chamaeleon": {
+      "name": "Chamaeleon",
+      "meanings": {
+        "archetype": "Chamaeleon reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Chamaeleon rekindles patient trust in divine timing.",
+        "shadow": "Under Chamaeleon, beware the shadow of impulsiveness—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Chamaeleon is to heal an old wound., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "In silence, the faithful answer is revealed."
+      }
+    },
+    "Circinus": {
+      "name": "Circinus",
+      "meanings": {
+        "archetype": "Circinus reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Circinus rekindles living wisdom, born of prayerful listening.",
+        "shadow": "Under Circinus, beware the shadow of doubt—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Circinus is to speak truth with grace., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "By grace, a guiding mentor appears when needed."
+      }
+    },
+    "Columba": {
+      "name": "Columba",
+      "meanings": {
+        "archetype": "Columba reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Columba rekindles creative flow offered in service.",
+        "shadow": "Under Columba, beware the shadow of rigidity—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Columba is to build what lasts., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A timely message confirms the way by grace."
+      }
+    },
+    "Coma Berenices": {
+      "name": "Coma Berenices",
+      "meanings": {
+        "archetype": "Coma Berenices reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Coma Berenices rekindles devoted love and steady prayer.",
+        "shadow": "Under Coma Berenices, beware the shadow of escapism—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Coma Berenices is to release what no longer serves., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "Old patterns shatter; grace clears the air."
+      }
+    },
+    "Corona Australis": {
+      "name": "Corona Australis",
+      "meanings": {
+        "archetype": "Corona Australis reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Corona Australis rekindles disciplined devotion.",
+        "shadow": "Under Corona Australis, beware the shadow of envy—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Corona Australis is to cross a threshold of growth., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "Your name is spoken with favor; providence has prepared the room."
+      }
+    },
+    "Corona Borealis": {
+      "name": "Corona Borealis",
+      "meanings": {
+        "archetype": "Corona Borealis reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Corona Borealis rekindles just and compassionate action.",
+        "shadow": "Under Corona Borealis, beware the shadow of fear of change—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Corona Borealis is to reconcile head and heart., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "An overlooked gift is called forth by grace."
+      }
+    },
+    "Corvus": {
+      "name": "Corvus",
+      "meanings": {
+        "archetype": "Corvus reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Corvus rekindles merciful strength.",
+        "shadow": "Under Corvus, beware the shadow of overcontrol—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Corvus is to protect the vulnerable., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "The tide turns; favor goes before you."
+      }
+    },
+    "Crater": {
+      "name": "Crater",
+      "meanings": {
+        "archetype": "Crater reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Crater rekindles clear seeing and truthful speech.",
+        "shadow": "Under Crater, beware the shadow of self-deception—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Crater is to master your craft., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A small act of faith unlocks a great gate."
+      }
+    },
+    "Crux": {
+      "name": "Crux",
+      "meanings": {
+        "archetype": "Crux reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Crux rekindles temperance and holy balance.",
+        "shadow": "Under Crux, beware the shadow of complacency—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Crux is to begin again with courage., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A seeming detour becomes the faithful path."
+      }
+    },
+    "Cygnus": {
+      "name": "Cygnus",
+      "meanings": {
+        "archetype": "Cygnus reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Cygnus rekindles joy rooted in gratitude.",
+        "shadow": "Under Cygnus, beware the shadow of isolation—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Cygnus is to seek wise counsel., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "Reunion restores what was lost—grace mends."
+      }
+    },
+    "Delphinus": {
+      "name": "Delphinus",
+      "meanings": {
+        "archetype": "Delphinus reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Delphinus rekindles humble strength and reverence.",
+        "shadow": "Under Delphinus, beware the shadow of overindulgence—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Delphinus is to endure through the season., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "In the night, clarity is given."
+      }
+    },
+    "Dorado": {
+      "name": "Dorado",
+      "meanings": {
+        "archetype": "Dorado reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Dorado rekindles faith and steadfast trust.",
+        "shadow": "Under Dorado, beware the shadow of obsession—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Dorado is to transform loss into wisdom., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "An ancient fear dissolves in the light of day."
+      }
+    },
+    "Draco": {
+      "name": "Draco",
+      "meanings": {
+        "archetype": "Draco reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Draco rekindles perseverance anchored in hope.",
+        "shadow": "Under Draco, beware the shadow of martyrdom—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Draco is to follow the call beyond comfort., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "The right ally steps forward in providence."
+      }
+    },
+    "Equuleus": {
+      "name": "Equuleus",
+      "meanings": {
+        "archetype": "Equuleus reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Equuleus rekindles integrity before God and neighbor.",
+        "shadow": "Under Equuleus, beware the shadow of apathy—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Equuleus is to restore trust., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "What was hidden aligns in plain sight; truth is revealed."
+      }
+    },
+    "Eridanus": {
+      "name": "Eridanus",
+      "meanings": {
+        "archetype": "Eridanus reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Eridanus rekindles holy curiosity.",
+        "shadow": "Under Eridanus, beware the shadow of arrogance—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Eridanus is to make art of your experience., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A long wait ripens into harvest by divine timing."
+      }
+    },
+    "Fornax": {
+      "name": "Fornax",
+      "meanings": {
+        "archetype": "Fornax reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Fornax rekindles resilience through grace.",
+        "shadow": "Under Fornax, beware the shadow of impatience—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Fornax is to walk the narrow path faithfully., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "The deadline becomes a launch by grace."
+      }
+    },
+    "Gemini": {
+      "name": "Gemini",
+      "meanings": {
+        "archetype": "Gemini reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Gemini rekindles compassion that heals.",
+        "shadow": "Under Gemini, beware the shadow of restlessness—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Gemini is to champion the common good., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "Watch for a gentle sign of grace confirming your next step."
+      }
+    },
+    "Grus": {
+      "name": "Grus",
+      "meanings": {
+        "archetype": "Grus reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Grus rekindles vision guided by Spirit.",
+        "shadow": "Under Grus, beware the shadow of detachment—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Grus is to learn the language of your intuition., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A humble beginning bears royal fruit."
+      }
+    },
+    "Hercules": {
+      "name": "Hercules",
+      "meanings": {
+        "archetype": "Hercules reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Hercules rekindles sacred balance.",
+        "shadow": "Under Hercules, beware the shadow of melancholy—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Hercules is to celebrate the light you carry., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "An ending does not wound; it frees by grace."
+      }
+    },
+    "Horologium": {
+      "name": "Horologium",
+      "meanings": {
+        "archetype": "Horologium reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Horologium rekindles faith’s courage—the quiet certainty that grace sustains each brave step.",
+        "shadow": "Under Horologium, beware the shadow of pride—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Horologium is to align will with purpose., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A door of grace opens when faith moves your hand."
+      }
+    },
+    "Hydra": {
+      "name": "Hydra",
+      "meanings": {
+        "archetype": "Hydra reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Hydra rekindles patient trust in divine timing.",
+        "shadow": "Under Hydra, beware the shadow of impulsiveness—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Hydra is to heal an old wound., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "In silence, the faithful answer is revealed."
+      }
+    },
+    "Hydrus": {
+      "name": "Hydrus",
+      "meanings": {
+        "archetype": "Hydrus reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Hydrus rekindles living wisdom, born of prayerful listening.",
+        "shadow": "Under Hydrus, beware the shadow of doubt—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Hydrus is to speak truth with grace., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "By grace, a guiding mentor appears when needed."
+      }
+    },
+    "Indus": {
+      "name": "Indus",
+      "meanings": {
+        "archetype": "Indus reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Indus rekindles creative flow offered in service.",
+        "shadow": "Under Indus, beware the shadow of rigidity—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Indus is to build what lasts., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A timely message confirms the way by grace."
+      }
+    },
+    "Lacerta": {
+      "name": "Lacerta",
+      "meanings": {
+        "archetype": "Lacerta reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Lacerta rekindles devoted love and steady prayer.",
+        "shadow": "Under Lacerta, beware the shadow of escapism—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Lacerta is to release what no longer serves., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "Old patterns shatter; grace clears the air."
+      }
+    },
+    "Leo": {
+      "name": "Leo",
+      "meanings": {
+        "archetype": "Leo reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Leo rekindles disciplined devotion.",
+        "shadow": "Under Leo, beware the shadow of envy—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Leo is to cross a threshold of growth., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "Your name is spoken with favor; providence has prepared the room."
+      }
+    },
+    "Leo Minor": {
+      "name": "Leo Minor",
+      "meanings": {
+        "archetype": "Leo Minor reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Leo Minor rekindles just and compassionate action.",
+        "shadow": "Under Leo Minor, beware the shadow of fear of change—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Leo Minor is to reconcile head and heart., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "An overlooked gift is called forth by grace."
+      }
+    },
+    "Lepus": {
+      "name": "Lepus",
+      "meanings": {
+        "archetype": "Lepus reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Lepus rekindles merciful strength.",
+        "shadow": "Under Lepus, beware the shadow of overcontrol—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Lepus is to protect the vulnerable., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "The tide turns; favor goes before you."
+      }
+    },
+    "Libra": {
+      "name": "Libra",
+      "meanings": {
+        "archetype": "Libra reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Libra rekindles clear seeing and truthful speech.",
+        "shadow": "Under Libra, beware the shadow of self-deception—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Libra is to master your craft., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A small act of faith unlocks a great gate."
+      }
+    },
+    "Lupus": {
+      "name": "Lupus",
+      "meanings": {
+        "archetype": "Lupus reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Lupus rekindles temperance and holy balance.",
+        "shadow": "Under Lupus, beware the shadow of complacency—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Lupus is to begin again with courage., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A seeming detour becomes the faithful path."
+      }
+    },
+    "Lynx": {
+      "name": "Lynx",
+      "meanings": {
+        "archetype": "Lynx reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Lynx rekindles joy rooted in gratitude.",
+        "shadow": "Under Lynx, beware the shadow of isolation—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Lynx is to seek wise counsel., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "Reunion restores what was lost—grace mends."
+      }
+    },
+    "Lyra": {
+      "name": "Lyra",
+      "meanings": {
+        "archetype": "Lyra reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Lyra rekindles humble strength and reverence.",
+        "shadow": "Under Lyra, beware the shadow of overindulgence—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Lyra is to endure through the season., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "In the night, clarity is given."
+      }
+    },
+    "Mensa": {
+      "name": "Mensa",
+      "meanings": {
+        "archetype": "Mensa reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Mensa rekindles faith and steadfast trust.",
+        "shadow": "Under Mensa, beware the shadow of obsession—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Mensa is to transform loss into wisdom., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "An ancient fear dissolves in the light of day."
+      }
+    },
+    "Microscopium": {
+      "name": "Microscopium",
+      "meanings": {
+        "archetype": "Microscopium reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Microscopium rekindles perseverance anchored in hope.",
+        "shadow": "Under Microscopium, beware the shadow of martyrdom—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Microscopium is to follow the call beyond comfort., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "The right ally steps forward in providence."
+      }
+    },
+    "Monoceros": {
+      "name": "Monoceros",
+      "meanings": {
+        "archetype": "Monoceros reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Monoceros rekindles integrity before God and neighbor.",
+        "shadow": "Under Monoceros, beware the shadow of apathy—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Monoceros is to restore trust., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "What was hidden aligns in plain sight; truth is revealed."
+      }
+    },
+    "Musca": {
+      "name": "Musca",
+      "meanings": {
+        "archetype": "Musca reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Musca rekindles holy curiosity.",
+        "shadow": "Under Musca, beware the shadow of arrogance—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Musca is to make art of your experience., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A long wait ripens into harvest by divine timing."
+      }
+    },
+    "Norma": {
+      "name": "Norma",
+      "meanings": {
+        "archetype": "Norma reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Norma rekindles resilience through grace.",
+        "shadow": "Under Norma, beware the shadow of impatience—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Norma is to walk the narrow path faithfully., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "The deadline becomes a launch by grace."
+      }
+    },
+    "Octans": {
+      "name": "Octans",
+      "meanings": {
+        "archetype": "Octans reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Octans rekindles compassion that heals.",
+        "shadow": "Under Octans, beware the shadow of restlessness—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Octans is to champion the common good., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "Watch for a gentle sign of grace confirming your next step."
+      }
+    },
+    "Ophiuchus": {
+      "name": "Ophiuchus",
+      "meanings": {
+        "archetype": "Ophiuchus reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Ophiuchus rekindles vision guided by Spirit.",
+        "shadow": "Under Ophiuchus, beware the shadow of detachment—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Ophiuchus is to learn the language of your intuition., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A humble beginning bears royal fruit."
+      }
+    },
+    "Orion": {
+      "name": "Orion",
+      "meanings": {
+        "archetype": "Orion reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Orion rekindles sacred balance.",
+        "shadow": "Under Orion, beware the shadow of melancholy—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Orion is to celebrate the light you carry., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "An ending does not wound; it frees by grace."
+      }
+    },
+    "Pavo": {
+      "name": "Pavo",
+      "meanings": {
+        "archetype": "Pavo reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Pavo rekindles faith’s courage—the quiet certainty that grace sustains each brave step.",
+        "shadow": "Under Pavo, beware the shadow of pride—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Pavo is to align will with purpose., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A door of grace opens when faith moves your hand."
+      }
+    },
+    "Pegasus": {
+      "name": "Pegasus",
+      "meanings": {
+        "archetype": "Pegasus reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Pegasus rekindles patient trust in divine timing.",
+        "shadow": "Under Pegasus, beware the shadow of impulsiveness—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Pegasus is to heal an old wound., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "In silence, the faithful answer is revealed."
+      }
+    },
+    "Perseus": {
+      "name": "Perseus",
+      "meanings": {
+        "archetype": "Perseus reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Perseus rekindles living wisdom, born of prayerful listening.",
+        "shadow": "Under Perseus, beware the shadow of doubt—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Perseus is to speak truth with grace., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "By grace, a guiding mentor appears when needed."
+      }
+    },
+    "Phoenix": {
+      "name": "Phoenix",
+      "meanings": {
+        "archetype": "Phoenix reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Phoenix rekindles creative flow offered in service.",
+        "shadow": "Under Phoenix, beware the shadow of rigidity—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Phoenix is to build what lasts., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A timely message confirms the way by grace."
+      }
+    },
+    "Pictor": {
+      "name": "Pictor",
+      "meanings": {
+        "archetype": "Pictor reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Pictor rekindles devoted love and steady prayer.",
+        "shadow": "Under Pictor, beware the shadow of escapism—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Pictor is to release what no longer serves., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "Old patterns shatter; grace clears the air."
+      }
+    },
+    "Pisces": {
+      "name": "Pisces",
+      "meanings": {
+        "archetype": "Pisces reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Pisces rekindles disciplined devotion.",
+        "shadow": "Under Pisces, beware the shadow of envy—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Pisces is to cross a threshold of growth., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "Your name is spoken with favor; providence has prepared the room."
+      }
+    },
+    "Piscis Austrinus": {
+      "name": "Piscis Austrinus",
+      "meanings": {
+        "archetype": "Piscis Austrinus reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Piscis Austrinus rekindles just and compassionate action.",
+        "shadow": "Under Piscis Austrinus, beware the shadow of fear of change—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Piscis Austrinus is to reconcile head and heart., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "An overlooked gift is called forth by grace."
+      }
+    },
+    "Puppis": {
+      "name": "Puppis",
+      "meanings": {
+        "archetype": "Puppis reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Puppis rekindles merciful strength.",
+        "shadow": "Under Puppis, beware the shadow of overcontrol—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Puppis is to protect the vulnerable., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "The tide turns; favor goes before you."
+      }
+    },
+    "Pyxis": {
+      "name": "Pyxis",
+      "meanings": {
+        "archetype": "Pyxis reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Pyxis rekindles clear seeing and truthful speech.",
+        "shadow": "Under Pyxis, beware the shadow of self-deception—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Pyxis is to master your craft., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A small act of faith unlocks a great gate."
+      }
+    },
+    "Reticulum": {
+      "name": "Reticulum",
+      "meanings": {
+        "archetype": "Reticulum reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Reticulum rekindles temperance and holy balance.",
+        "shadow": "Under Reticulum, beware the shadow of complacency—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Reticulum is to begin again with courage., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A seeming detour becomes the faithful path."
+      }
+    },
+    "Sagitta": {
+      "name": "Sagitta",
+      "meanings": {
+        "archetype": "Sagitta reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Sagitta rekindles joy rooted in gratitude.",
+        "shadow": "Under Sagitta, beware the shadow of isolation—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Sagitta is to seek wise counsel., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "Reunion restores what was lost—grace mends."
+      }
+    },
+    "Sagittarius": {
+      "name": "Sagittarius",
+      "meanings": {
+        "archetype": "Sagittarius reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Sagittarius rekindles humble strength and reverence.",
+        "shadow": "Under Sagittarius, beware the shadow of overindulgence—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Sagittarius is to endure through the season., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "In the night, clarity is given."
+      }
+    },
+    "Scorpius": {
+      "name": "Scorpius",
+      "meanings": {
+        "archetype": "Scorpius reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Scorpius rekindles faith and steadfast trust.",
+        "shadow": "Under Scorpius, beware the shadow of obsession—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Scorpius is to transform loss into wisdom., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "An ancient fear dissolves in the light of day."
+      }
+    },
+    "Sculptor": {
+      "name": "Sculptor",
+      "meanings": {
+        "archetype": "Sculptor reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Sculptor rekindles perseverance anchored in hope.",
+        "shadow": "Under Sculptor, beware the shadow of martyrdom—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Sculptor is to follow the call beyond comfort., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "The right ally steps forward in providence."
+      }
+    },
+    "Scutum": {
+      "name": "Scutum",
+      "meanings": {
+        "archetype": "Scutum reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Scutum rekindles integrity before God and neighbor.",
+        "shadow": "Under Scutum, beware the shadow of apathy—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Scutum is to restore trust., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "What was hidden aligns in plain sight; truth is revealed."
+      }
+    },
+    "Serpens": {
+      "name": "Serpens",
+      "meanings": {
+        "archetype": "Serpens reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Serpens rekindles holy curiosity.",
+        "shadow": "Under Serpens, beware the shadow of arrogance—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Serpens is to make art of your experience., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A long wait ripens into harvest by divine timing."
+      }
+    },
+    "Sextans": {
+      "name": "Sextans",
+      "meanings": {
+        "archetype": "Sextans reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Sextans rekindles resilience through grace.",
+        "shadow": "Under Sextans, beware the shadow of impatience—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Sextans is to walk the narrow path faithfully., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "The deadline becomes a launch by grace."
+      }
+    },
+    "Taurus": {
+      "name": "Taurus",
+      "meanings": {
+        "archetype": "Taurus reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Taurus rekindles compassion that heals.",
+        "shadow": "Under Taurus, beware the shadow of restlessness—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Taurus is to champion the common good., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "Watch for a gentle sign of grace confirming your next step."
+      }
+    },
+    "Telescopium": {
+      "name": "Telescopium",
+      "meanings": {
+        "archetype": "Telescopium reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Telescopium rekindles vision guided by Spirit.",
+        "shadow": "Under Telescopium, beware the shadow of detachment—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Telescopium is to learn the language of your intuition., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A humble beginning bears royal fruit."
+      }
+    },
+    "Triangulum": {
+      "name": "Triangulum",
+      "meanings": {
+        "archetype": "Triangulum reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Triangulum rekindles sacred balance.",
+        "shadow": "Under Triangulum, beware the shadow of melancholy—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Triangulum is to celebrate the light you carry., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "An ending does not wound; it frees by grace."
+      }
+    },
+    "Triangulum Australe": {
+      "name": "Triangulum Australe",
+      "meanings": {
+        "archetype": "Triangulum Australe reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Triangulum Australe rekindles faith’s courage—the quiet certainty that grace sustains each brave step.",
+        "shadow": "Under Triangulum Australe, beware the shadow of pride—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Triangulum Australe is to align will with purpose., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A door of grace opens when faith moves your hand."
+      }
+    },
+    "Tucana": {
+      "name": "Tucana",
+      "meanings": {
+        "archetype": "Tucana reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Tucana rekindles patient trust in divine timing.",
+        "shadow": "Under Tucana, beware the shadow of impulsiveness—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Tucana is to heal an old wound., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "In silence, the faithful answer is revealed."
+      }
+    },
+    "Ursa Major": {
+      "name": "Ursa Major",
+      "meanings": {
+        "archetype": "Ursa Major reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Ursa Major rekindles living wisdom, born of prayerful listening.",
+        "shadow": "Under Ursa Major, beware the shadow of doubt—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Ursa Major is to speak truth with grace., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "By grace, a guiding mentor appears when needed."
+      }
+    },
+    "Ursa Minor": {
+      "name": "Ursa Minor",
+      "meanings": {
+        "archetype": "Ursa Minor reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Ursa Minor rekindles creative flow offered in service.",
+        "shadow": "Under Ursa Minor, beware the shadow of rigidity—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Ursa Minor is to build what lasts., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "A timely message confirms the way by grace."
+      }
+    },
+    "Vela": {
+      "name": "Vela",
+      "meanings": {
+        "archetype": "Vela reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Vela rekindles devoted love and steady prayer.",
+        "shadow": "Under Vela, beware the shadow of escapism—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Vela is to release what no longer serves., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "Old patterns shatter; grace clears the air."
+      }
+    },
+    "Virgo": {
+      "name": "Virgo",
+      "meanings": {
+        "archetype": "Virgo reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Virgo rekindles disciplined devotion.",
+        "shadow": "Under Virgo, beware the shadow of envy—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Virgo is to cross a threshold of growth., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "Your name is spoken with favor; providence has prepared the room."
+      }
+    },
+    "Volans": {
+      "name": "Volans",
+      "meanings": {
+        "archetype": "Volans reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Volans rekindles just and compassionate action.",
+        "shadow": "Under Volans, beware the shadow of fear of change—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Volans is to reconcile head and heart., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "An overlooked gift is called forth by grace."
+      }
+    },
+    "Vulpecula": {
+      "name": "Vulpecula",
+      "meanings": {
+        "archetype": "Vulpecula reveals a sacred pattern at work in your story—an image calling forth your faithful, authentic stance in this moment.",
+        "virtue": "The light of Vulpecula rekindles merciful strength.",
+        "shadow": "Under Vulpecula, beware the shadow of overcontrol—a drift from trust. Return to humility, gratitude, and alignment.",
+        "quest": "The quest of Vulpecula is to protect the vulnerable., in faithful alignment with purpose.",
+        "lesson": "Faithful endurance and sacred presence unveil the path when plans fail.",
+        "omen": "The tide turns; favor goes before you."
+      }
+    }
+  }
+}

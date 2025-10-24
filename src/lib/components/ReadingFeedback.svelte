@@ -1,8 +1,12 @@
+<!-- @component
+no description yet
+-->
 <script lang="ts">
   export let readingId: string;
   export let cards: string[];
   export let themes: string[];
   export let userZodiac: string | undefined;
+  export let astroTarotThemes: string[] = [];
   export let onFeedbackSubmitted: () => void = () => {};
 
   let rating = 0;
@@ -27,6 +31,7 @@
           feedback,
           cards,
           themes,
+          astroTarotThemes,
           userZodiac,
         }),
       });

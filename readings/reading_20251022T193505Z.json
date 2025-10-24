@@ -1,0 +1,65 @@
+{
+  "meta": {
+    "question": "What should I focus on in my career over the next 30 days?",
+    "timeframe": "next 30 days",
+    "astro_context": {
+      "chart_type": "transit",
+      "datetime_utc": "2025-10-22T17:00:00Z",
+      "location": "Lexington, Kentucky, USA"
+    },
+    "spread_name": "Custom",
+    "timestamp": "2025-10-22T19:35:05.992176Z"
+  },
+  "astro_summary": {
+    "sun": "Libra 29° H7",
+    "moon": "Taurus 12° H2",
+    "asc": "Capricorn 15°",
+    "lunar_phase": "Full Moon",
+    "dominant_elements": [
+      "Earth",
+      "Air"
+    ],
+    "notable_aspects": [
+      {
+        "aspect": "Sun conjunct Mercury",
+        "orb": "1°",
+        "interpretation": "Heightened communication and insight; clarity of thought."
+      },
+      {
+        "aspect": "Moon trine Pluto",
+        "orb": "2°",
+        "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+      },
+      {
+        "aspect": "Venus sextile Mars",
+        "orb": "3°",
+        "interpretation": "Creative harmony between desire and action."
+      }
+    ],
+    "majors_count": 2,
+    "element_counts": {
+      "Fire": 1,
+      "Earth": 2,
+      "Air": 1,
+      "Water": 0
+    },
+    "notes": "Full Moon energy highlights release, balance, and the integration of emotional truth with practical progress."
+  },
+  "spread_summary": {
+    "past": "The Hermit",
+    "present": "The Lovers (reversed)",
+    "future": "Ten of Pentacles"
+  },
+  "resonance": {
+    "career focus": "Emphasize harmony and balance in your professional relationships, as The Lovers suggests a need to re-evaluate priorities. The Hermit's guidance can help you find inner wisdom and clarity.",
+    "next steps": "In the next 30 days, focus on building strong connections with colleagues and clients, while also nurturing your own emotional well-being."
+  },
+  "interpretation": {
+    "career advice": "The Ten of Pentacles indicates a sense of stability and security in your career. This is an excellent time to solidify your professional foundation and prepare for long-term growth.",
+    "personal insight": "The Full Moon energy highlights the importance of emotional release and balance. Take time to reflect on your personal values and priorities, ensuring they align with your professional goals."
+  },
+  "confidence": {
+    "career confidence": 8,
+    "personal confidence": 7
+  }
+}

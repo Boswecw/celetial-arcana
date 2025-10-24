@@ -1,53 +1,134 @@
 <script lang="ts">
-  import { riderWaiteDeck } from '$lib/decks';
+  import { celestiaArcanaCards } from '$lib/decks/celestia-arcana';
+  import { getMeaningsBySuit } from '$lib/decks/tarot-meanings-map';
+  import { onMount } from 'svelte';
 
-  let selectedCard = riderWaiteDeck[0];
-  let reversed = false;
-
-  function selectCard(card: typeof riderWaiteDeck[0]) {
-    selectedCard = card;
-    reversed = false;
+  interface DynamicCard {
+    id: string;
+    name: string;
+    filename: string;
+    upright?: string;
+    reversed?: string;
+    suit?: string;
   }
 
-  function toggleReversed() {
-    reversed = !reversed;
+  interface CardSection {
+    suit: string;
+    icon: string;
+    cards: DynamicCard[];
   }
 
-  function getCardImagePath(cardId: string): string {
-    const id = parseInt(cardId);
+  let selectedCard: DynamicCard | null = null;
+  let showModal = false;
+  let allCards: DynamicCard[] = [];
+  let cardSections: CardSection[] = [];
+  let loading = true;
 
-    // Wikimedia Commons URLs for Rider-Waite cards
-    const majorArcana = [
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Fool.jpg/220px-Fool.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Magician.jpg/220px-Magician.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/High_Priestess.jpg/220px-High_Priestess.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Empress.jpg/220px-Empress.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Emperor.jpg/220px-Emperor.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Hierophant.jpg/220px-Hierophant.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Lovers.jpg/220px-Lovers.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Chariot.jpg/220px-Chariot.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Strength.jpg/220px-Strength.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Hermit.jpg/220px-Hermit.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Wheel_of_Fortune.jpg/220px-Wheel_of_Fortune.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Justice.jpg/220px-Justice.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Hanged_Man.jpg/220px-Hanged_Man.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Death.jpg/220px-Death.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Temperance.jpg/220px-Temperance.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Devil.jpg/220px-Devil.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Tower.jpg/220px-Tower.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Star.jpg/220px-Star.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Moon.jpg/220px-Moon.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Sun.jpg/220px-Sun.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Judgement.jpg/220px-Judgement.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/World.jpg/220px-World.jpg'
-    ];
+  const suitOrder = ['Major Arcana', 'Flames', 'Tides', 'Stones', 'Winds'];
+  const suitIcons: Record<string, string> = {
+    'Major Arcana': '✨',
+    'Flames': '🔥',
+    'Tides': '💧',
+    'Stones': '💎',
+    'Winds': '🌪️',
+  };
 
-    if (id >= 0 && id <= 21) {
-      return majorArcana[id];
+  onMount(async () => {
+    // Load all cards from static directory
+    await loadAllCards();
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && showModal) {
+        showModal = false;
+      }
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  });
+
+  async function loadAllCards() {
+    try {
+      // Fetch the list of card files from the static/cards directory
+      const response = await fetch('/api/cards');
+      if (!response.ok) throw new Error('Failed to load cards');
+
+      const cardFiles: string[] = await response.json();
+
+      // Convert filenames to card objects
+      allCards = cardFiles.map((filename) => {
+        // Convert filename to card name (e.g., "The_Fool.webp" -> "The Fool")
+        const cardName = filename.replace(/\.webp$/, '').replace(/_/g, ' ');
+
+        // Try to find matching card in celestiaArcanaCards for meanings
+        const matchingCard = celestiaArcanaCards.find(
+          (c) => c.name.toLowerCase() === cardName.toLowerCase()
+        );
+
+        // Determine suit based on card name
+        let suit = 'Major Arcana';
+        if (cardName.includes('of Flames')) suit = 'Flames';
+        else if (cardName.includes('of Tide')) suit = 'Tides'; // Handles both "Tide" and "Tides"
+        else if (cardName.includes('of Stones')) suit = 'Stones';
+        else if (cardName.includes('of Winds')) suit = 'Winds';
+
+        return {
+          id: `card-${filename}`,
+          name: cardName,
+          filename: filename,
+          suit: suit,
+          upright: matchingCard?.upright || 'Upright meaning not available',
+          reversed: matchingCard?.reversed || 'Reversed meaning not available',
+        };
+      });
+
+      // Sort cards within each suit from Ace to King
+      const cardOrder = ['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Page', 'Knight', 'Queen', 'King'];
+
+      const getCardSortOrder = (cardName: string): number => {
+        for (let i = 0; i < cardOrder.length; i++) {
+          if (cardName.includes(cardOrder[i])) {
+            return i;
+          }
+        }
+        return -1; // For Major Arcana cards
+      };
+
+      // Organize cards by suit, sorted by card count (highest to lowest)
+      cardSections = suitOrder
+        .map((suit) => ({
+          suit,
+          icon: suitIcons[suit],
+          cards: allCards
+            .filter((c) => c.suit === suit)
+            .sort((a, b) => {
+              const orderA = getCardSortOrder(a.name);
+              const orderB = getCardSortOrder(b.name);
+              if (orderA === -1 && orderB === -1) {
+                // Both are Major Arcana, sort by name
+                return a.name.localeCompare(b.name);
+              }
+              if (orderA === -1) return -1; // Major Arcana comes first
+              if (orderB === -1) return 1;
+              return orderA - orderB; // Sort by card order (Ace to King)
+            }),
+        }))
+        .filter((section) => section.cards.length > 0)
+        .sort((a, b) => b.cards.length - a.cards.length);
+
+      loading = false;
+    } catch (err) {
+      console.error('Error loading cards:', err);
+      loading = false;
     }
+  }
 
-    // For minor arcana, use a placeholder or generic card back
-    return 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Fool.jpg/220px-Fool.jpg';
+  function openCardModal(card: DynamicCard) {
+    selectedCard = card;
+    showModal = true;
+  }
+
+  function closeModal() {
+    showModal = false;
   }
 </script>
 
@@ -63,85 +144,126 @@
     <!-- Header -->
     <div class="text-center mb-12">
       <h1 class="text-5xl font-bold mb-2" style="background: linear-gradient(135deg, #7B61FF, #FF4EDB); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Celestia Arcana</h1>
-      <p style="color: #C6A7FF;">Rider-Waite-Smith Tarot Deck</p>
-      <p class="text-sm mt-2" style="color: #B3A9C7;">Public domain images from Wikimedia Commons</p>
+      <p style="color: #C6A7FF;">Mystical Tarot Deck</p>
+      <p class="text-sm mt-2" style="color: #B3A9C7;">Original designs and classic wisdom combined</p>
     </div>
 
-    <!-- Main Display -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-      <!-- Card Display -->
-      <div class="lg:col-span-1 flex justify-center">
-        <div class="w-48 h-72 rounded-xl border-2 overflow-hidden" style="border-color: rgba(123, 97, 255, 0.5); box-shadow: 0 10px 15px -3px rgba(255, 78, 219, 0.3);">
-          <img
-            src={getCardImagePath(selectedCard.id)}
-            alt={selectedCard.name}
-            class="w-full h-full object-cover"
-            style="transform: {reversed ? 'rotateY(180deg)' : 'none'}"
-          />
-        </div>
+    <!-- Celestia Arcana Deck -->
+    <div class="mb-16 card-surface p-8 rounded-2xl" style="border: 2px solid rgba(123, 97, 255, 0.3); background: linear-gradient(135deg, rgba(123, 97, 255, 0.05), rgba(255, 78, 219, 0.05));">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold mb-2 flex items-center justify-center gap-2" style="color: #EDEBFF;">
+          <span>🎴</span>
+          Celestia Arcana Deck
+          <span>🎴</span>
+        </h2>
+        <p style="color: #C6A7FF;">Complete tarot collection with {allCards.length} cards</p>
       </div>
 
-      <!-- Card Info -->
-      <div class="lg:col-span-2 card-surface card-surface-hover p-8">
-        <h2 class="text-3xl font-bold mb-4" style="color: #EDEBFF;">{selectedCard.name}</h2>
-
-        <div class="space-y-6">
-          <div>
-            <h3 class="text-lg font-semibold mb-2" style="color: #C6A7FF;">Upright</h3>
-            <p style="color: #EDEBFF;">{selectedCard.upright}</p>
-          </div>
-
-          <div>
-            <h3 class="text-lg font-semibold mb-2" style="color: #C6A7FF;">Reversed</h3>
-            <p style="color: #EDEBFF;">{selectedCard.reversed}</p>
-          </div>
-
-          <button
-            on:click={toggleReversed}
-            class="btn-primary w-full"
-          >
-            {reversed ? 'Show Upright' : 'Show Reversed'}
-          </button>
+      {#if loading}
+        <div class="text-center py-12">
+          <p style="color: #B3A9C7;">Loading cards...</p>
         </div>
-      </div>
-    </div>
-
-    <!-- Deck Grid -->
-    <div class="card-surface p-8">
-      <h2 class="text-2xl font-bold mb-6" style="color: #EDEBFF;">Full Deck</h2>
-
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {#each riderWaiteDeck as card (card.id)}
-          <button
-            on:click={() => selectCard(card)}
-            class="group relative overflow-hidden rounded-lg border-2 transition-all hover:scale-105 h-48"
-            style="border-color: {selectedCard.id === card.id ? '#FF4EDB' : 'rgba(123, 97, 255, 0.5)'}; box-shadow: {selectedCard.id === card.id ? '0 10px 15px -3px rgba(255, 78, 219, 0.5)' : 'none'};"
-          >
-            <img
-              src={getCardImagePath(card.id)}
-              alt={card.name}
-              class="w-full h-full object-cover"
-            />
-          </button>
+      {:else if allCards.length === 0}
+        <div class="text-center py-12">
+          <p style="color: #B3A9C7;">No cards found in the deck</p>
+        </div>
+      {:else}
+        <!-- Display cards organized by suit/section -->
+        {#each cardSections as section (section.suit)}
+          <div class="mb-12">
+            <div class="flex items-center gap-3 mb-6">
+              <span class="text-4xl">{section.icon}</span>
+              <h3 class="text-2xl font-bold" style="color: #EDEBFF;">{section.suit}</h3>
+              <span class="text-sm px-3 py-1 rounded-full" style="background-color: rgba(123, 97, 255, 0.2); color: #C6A7FF;">
+                {section.cards.length} cards
+              </span>
+            </div>
+            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
+              {#each section.cards as card (card.id)}
+                <button
+                  on:click={() => openCardModal(card)}
+                  class="flex flex-col items-center cursor-pointer group transition-all hover:scale-110"
+                  type="button"
+                  title={card.name}
+                >
+                  <div class="w-20 h-28 rounded-lg border-2 overflow-hidden mb-2 transition-all group-hover:shadow-lg" style="border-color: #7B61FF; box-shadow: 0 5px 10px rgba(123, 97, 255, 0.2); group-hover:border-color: #FF4EDB;">
+                    <img src="/cards/{card.filename}" alt={card.name} class="w-full h-full object-cover" />
+                  </div>
+                  <p style="color: #C6A7FF;" class="text-xs font-semibold text-center line-clamp-2">{card.name}</p>
+                </button>
+              {/each}
+            </div>
+          </div>
         {/each}
-      </div>
-    </div>
-
-    <!-- Stats -->
-    <div class="mt-12 grid grid-cols-3 gap-4 text-center">
-      <div class="card-surface p-4">
-        <p class="text-sm" style="color: #B3A9C7;">Total Cards</p>
-        <p class="text-3xl font-bold" style="color: #EDEBFF;">{riderWaiteDeck.length}</p>
-      </div>
-      <div class="card-surface p-4">
-        <p class="text-sm" style="color: #B3A9C7;">Major Arcana</p>
-        <p class="text-3xl font-bold" style="color: #EDEBFF;">22</p>
-      </div>
-      <div class="card-surface p-4">
-        <p class="text-sm" style="color: #B3A9C7;">Minor Arcana</p>
-        <p class="text-3xl font-bold" style="color: #EDEBFF;">56</p>
-      </div>
+      {/if}
     </div>
   </div>
 </div>
+
+<!-- Card Details Modal -->
+{#if showModal && selectedCard}
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto"
+    style="background-color: rgba(0, 0, 0, 0.95); pointer-events: auto; display: flex; top: 0; left: 0; right: 0; bottom: 0; padding: 2rem;"
+    on:click={closeModal}
+    on:keydown={(e) => e.key === 'Escape' && closeModal()}
+    role="dialog"
+    aria-modal="true"
+    tabindex="0"
+  >
+    <div
+      class="relative w-full max-w-2xl mx-auto my-auto card-surface p-8 rounded-2xl"
+      on:click|stopPropagation
+      role="presentation"
+      style="pointer-events: auto; display: flex; flex-direction: column; align-items: center;"
+    >
+      <!-- Close Button -->
+      <button
+        on:click={closeModal}
+        class="absolute top-4 right-4 text-white text-3xl font-bold hover:text-gray-300 transition-colors"
+        aria-label="Close modal"
+        type="button"
+        style="pointer-events: auto; z-index: 10000;"
+      >
+        ✕
+      </button>
+
+      <!-- Card Image -->
+      <div class="w-48 h-72 rounded-lg border-2 overflow-hidden mb-6" style="border-color: #7B61FF; box-shadow: 0 10px 15px -3px rgba(123, 97, 255, 0.3);">
+        <img
+          src="/cards/{selectedCard.filename}"
+          alt={selectedCard.name}
+          class="w-full h-full object-cover"
+        />
+      </div>
+
+      <!-- Card Name -->
+      <h2 class="text-4xl font-bold mb-6" style="color: #EDEBFF; background: linear-gradient(135deg, #7B61FF, #FF4EDB); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        {selectedCard.name}
+      </h2>
+
+      <!-- Card Meanings -->
+      <div class="w-full space-y-6">
+        <!-- Upright -->
+        <div class="p-6 rounded-lg" style="background: linear-gradient(135deg, rgba(123, 97, 255, 0.1), rgba(123, 97, 255, 0.05)); border-left: 4px solid #7B61FF;">
+          <h3 class="text-lg font-semibold mb-2" style="color: #C6A7FF;">⬆️ Upright</h3>
+          <p style="color: #EDEBFF;">{selectedCard.upright}</p>
+        </div>
+
+        <!-- Reversed -->
+        <div class="p-6 rounded-lg" style="background: linear-gradient(135deg, rgba(255, 78, 219, 0.1), rgba(255, 78, 219, 0.05)); border-left: 4px solid #FF4EDB;">
+          <h3 class="text-lg font-semibold mb-2" style="color: #FF4EDB;">🔄 Reversed</h3>
+          <p style="color: #EDEBFF;">{selectedCard.reversed}</p>
+        </div>
+      </div>
+
+      <!-- Close Instructions -->
+      <div class="text-center mt-8">
+        <p class="text-sm" style="color: #B3A9C7;">
+          Press ESC or click outside to close
+        </p>
+      </div>
+    </div>
+  </div>
+{/if}
 

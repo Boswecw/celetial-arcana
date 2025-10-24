@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "question": "How well will my book Faith in a FireStorm Sale?",
+    "timeframe": "next 30 days",
+    "spread_name": "",
+    "timestamp": "2025-10-23T16:16:24.947267Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": [
+        "Earth",
+        "Air"
+      ],
+      "notable_aspects": [
+        {
+          "aspect": "Sun conjunct Mercury",
+          "orb": "1°",
+          "interpretation": "Heightened communication and insight; clarity of thought."
+        },
+        {
+          "aspect": "Moon trine Pluto",
+          "orb": "2°",
+          "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+        },
+        {
+          "aspect": "Venus sextile Mars",
+          "orb": "3°",
+          "interpretation": "Creative harmony between desire and action."
+        }
+      ],
+      "lunar_phase": "Full Moon"
+    },
+    "themes": [
+      "Release, balance, and integration"
+    ]
+  },
+  "spread_summary": {
+    "layout": [
+      "Past: The Hermit",
+      "Present: The Lovers (reversed)",
+      "Future: Ten of Pentacles"
+    ],
+    "card_elements_count": {
+      "Fire": 0,
+      "Earth": 2,
+      "Air": 1,
+      "Water": 0
+    },
+    "majors_count": 1
+  },
+  "resonance": {
+    "matches": [
+      {
+        "type": "Astro-Tarot",
+        "detail": "The Hermit's guidance and introspection align with the Full Moon's themes of release and balance.",
+        "why": "The Hermit's wisdom helps navigate emotional truth."
+      }
+    ],
+    "tensions": [],
+    "element_balance": {
+      "astro": "Earth, Air",
+      "tarot": "Fire:0; Earth:2; Air:1; Water:0",
+      "comment": "Balance between practicality and creativity"
+    }
+  },
+  "interpretation": {
+    "theme": "Integration of emotional truth with practical progress",
+    "positions": [
+      {
+        "card": "The Hermit",
+        "position": "Past",
+        "element": "Earth",
+        "insight": "Reflect on past experiences to gain clarity."
+      },
+      {
+        "card": "The Lovers (reversed)",
+        "position": "Present",
+        "element": "Air",
+        "insight": "Current relationships may be out of balance; re-evaluate priorities."
+      },
+      {
+        "card": "Ten of Pentacles",
+        "position": "Future",
+        "element": "Earth",
+        "insight": "A stable and secure future awaits, built on practical foundations."
+      }
+    ],
+    "timing": [
+      "Next 30 days"
+    ],
+    "action_items": [
+      "Reflect on past experiences; re-evaluate current relationships; focus on building a stable future"
+    ],
+    "affirmations": [
+      "I trust my intuition to guide me towards balance and integration."
+    ]
+  },
+  "confidence": {
+    "overall": 0.8,
+    "notes": "The Hermit's guidance and the Full Moon's themes of release and balance create a strong foundation for navigating the spread."
+  }
+}

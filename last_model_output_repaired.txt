@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "question": "What should I focus on in my career over the next 30 days?",
+    "timeframe": "next 30 days",
+    "spread_name": "TBD",
+    "timestamp": "2025-10-22T17:00:00Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": ["Earth", "Air"],
+      "notable_aspects": [
+        {"aspect": "Sun conjunct Mercury", "orb": "1°", "interpretation": "Heightened communication and insight; clarity of thought."},
+        {"aspect": "Moon trine Pluto", "orb": "2°", "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."},
+        {"aspect": "Venus sextile Mars", "orb": "3°", "interpretation": "Creative harmony between desire and action."}
+      ],
+      "lunar_phase": "Full Moon"
+    },
+  "themes": {}
+} 
+
+ 
+  }

@@ -10,6 +10,7 @@ export interface ReadingFeedback {
   timestamp: number;
   cards: string[];
   themes: string[];
+  astroTarotThemes?: string[];
   userZodiac?: string;
 }
 
@@ -62,7 +63,7 @@ class AITrainer {
       (currentScore + feedback.rating) / 2
     );
 
-    // Update theme weights
+    // Update theme weights (traditional themes)
     feedback.themes.forEach((theme) => {
       const currentWeight = this.trainingData.themeWeights.get(theme) || 0;
       this.trainingData.themeWeights.set(
@@ -70,6 +71,17 @@ class AITrainer {
         (currentWeight + feedback.rating) / 2
       );
     });
+
+    // Update astro-tarot theme weights
+    if (feedback.astroTarotThemes) {
+      feedback.astroTarotThemes.forEach((theme) => {
+        const currentWeight = this.trainingData.themeWeights.get(`astro:${theme}`) || 0;
+        this.trainingData.themeWeights.set(
+          `astro:${theme}`,
+          (currentWeight + feedback.rating) / 2
+        );
+      });
+    }
 
     // Store user preferences
     if (feedback.userZodiac) {

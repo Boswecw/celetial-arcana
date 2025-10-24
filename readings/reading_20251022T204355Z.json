@@ -1,0 +1,108 @@
+{
+  "meta": {
+    "question": "What should I focus on in my career over the next 30 days?",
+    "timeframe": "next 30 days",
+    "spread_name": "",
+    "timestamp": "2025-10-22T20:43:55.365197Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": [
+        "Earth",
+        "Air"
+      ],
+      "notable_aspects": [
+        {
+          "aspect": "Sun conjunct Mercury",
+          "orb": "1°",
+          "interpretation": "Heightened communication and insight; clarity of thought."
+        },
+        {
+          "aspect": "Moon trine Pluto",
+          "orb": "2°",
+          "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+        },
+        {
+          "aspect": "Venus sextile Mars",
+          "orb": "3°",
+          "interpretation": "Creative harmony between desire and action."
+        }
+      ],
+      "lunar_phase": "Full Moon"
+    },
+    "themes": [
+      "Release, balance, and integration",
+      "Libra: The light of Libra cultivates clarity. A small kindness unlocks a large gate.",
+      "Taurus: The light of Taurus cultivates compassion. A boundary draws respect.",
+      "Capricorn: The light of Capricornus cultivates curiosity. The long wait ripens into harvest."
+    ]
+  },
+  "spread_summary": {
+    "layout": [
+      "Past: The Hermit",
+      "Present: The Lovers",
+      "Future: Ten of Pentacles"
+    ],
+    "card_elements_count": {
+      "Fire": 1,
+      "Earth": 1,
+      "Air": 1,
+      "Water": 0
+    },
+    "majors_count": 0
+  },
+  "resonance": {
+    "matches": [
+      {
+        "type": "Astro-Tarot Synthesis",
+        "detail": "The Full Moon energy amplifies the tarot spread's themes.",
+        "why": "The lunar phase highlights release, balance, and integration."
+      }
+    ],
+    "tensions": [],
+    "element_balance": {
+      "astro": "Earth",
+      "tarot": "Fire:1; Earth:1; Air:1; Water:0",
+      "comment": "The Hermit's guidance balances with the Lovers' harmony"
+    }
+  },
+  "interpretation": {
+    "theme": "Release, balance, and integration The light of Libra cultivates clarity. A small kindness unlocks a large gate.",
+    "positions": [
+      {
+        "card": "The Hermit",
+        "position": "Past",
+        "element": "Earth",
+        "insight": "Reflect on past experiences to gain wisdom."
+      },
+      {
+        "card": "The Lovers",
+        "position": "Present",
+        "element": "Air",
+        "insight": "Re-evaluate current relationships and desires."
+      },
+      {
+        "card": "Ten of Pentacles",
+        "position": "Future",
+        "element": "Fire",
+        "insight": "Look forward to a fulfilling career, with creative expression and harmony."
+      }
+    ],
+    "timing": [
+      "next 30 days"
+    ],
+    "action_items": [
+      "Reflect on past experiences; re-evaluate current relationships; look forward to a fulfilling career"
+    ],
+    "affirmations": [
+      "I trust my inner wisdom; I harmonize my desires and actions; I manifest a fulfilling career"
+    ]
+  },
+  "confidence": {
+    "overall": 0.8,
+    "notes": "The Full Moon energy amplifies the tarot spread's themes."
+  }
+}

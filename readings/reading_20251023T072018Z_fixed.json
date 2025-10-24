@@ -1,0 +1,115 @@
+{
+  "meta": {
+    "question": "What guidance does the universe have for me?",
+    "timeframe": "next 30 days",
+    "spread_name": "",
+    "timestamp": "2025-10-23T07:20:18.466638Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": [
+        "Earth",
+        "Air"
+      ],
+      "notable_aspects": [
+        {
+          "aspect": "Sun conjunct Mercury",
+          "orb": "1°",
+          "interpretation": "Heightened communication and insight; clarity of thought."
+        },
+        {
+          "aspect": "Moon trine Pluto",
+          "orb": "2°",
+          "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+        },
+        {
+          "aspect": "Venus sextile Mars",
+          "orb": "3°",
+          "interpretation": "Creative harmony between desire and action."
+        }
+      ],
+      "lunar_phase": "Full Moon"
+    },
+    "themes": [
+      "Release, balance, and integration"
+    ]
+  },
+  "spread_summary": {
+    "layout": [
+      "Past: The Hermit",
+      "Present: The Lovers (reversed)",
+      "Future: Ten of Pentacles"
+    ],
+    "card_elements_count": {
+      "Fire": 0,
+      "Earth": 2,
+      "Air": 1,
+      "Water": 0
+    },
+    "majors_count": 2
+  },
+  "resonance": {
+    "matches": [
+      {
+        "type": "Astro-Tarot",
+        "detail": "The universe is guiding you towards balance and integration.",
+        "why": "Full Moon energy amplifies emotional truth with practical progress."
+      }
+    ],
+    "tensions": [],
+    "element_balance": {
+      "astro": "Earth, Air",
+      "tarot": "Fire:0; Earth:2; Air:1; Water:0",
+      "comment": "Balance between emotional renewal and practical progress"
+    }
+  },
+  "interpretation": {
+    "theme": "Integration",
+    "positions": [
+      {
+        "card": "The Hermit",
+        "position": "Past",
+        "element": "Earth",
+        "insight": "Reflect on your past experiences to guide future decisions."
+      },
+      {
+        "card": "The Lovers (reversed)",
+        "position": "Present",
+        "element": "Air",
+        "insight": "Re-evaluate current relationships and desires."
+      },
+      {
+        "card": "Ten of Pentacles",
+        "position": "Future",
+        "element": "Earth",
+        "insight": "Look forward to a stable and secure future, grounded in practicality."
+      }
+    ],
+    "timing": [
+      "next 30 days"
+    ],
+    "action_items": [
+      "Reflect on past experiences",
+      "Re-evaluate current relationships",
+      "Prepare for a stable future",
+      "Choose one recovery habit (sleep/walk/quiet time) and track it daily for 7 days.",
+      "Set a daily stop-time and honor it 5 days this week.",
+      "Say no to one nonessential request to protect focus.",
+      "List one commitment to release and notify stakeholders within 48 hours.",
+      "Timebox work blocks and rest blocks on your calendar for the next 7 days.",
+      "Pair one emotional truth with one practical step and schedule it this week."
+    ],
+    "affirmations": [
+      "I trust my inner guidance.",
+      "I release emotional baggage.",
+      "I am prepared for a secure future."
+    ]
+  },
+  "confidence": {
+    "overall": 0.8,
+    "notes": "The universe is guiding you towards balance and integration."
+  }
+}

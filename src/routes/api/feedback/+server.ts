@@ -8,6 +8,7 @@ const FeedbackSchema = z.object({
   feedback: z.string().optional(),
   cards: z.array(z.string()),
   themes: z.array(z.string()),
+  astroTarotThemes: z.array(z.string()).optional(),
   userZodiac: z.string().optional(),
 });
 
