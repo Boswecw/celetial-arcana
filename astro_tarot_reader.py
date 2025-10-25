@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Celestia Arcana — Astro + Tarot Synthesizer (Ollama + Llama 3)
+Celestia Arcana — Astro + Tarot Synthesizer (Claude via Anthropic API)
 - High-timeout + retry networking
 - Strict JSON extraction/repair
 - Schema normalizer (guarantees stable output)
@@ -38,33 +38,87 @@ OUTPUT STRICT SCHEMA (do not add new keys):
 """
 
 from __future__ import annotations
-import os, sys, json, datetime, re, argparse, pathlib, time, requests
+import os, sys, json, datetime, re, argparse, pathlib, time, requests, hashlib
 from typing import List, Dict, Any, Optional
 from requests.exceptions import ReadTimeout, ConnectTimeout, Timeout, RequestException
+from functools import lru_cache
+
+# HTTP Session for connection pooling
+_HTTP_SESSION = None
+
+def get_http_session() -> requests.Session:
+    """Get or create a persistent HTTP session with connection pooling."""
+    global _HTTP_SESSION
+    if _HTTP_SESSION is None:
+        _HTTP_SESSION = requests.Session()
+        # Configure connection pooling
+        adapter = requests.adapters.HTTPAdapter(
+            pool_connections=10,
+            pool_maxsize=10,
+            max_retries=0  # We handle retries manually
+        )
+        _HTTP_SESSION.mount('http://', adapter)
+        _HTTP_SESSION.mount('https://', adapter)
+    return _HTTP_SESSION
+
+# Response cache for model calls (hash of prompt -> response)
+_RESPONSE_CACHE: Dict[str, str] = {}
+ENABLE_RESPONSE_CACHE = os.environ.get("ENABLE_RESPONSE_CACHE", "true").lower() == "true"
 
 # -----------------------------------------------------------------------------
 # Config
 # -----------------------------------------------------------------------------
-DEFAULT_MODEL = os.environ.get("ASTRO_TAROT_MODEL", "llama3")
-OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://127.0.0.1:11434/api/chat")
+DEFAULT_MODEL = "claude-3-5-sonnet-20241022"
+ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
+ANTHROPIC_API_URL = "https://api.anthropic.com/v1/messages"
 STOP_SEQUENCES = [s for s in os.environ.get("ASTRO_TAROT_STOPS", "").split(",") if s.strip()] or None
 
-TAROT_KB_PATH = os.environ.get("TAROT_KB_PATH", "data/tarot_knowledge.json")
+TAROT_KB_PATH = os.environ.get("TAROT_KB_PATH", "data/celestia_arcana_knowledge.json")
 CONSTELLATION_KB_PATH = os.environ.get("CONSTELLATION_KB_PATH", "data/constellation_knowledge.json")
 
+# Performance monitoring
+_PERF_STATS = {"cache_hits": 0, "cache_misses": 0, "kb_reloads": 0}
+
+# Cache management utilities
+def clear_all_caches():
+    """Clear all caches (KB, responses, HTTP session)."""
+    global _CARD_KB_CACHE, _CONSTELLATION_KB_CACHE, _RESPONSE_CACHE, _HTTP_SESSION
+    _CARD_KB_CACHE = None
+    _CONSTELLATION_KB_CACHE = None
+    _RESPONSE_CACHE.clear()
+    if _HTTP_SESSION:
+        _HTTP_SESSION.close()
+        _HTTP_SESSION = None
+    print("✓ All caches cleared", file=sys.stderr)
+
+def reload_kbs(force=True):
+    """Reload knowledge bases from disk."""
+    load_card_kb(force_reload=force)
+    load_constellation_kb(force_reload=force)
+    print("✓ Knowledge bases reloaded", file=sys.stderr)
+
+def get_cache_stats() -> Dict[str, Any]:
+    """Get cache statistics."""
+    return {
+        "response_cache_size": len(_RESPONSE_CACHE),
+        "cache_enabled": ENABLE_RESPONSE_CACHE,
+        "perf_stats": dict(_PERF_STATS)
+    }
+
 # -----------------------------------------------------------------------------
-# HTTP (long timeout + retry)
+# HTTP (long timeout + retry + connection pooling)
 # -----------------------------------------------------------------------------
-def _post_with_retry(url, payload, timeout=(60, 3600), retries=3, backoff=2.0):
+def _post_with_retry(url, payload, headers=None, timeout=(60, 3600), retries=3, backoff=2.0):
     """
-    Robust HTTP POST with generous timeouts and exponential backoff.
+    Robust HTTP POST with generous timeouts, exponential backoff, and connection pooling.
     timeout -> (connect_timeout, read_timeout)
     """
+    session = get_http_session()
     attempt = 0
     last_err = None
     while attempt <= retries:
         try:
-            return requests.post(url, json=payload, timeout=timeout)
+            return session.post(url, json=payload, headers=headers, timeout=timeout)
         except (ReadTimeout, ConnectTimeout, Timeout) as e:
             last_err = e
             if attempt == retries:
@@ -176,48 +230,87 @@ def load_json_if_exists(path: str):
     try:
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f)
-    except Exception:
+    except FileNotFoundError:
+        return None
+    except json.JSONDecodeError as e:
+        print(f"⚠️  JSON decode error in {path}: {e}", file=sys.stderr)
+        return None
+    except Exception as e:
+        print(f"⚠️  Error loading {path}: {e}", file=sys.stderr)
         return None
 
 # -----------------------------------------------------------------------------
-# Tarot KB
+# Tarot KB (with reload support)
 # -----------------------------------------------------------------------------
-def load_card_kb(path=TAROT_KB_PATH):
-    try:
-        raw = load_json_if_exists(path)
-        if not raw: return {}
-        # Accept either {"cards":[...]} or a dict keyed by names
-        if isinstance(raw, dict) and "cards" in raw:
-            cards = raw["cards"]
-        elif isinstance(raw, list):
-            cards = raw
-        else:
-            # try to coerce dict-of-dicts into list
-            cards = []
-            for k, v in raw.items():
-                if isinstance(v, dict):
-                    vv = dict(v)
-                    vv.setdefault("name", k)
-                    cards.append(vv)
+_CARD_KB_CACHE = None
+_CONSTELLATION_KB_CACHE = None
 
-        kb = {}
-        for c in cards:
-            name = c.get("name")
-            if not name:
-                continue
-            kb[name] = c
-            # suit aliases for Pentacles
-            if "Pentacles" in name:
-                kb[name.replace("Pentacles", "Coins")] = c
-                kb[name.replace("Pentacles", "Disks")] = c
-        return kb
-    except Exception:
+def load_card_kb(path=TAROT_KB_PATH, force_reload=False):
+    """Load tarot card knowledge base with caching and reload support."""
+    global _CARD_KB_CACHE
+
+    if _CARD_KB_CACHE is not None and not force_reload:
+        return _CARD_KB_CACHE
+
+    if force_reload:
+        _PERF_STATS["kb_reloads"] += 1
+
+    raw = load_json_if_exists(path)
+    if not raw:
+        print(f"⚠️  Tarot KB not found at {path}", file=sys.stderr)
+        _CARD_KB_CACHE = {}
         return {}
 
-CARD_KB = load_card_kb()
+    # Accept either {"cards":[...]} or a dict keyed by names
+    if isinstance(raw, dict) and "cards" in raw:
+        cards = raw["cards"]
+    elif isinstance(raw, list):
+        cards = raw
+    else:
+        # try to coerce dict-of-dicts into list
+        cards = []
+        for k, v in raw.items():
+            if isinstance(v, dict):
+                vv = dict(v)
+                vv.setdefault("name", k)
+                cards.append(vv)
+
+    kb = {}
+    for c in cards:
+        name = c.get("name")
+        if not name:
+            continue
+        kb[name] = c
+
+        # Standard suit aliases for Pentacles
+        if "Pentacles" in name:
+            kb[name.replace("Pentacles", "Coins")] = c
+            kb[name.replace("Pentacles", "Disks")] = c
+
+        # Custom deck suit aliases (Flames, Tides, Stones, Winds)
+        if "Wands" in name:
+            kb[name.replace("Wands", "Flames")] = c
+        elif "Cups" in name:
+            kb[name.replace("Cups", "Tides")] = c
+        elif "Pentacles" in name:
+            kb[name.replace("Pentacles", "Stones")] = c
+        elif "Swords" in name:
+            kb[name.replace("Swords", "Winds")] = c
+
+    _CARD_KB_CACHE = kb
+    print(f"✓ Loaded {len(cards)} tarot cards ({len(kb)} entries with aliases)", file=sys.stderr)
+    return kb
+
+def get_card_kb():
+    """Get cached tarot KB, loading if necessary."""
+    global _CARD_KB_CACHE
+    if _CARD_KB_CACHE is None:
+        load_card_kb()
+    return _CARD_KB_CACHE or {}
 
 def kb_lookup(card_name: str) -> dict:
-    return CARD_KB.get(card_name or "") or {}
+    kb = get_card_kb()
+    return kb.get(card_name or "") or {}
 
 def kb_element(card_name: str, fallback: str = "") -> str:
     info = kb_lookup(card_name)
@@ -243,25 +336,49 @@ def kb_keywords(card_name: str, orientation: str = "upright") -> List[str]:
     return (info.get("keywords") or [])[:4]
 
 # -----------------------------------------------------------------------------
-# Constellation KB
+# Constellation KB (with reload support)
 # -----------------------------------------------------------------------------
-def load_constellation_kb(path=CONSTELLATION_KB_PATH):
-    try:
-        data = load_json_if_exists(path)
-        return data if isinstance(data, dict) else {}
-    except Exception:
+def load_constellation_kb(path=CONSTELLATION_KB_PATH, force_reload=False):
+    """Load constellation knowledge base with caching and reload support."""
+    global _CONSTELLATION_KB_CACHE
+
+    if _CONSTELLATION_KB_CACHE is not None and not force_reload:
+        return _CONSTELLATION_KB_CACHE
+
+    if force_reload:
+        _PERF_STATS["kb_reloads"] += 1
+
+    data = load_json_if_exists(path)
+    if not data:
+        print(f"⚠️  Constellation KB not found at {path}", file=sys.stderr)
+        _CONSTELLATION_KB_CACHE = {}
         return {}
 
-CONSTELLATION_KB = load_constellation_kb()
+    if not isinstance(data, dict):
+        print(f"⚠️  Constellation KB is not a dict at {path}", file=sys.stderr)
+        _CONSTELLATION_KB_CACHE = {}
+        return {}
+
+    _CONSTELLATION_KB_CACHE = data
+    print(f"✓ Loaded constellation KB with {len(data)} entries", file=sys.stderr)
+    return data
+
+def get_constellation_kb():
+    """Get cached constellation KB, loading if necessary."""
+    global _CONSTELLATION_KB_CACHE
+    if _CONSTELLATION_KB_CACHE is None:
+        load_constellation_kb()
+    return _CONSTELLATION_KB_CACHE or {}
 
 def constellation_lookup(name: str) -> dict:
     if not name: return {}
+    kb = get_constellation_kb()
     # try exact, then case-insensitive
-    if name in CONSTELLATION_KB:
-        return CONSTELLATION_KB[name]
-    for k in CONSTELLATION_KB.keys():
+    if name in kb:
+        return kb[name]
+    for k in kb.keys():
         if k.lower() == name.lower():
-            return CONSTELLATION_KB[k]
+            return kb[k]
     # some zodiac names might be Latinized variants (e.g., Capricornus vs Capricorn)
     alt = {
         "Capricorn": "Capricornus",
@@ -278,8 +395,8 @@ def constellation_lookup(name: str) -> dict:
         "Sagittarius": "Sagittarius",
     }
     mapped = alt.get(name)
-    if mapped and mapped in CONSTELLATION_KB:
-        return CONSTELLATION_KB[mapped]
+    if mapped and mapped in kb:
+        return kb[mapped]
     return {}
 
 def constellation_insight(name: str) -> dict:
@@ -307,27 +424,60 @@ def constellation_theme_line(sign: str) -> str:
 # -----------------------------------------------------------------------------
 # Model call / JSON parsing + repair
 # -----------------------------------------------------------------------------
-def call_ollama(system: str, user: str, model: str, temp: float, num: int) -> str:
+def _get_cache_key(system: str, user: str, model: str, temp: float, num: int) -> str:
+    """Generate a cache key for model responses."""
+    content = f"{system}||{user}||{model}||{temp}||{num}"
+    return hashlib.sha256(content.encode()).hexdigest()
+
+def call_claude(system: str, user: str, model: str, temp: float, num: int) -> str:
+    """Call Claude via Anthropic API with optional response caching and performance tracking."""
+    # Check cache first
+    if ENABLE_RESPONSE_CACHE:
+        cache_key = _get_cache_key(system, user, model, temp, num)
+        if cache_key in _RESPONSE_CACHE:
+            _PERF_STATS["cache_hits"] += 1
+            print(f"[cache] Hit for model={model} (total hits: {_PERF_STATS['cache_hits']})", file=sys.stderr)
+            return _RESPONSE_CACHE[cache_key]
+        _PERF_STATS["cache_misses"] += 1
+
+    if not ANTHROPIC_API_KEY:
+        raise ValueError("ANTHROPIC_API_KEY environment variable not set")
+
+    headers = {
+        "x-api-key": ANTHROPIC_API_KEY,
+        "anthropic-version": "2023-06-01",
+        "content-type": "application/json"
+    }
+
     payload = {
         "model": model,
+        "max_tokens": int(num),
+        "temperature": float(temp),
+        "system": system,
         "messages": [
-            {"role": "system", "content": system},
             {"role": "user", "content": user}
-        ],
-        "options": {"temperature": float(temp), "num_predict": int(num)},
-        "stream": False,
-        "format": "json"
+        ]
     }
-    if STOP_SEQUENCES:
-        payload["options"]["stop"] = STOP_SEQUENCES
 
-    r = _post_with_retry(OLLAMA_URL, payload, timeout=(60, 3600))  # 1h read
+    r = _post_with_retry(ANTHROPIC_API_URL, payload, headers=headers, timeout=(60, 3600))
     r.raise_for_status()
     try:
         obj = r.json()
-        return obj.get("message", {}).get("content", "") or obj.get("content", "")
+        response = obj.get("content", [{}])[0].get("text", "")
     except Exception:
-        return r.text
+        response = r.text
+
+    # Cache the response
+    if ENABLE_RESPONSE_CACHE:
+        cache_key = _get_cache_key(system, user, model, temp, num)
+        _RESPONSE_CACHE[cache_key] = response
+
+    return response
+
+# Alias for backward compatibility
+def call_ollama(system: str, user: str, model: str, temp: float, num: int) -> str:
+    """Backward compatibility wrapper - calls Claude instead."""
+    return call_claude(system, user, model, temp, num)
 
 def _extract_balanced_json(text: str) -> Optional[str]:
     t = text.strip()
@@ -361,9 +511,28 @@ def _basic_json_repairs(s: str) -> str:
     s = re.sub(r':\s*\'([^\']*)\'(\s*[,\}])', r': "\1"\2', s)
     s = re.sub(r',\s*([}\]])', r'\1', s)
     s = re.sub(r'(".*?)(?<!\\)\\(?![\\/"bfnrtu])', r'\1\\\\', s)
+
+    # Handle truncated JSON by closing open structures
+    # Count open/close braces and brackets
+    open_braces = s.count('{') - s.count('}')
+    open_brackets = s.count('[') - s.count(']')
+
+    # Close any unclosed strings (truncated at end)
+    # First, find the last quote and check if it's closed
+    last_quote = s.rfind('"')
+    if last_quote != -1:
+        # Count quotes before the last one
+        quotes_before = s[:last_quote].count('"')
+        if quotes_before % 2 == 0:  # Odd number of quotes total = unclosed string
+            s = s.rstrip() + '"'
+
+    # Close unclosed arrays and objects
+    s = s.rstrip(',') + ']' * open_brackets + '}' * open_braces
+
     return s
 
 def parse_model_json(raw: str) -> Dict[str, Any]:
+    """Parse JSON from model output with aggressive local repair."""
     cand = _extract_balanced_json(raw) or raw.strip()
     repaired = _basic_json_repairs(cand)
     try:
@@ -372,32 +541,27 @@ def parse_model_json(raw: str) -> Dict[str, Any]:
         snippet = repaired[max(0, e.pos-160):e.pos+160]
         raise ValueError(f"JSON parse failed at {e.pos}: {e.msg}\n--- snippet ---\n{snippet}")
 
-def repair_to_json(raw_text: str, model: str, temperature: float = 0.1) -> str:
+def repair_to_json(raw_text: str, model: str, temperature: float = 0.1, max_retries: int = 2) -> str:
+    """Repair malformed JSON by calling Claude with retry logic."""
     fixer_system = (
         "You are a JSON repair tool. Input may be malformed JSON. "
         "Return only a single valid JSON object that matches schema; no markdown or comments."
     )
-    fixer_user = f"Repair this into strict JSON (single object). Preserve fields.\\n\\nRAW:\\n{raw_text}"
-    payload = {
-        "model": model,
-        "messages": [
-            {"role": "system", "content": fixer_system},
-            {"role": "user", "content": fixer_user}
-        ],
-        "options": {"temperature": float(temperature), "num_predict": 800},
-        "stream": False,
-        "format": "json"
-    }
-    if STOP_SEQUENCES:
-        payload["options"]["stop"] = STOP_SEQUENCES
+    fixer_user = f"Repair this into strict JSON (single object). Preserve fields.\n\nRAW:\n{raw_text}"
 
-    r = _post_with_retry(OLLAMA_URL, payload, timeout=(60, 1800))
-    r.raise_for_status()
-    try:
-        obj = r.json()
-        return obj.get("message", {}).get("content", "") or obj.get("content", "")
-    except Exception:
-        return r.text
+    for attempt in range(max_retries + 1):
+        try:
+            response = call_claude(fixer_system, fixer_user, model, temperature, 1500)
+            if response:
+                print(f"[repair] Success on attempt {attempt + 1}", file=sys.stderr)
+                return response
+        except Exception as e:
+            print(f"[repair] Error on attempt {attempt + 1}: {e}", file=sys.stderr)
+            if attempt == max_retries:
+                raise
+            time.sleep(1.0)
+
+    return ""
 
 # -----------------------------------------------------------------------------
 # Element guess fallback (used if KB missing)
@@ -684,16 +848,17 @@ def _coerce_to_schema(d: Dict[str, Any], spread: List[Dict[str, Any]]) -> Dict[s
 # -----------------------------------------------------------------------------
 def _kb_slice_for_spread(spread: List[Dict[str, Any]]) -> dict:
     out = {}
+    card_kb = get_card_kb()
     for it in spread or []:
         name = (it.get("card") or "").strip()
-        if name and name not in out and name in CARD_KB:
-            info = CARD_KB[name]
+        if name and name not in out and name in card_kb:
+            info = card_kb[name]
             out[name] = {
                 "arcana": info.get("arcana"),
                 "element": info.get("element"),
-                "keywords": info.get("keywords"),
-                "upright_general": info.get("upright_general"),
-                "reversed_general": info.get("reversed_general")
+                "keywords_upright": info.get("keywords_upright"),
+                "keywords_reversed": info.get("keywords_reversed"),
+                "suit": info.get("suit")
             }
     return out
 
@@ -741,13 +906,13 @@ Return exactly one JSON matching the schema above.
     try:
         data = parse_model_json(raw)
     except Exception:
-        repaired = repair_to_json(raw, model)
-        try:
-            with open("last_model_output_repaired.txt", "w", encoding="utf-8") as f:
-                f.write(repaired)
-        except Exception:
-            pass
-        data = parse_model_json(repaired)
+        # Try to extract JSON without calling repair (which hangs)
+        extracted = _extract_balanced_json(raw)
+        if extracted:
+            data = parse_model_json(extracted)
+        else:
+            repaired = _basic_json_repairs(raw)
+            data = parse_model_json(repaired)
 
     # Meta defaults
     meta = data.setdefault("meta", {})
@@ -812,7 +977,7 @@ def main():
     p.add_argument("--spread", default="./data/my_spread.json")
     p.add_argument("--model", default=DEFAULT_MODEL)
     p.add_argument("--temperature", type=float, default=0.2)
-    p.add_argument("--num-predict", type=int, default=2000)
+    p.add_argument("--num-predict", type=int, default=1500)
     p.add_argument("--outdir", default="./readings")
     p.add_argument("--postprocess", action="store_true", help="Enable faith-aware postprocessing")
     a = p.parse_args()
@@ -821,7 +986,7 @@ def main():
     spread = load_json_if_exists(a.spread) or [
         {"position":"Past","card":"The Hermit","orientation":"upright","element":"Earth"},
         {"position":"Present","card":"The Lovers","orientation":"upright","element":"Air"},
-        {"position":"Future","card":"Ten of Pentacles","orientation":"upright","element":"Earth"}
+        {"position":"Future","card":"Ten of Stones","orientation":"upright","element":"Earth"}
     ]
 
     # 1) Generate raw reading

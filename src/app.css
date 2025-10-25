@@ -75,15 +75,19 @@
   }
 
   .card-surface {
-    background-color: rgba(23, 19, 58, 0.5);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(123, 97, 255, 0.3);
+    background: rgba(23, 19, 58, 0.25);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(123, 97, 255, 0.4);
     border-radius: 0.75rem;
-    transition: all 0.2s;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(123, 97, 255, 0.1);
   }
 
   .card-surface:hover {
+    background: rgba(23, 19, 58, 0.35);
     border-color: rgba(123, 97, 255, 0.6);
+    box-shadow: 0 12px 48px rgba(123, 97, 255, 0.2);
   }
 
   .card-surface-hover {
@@ -133,14 +137,16 @@
 
   .cta-primary {
     display: inline-block;
-    padding: 0.75rem 2rem;
+    padding: 0.875rem 2.5rem;
     font-size: 1.125rem;
-    font-weight: 600;
+    font-weight: 700;
+    font-family: 'Cinzel Decorative', serif;
+    letter-spacing: 0.5px;
     border-radius: 0.5rem;
     background-color: #7B61FF;
     color: #EDEBFF;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     box-shadow: 0 10px 15px -3px rgba(123, 97, 255, 0.3);
     cursor: pointer;
   }
@@ -153,14 +159,16 @@
 
   .cta-secondary {
     display: inline-block;
-    padding: 0.75rem 2rem;
+    padding: 0.875rem 2.5rem;
     font-size: 1.125rem;
-    font-weight: 600;
+    font-weight: 700;
+    font-family: 'Cinzel Decorative', serif;
+    letter-spacing: 0.5px;
     border-radius: 0.5rem;
     background-color: #17133A;
     color: #EDEBFF;
     border: 1px solid rgba(123, 97, 255, 0.5);
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     cursor: pointer;
   }
 

@@ -76,9 +76,9 @@ function executePythonScript(payload: AstroTarotRequest): Promise<PythonOutput> 
     const args = [
       '--question', payload.question,
       '--timeframe', payload.timeframe,
-      '--model', payload.model || 'phi',
+      '--model', payload.model || 'claude-3-5-sonnet-20241022',
       '--temperature', String(payload.temperature || 0.2),
-      '--num-predict', String(payload.num_predict || 150),
+      '--num-predict', String(payload.num_predict || 1500),
       '--postprocess', // Enable postprocessing with faith-aware validator
     ];
 

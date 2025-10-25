@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { riderWaiteDeck } from '$lib/decks';
+  import { celestiaArcanaCards } from '$lib/decks/celestia-arcana';
   import ReadingFeedback from '$lib/components/ReadingFeedback.svelte';
   import ReadingExplainer from '$lib/components/ReadingExplainer.svelte';
 
@@ -98,12 +98,12 @@
     for (let i = 0; i < count; i++) {
       let idx;
       do {
-        idx = Math.floor(Math.random() * riderWaiteDeck.length);
+        idx = Math.floor(Math.random() * celestiaArcanaCards.length);
       } while (used.has(idx));
       used.add(idx);
 
       drawn.push({
-        card: riderWaiteDeck[idx],
+        card: celestiaArcanaCards[idx],
         reversed: Math.random() > 0.5,
       });
     }
@@ -235,7 +235,13 @@
       // Reset video element to ensure it plays from the beginning
       if (videoElement) {
         videoElement.currentTime = 0;
-        videoElement.play().catch(err => console.error('Video play error:', err));
+        // Use a small delay to ensure the video is ready to play
+        setTimeout(() => {
+          videoElement?.play().catch(err => {
+            console.error('Video play error:', err);
+            // If autoplay fails, the user can click play button
+          });
+        }, 100);
       }
 
       const spread = spreads[spreadType as keyof typeof spreads];
@@ -286,7 +292,7 @@
           spread: spreadData,
           model: 'llama3',
           temperature: 0.2,
-          num_predict: 2000,
+          num_predict: 1500,
         }),
       });
 
@@ -912,6 +918,7 @@
         src={videoSrc}
         controls
         autoplay
+        muted
         on:ended={() => {
           console.log('Video ended');
           videoEnded = true;
@@ -919,6 +926,9 @@
         on:play={() => console.log('Video playing')}
         on:pause={() => console.log('Video paused')}
         on:error={(e) => console.error('Video error:', e)}
+        on:loadedmetadata={() => {
+          console.log('Video metadata loaded, duration:', videoElement?.duration);
+        }}
         style="width: 100%; height: auto; max-height: 80vh; border-radius: 0.5rem; box-shadow: 0 0 50px rgba(123, 97, 255, 0.5); background-color: #000; pointer-events: auto; display: block;"
       >
         <track kind="captions" />

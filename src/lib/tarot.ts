@@ -5,6 +5,7 @@ export type Card = {
   name: string;
   upright: string;
   reversed: string;
+  image?: string;
 };
 
 export type Draw = {

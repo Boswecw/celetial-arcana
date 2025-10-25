@@ -1,4 +1,5 @@
 import type { Card } from '../tarot';
+import { getCardImageUrl } from './wikimedia-urls';
 
 const WIKIMEDIA_BASE = 'https://upload.wikimedia.org/wikipedia/commons/thumb';
 
@@ -14,6 +15,7 @@ export const riderWaiteDeck: Card[] = [
     name: 'The Fool',
     upright: 'New beginnings, taking risks, innocence, spontaneity',
     reversed: 'Recklessness, naivety, lack of planning, hesitation',
+    image: getCardImageUrl('0'),
   },
   {
     id: '1',
