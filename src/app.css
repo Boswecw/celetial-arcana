@@ -177,5 +177,8 @@
     border-color: #7B61FF;
     transform: translateY(-2px);
   }
-}
 
+  .reversed-card-image {
+    transform: rotate(180deg);
+  }
+}

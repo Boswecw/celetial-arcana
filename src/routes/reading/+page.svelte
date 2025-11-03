@@ -35,6 +35,27 @@
   let showVideoPopup = true;
   let videoSrc = '/reading-animation.mp4';
   let videoElement: HTMLVideoElement;
+  const astroTarotModel = import.meta.env.VITE_ASTRO_TAROT_MODEL || 'gpt-4o-mini';
+
+  $: if (typeof document !== 'undefined') {
+    if (showVideoPopup) {
+      document.body.classList.add('video-popup-open');
+      if (videoElement) {
+        videoElement.currentTime = 0;
+        const playPromise = videoElement.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+          playPromise.catch((err) => console.error('Video autoplay blocked:', err));
+        }
+      }
+    } else {
+      document.body.classList.remove('video-popup-open');
+      if (videoElement) {
+        videoElement.pause();
+        videoElement.currentTime = 0;
+      }
+    }
+  }
+
   let showShuffleOverlay = false;
   let shuffleCards: ShuffleCard[] = [];
   let shuffleResults: { id: string; image: string; name: string }[] = [];
@@ -334,7 +355,7 @@
           timeframe: 'next 30 days',
           astro: astroData,
           spread: spreadData,
-          model: 'llama3',
+          model: astroTarotModel,
           temperature: 0.2,
           num_predict: 1500,
         }),
@@ -406,6 +427,9 @@
     if (shuffleInterval) {
       clearInterval(shuffleInterval);
     }
+    if (typeof document !== 'undefined') {
+      document.body.classList.remove('video-popup-open');
+    }
   });
 </script>
 
@@ -454,11 +478,11 @@
           </div>
 
           <!-- Date of Birth (Manual Entry) -->
-          <div>
-            <label class="block text-lg font-semibold mb-3 flex items-center gap-2" style="color: #C6A7FF;">
+          <fieldset style="border: none; padding: 0; margin: 0;">
+            <legend class="block text-lg font-semibold mb-3 flex items-center gap-2" style="color: #C6A7FF;">
               <span>🎂</span>
               Date of Birth
-            </label>
+            </legend>
             <div class="grid grid-cols-3 gap-3">
               <div>
                 <label for="month" class="block text-sm font-semibold mb-2" style="color: #C6A7FF;">Month</label>
@@ -500,7 +524,7 @@
                 />
               </div>
             </div>
-          </div>
+          </fieldset>
 
           <!-- Time -->
           <div>
@@ -635,12 +659,12 @@
                       <!-- Card Image -->
                       <div
                         class="w-40 h-60 rounded-lg border-2 overflow-hidden mx-auto mb-4"
-                        style="border-color: #7B61FF; box-shadow: 0 10px 25px rgba(123, 97, 255, 0.2); transform: {dealtCard.reversed ? 'rotateY(180deg)' : 'none'};"
+                        style="border-color: #7B61FF; box-shadow: 0 10px 25px rgba(123, 97, 255, 0.2);"
                       >
                         <img
                           src={dealtCard.card.image}
                           alt={dealtCard.card.name}
-                          class="w-full h-full object-cover"
+                          class={`w-full h-full object-cover ${dealtCard.reversed ? 'reversed-card-image' : ''}`}
                         />
                       </div>
 
@@ -973,15 +997,26 @@
         controls
         autoplay
         muted
+        playsinline
+        preload="auto"
         on:ended={() => {
           console.log('Video ended');
           showVideoPopup = false;
         }}
         on:play={() => console.log('Video playing')}
         on:pause={() => console.log('Video paused')}
-        on:error={(e) => console.error('Video error:', e)}
+        on:error={(e) => {
+          const mediaError = (e.currentTarget as HTMLVideoElement)?.error;
+          console.error('Video error:', mediaError ?? e);
+        }}
         on:loadedmetadata={() => {
           console.log('Video metadata loaded, duration:', videoElement?.duration);
+        }}
+        on:loadeddata={() => {
+          const playPromise = videoElement?.play();
+          if (playPromise && typeof playPromise.catch === 'function') {
+            playPromise.catch((err) => console.error('Video play after load failed:', err));
+          }
         }}
         style="width: 100%; height: auto; max-height: 80vh; border-radius: 0.5rem; box-shadow: 0 0 50px rgba(123, 97, 255, 0.5); background-color: #000; pointer-events: auto; display: block;"
       >
@@ -1047,6 +1082,10 @@
 
   :global(.animate-fade-in) {
     animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  :global(body.video-popup-open) {
+    overflow: hidden;
   }
 
   .shuffle-overlay {

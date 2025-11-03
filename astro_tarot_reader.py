@@ -623,7 +623,8 @@ def _coerce_to_schema(d: Dict[str, Any], spread: List[Dict[str, Any]]) -> Dict[s
     out["meta"].setdefault("question", d.get("meta", {}).get("question", ""))
     out["meta"].setdefault("timeframe", d.get("meta", {}).get("timeframe", ""))
     out["meta"].setdefault("spread_name", d.get("meta", {}).get("spread_name", "Custom"))
-    out["meta"].setdefault("timestamp", d.get("meta", {}).get("timestamp", datetime.datetime.utcnow().isoformat()+"Z"))
+    default_timestamp = datetime.datetime.now(datetime.timezone.utc).isoformat().replace("+00:00", "Z")
+    out["meta"].setdefault("timestamp", d.get("meta", {}).get("timestamp", default_timestamp))
 
     # --- astro_summary (copy fields, then enrich themes with constellation KB) ---
     a = d.get("astro_summary", {})
@@ -925,7 +926,7 @@ Return exactly one JSON matching the schema above.
     meta.setdefault("question", question)
     meta.setdefault("timeframe", timeframe)
     meta.setdefault("spread_name", (spread[0].get("spread","") if (spread and isinstance(spread[0], dict)) else "") or "Custom")
-    meta["timestamp"] = datetime.datetime.utcnow().isoformat() + "Z"
+    meta["timestamp"] = datetime.datetime.now(datetime.timezone.utc).isoformat().replace("+00:00", "Z")
 
     # Normalize to strict schema (uses Tarot KB + Constellation KB)
     data = _coerce_to_schema(data, spread)
@@ -999,7 +1000,7 @@ def main():
     reading = synthesize_reading(a.question, a.timeframe, astro, spread, a.model, a.temperature, a.num_predict)
 
     outdir = pathlib.Path(a.outdir); outdir.mkdir(exist_ok=True)
-    ts = datetime.datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')
+    ts = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ')
     raw_path = outdir / f"reading_{ts}_raw.json"
     with open(raw_path, "w", encoding="utf-8") as f:
         json.dump(reading, f, indent=2, ensure_ascii=False)

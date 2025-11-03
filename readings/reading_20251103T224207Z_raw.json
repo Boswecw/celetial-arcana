@@ -1,0 +1,121 @@
+{
+  "meta": {
+    "question": "How well will my first Novel Sale?",
+    "timeframe": "next 30 days",
+    "spread_name": "Novel Sale Reading",
+    "timestamp": "2025-11-03T22:42:07.116191Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": [
+        "Earth",
+        "Air"
+      ],
+      "notable_aspects": [
+        {
+          "aspect": "Sun conjunct Mercury",
+          "orb": "1°",
+          "interpretation": "Heightened communication and insight; clarity of thought."
+        },
+        {
+          "aspect": "Moon trine Pluto",
+          "orb": "2°",
+          "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+        },
+        {
+          "aspect": "Venus sextile Mars",
+          "orb": "3°",
+          "interpretation": "Creative harmony between desire and action."
+        }
+      ],
+      "lunar_phase": "Full Moon"
+    },
+    "themes": [
+      "communication",
+      "emotional depth",
+      "creative action"
+    ]
+  },
+  "spread_summary": {
+    "layout": [
+      "Past: The Hermit",
+      "Present: The Lovers",
+      "Future: Ten of Stones"
+    ],
+    "card_elements_count": {
+      "Fire": 0,
+      "Earth": 1,
+      "Air": 0,
+      "Water": 0
+    },
+    "majors_count": 2
+  },
+  "resonance": {
+    "matches": [
+      {
+        "type": "astrology",
+        "detail": "Sun conjunct Mercury",
+        "why": "This aspect supports clear communication, essential for promoting your novel."
+      },
+      {
+        "type": "tarot",
+        "detail": "The Lovers reversed",
+        "why": "Indicates potential misalignment in current relationships or partnerships affecting your novel's sale."
+      }
+    ],
+    "tensions": [
+      {
+        "type": "astrology",
+        "detail": "Venus sextile Mars",
+        "why": "While there's creative harmony, it may not translate into immediate sales without addressing current conflicts."
+      }
+    ],
+    "element_balance": {
+      "astro": "Earth and Air",
+      "tarot": "Fire:0; Earth:1; Air:0; Water:0",
+      "comment": "Strong Earth influence suggests stability and practicality, while Spirit cards indicate introspection and alignment issues."
+    }
+  },
+  "interpretation": {
+    "theme": "Navigating introspection and alignment for future stability.",
+    "positions": [
+      {
+        "card": "The Hermit",
+        "position": "Past",
+        "element": "Spirit",
+        "insight": "You have spent time in introspection, which has shaped your writing and approach to your novel."
+      },
+      {
+        "card": "The Lovers",
+        "position": "Present",
+        "element": "Spirit",
+        "insight": "Currently, there may be conflicts or misalignments in your partnerships or marketing strategies that could hinder your novel's sale."
+      },
+      {
+        "card": "Ten of Stones",
+        "position": "Future",
+        "element": "Earth",
+        "insight": "In the future, there is potential for stability and success, indicating that your novel could lead to financial gain and legacy."
+      }
+    ],
+    "timing": [
+      "next 30 days"
+    ],
+    "action_items": [
+      "Reflect on your current partnerships and ensure they align with your vision for the novel.",
+      "Utilize the Full Moon energy to release any emotional blocks or misalignments that may be affecting your confidence.",
+      "Engage in clear communication about your novel's value to potential buyers or partners."
+    ],
+    "affirmations": [
+      "I embrace clarity and alignment in my creative journey.",
+      "I trust in the stability and success of my novel."
+    ]
+  },
+  "confidence": {
+    "overall": 0.85,
+    "notes": "The reading shows strong potential for success, but emphasizes the need for alignment and clear communication."
+  }
+}
