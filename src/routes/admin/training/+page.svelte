@@ -146,7 +146,7 @@
         <ul class="space-y-3" style="color: #EDEBFF;">
           <li>✅ <strong>Feedback Collection:</strong> Users rate readings 1-5 stars</li>
           <li>✅ <strong>Pattern Recognition:</strong> System identifies successful card combinations and themes</li>
-          <li>✅ <strong>Prompt Optimization:</strong> Claude's prompts are enhanced based on patterns</li>
+          <li>✅ <strong>Prompt Optimization:</strong> ChatGPT prompts are enhanced based on patterns</li>
           <li>✅ <strong>Continuous Learning:</strong> Each rating improves future readings</li>
           <li>✅ <strong>User Preferences:</strong> System learns what each zodiac sign prefers</li>
         </ul>
@@ -161,4 +161,3 @@
     padding: 0;
   }
 </style>
-

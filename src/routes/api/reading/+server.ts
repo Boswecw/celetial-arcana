@@ -41,7 +41,7 @@ export const POST: RequestHandler = async ({ request }) => {
     const aspectTypes = analysis.aspects.map((a) => a.type);
     const ragContext = buildReadingContext(cardNames, aspectTypes, analysis.themes);
 
-    // Generate reading with LLM (using Claude if available)
+    // Generate reading with LLM (using ChatGPT if available)
     let reading = await generateReading(body, analysis, ragContext);
 
     // Apply guardrails
@@ -77,7 +77,7 @@ async function generateReading(
   analysis: any,
   ragContext: string
 ): Promise<string> {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.OPENAI_API_KEY;
 
   if (!apiKey) {
     // Fallback to mock reading if no API key
@@ -108,30 +108,32 @@ Key aspects: ${analysis.aspects.map((a: any) => `${a.planet1} ${a.type} ${a.plan
 
 Please weave a cohesive reading that integrates these elements.`;
 
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
+        Authorization: `Bearer ${apiKey}`,
         "content-type": "application/json",
       },
       body: JSON.stringify({
-        model: "claude-3-5-sonnet-20241022",
+        model: "gpt-4o-mini",
         max_tokens: 1024,
-        system: systemPrompt,
-        messages: [{ role: "user", content: userMessage }],
+        temperature: 0.7,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userMessage },
+        ],
       }),
     });
 
     if (!response.ok) {
-      console.error("Claude API error:", await response.text());
+      console.error("OpenAI API error:", await response.text());
       return generateMockReading(body, analysis);
     }
 
     const data = await response.json();
-    return data.content[0].text;
+    return data.choices[0].message.content;
   } catch (error) {
-    console.error("Error calling Claude API:", error);
+    console.error("Error calling OpenAI API:", error);
     return generateMockReading(body, analysis);
   }
 }
@@ -150,4 +152,3 @@ This reading suggests a moment of reflection and potential. The interplay of the
 
 Remember: this reading is a mirror for reflection, not a prediction of fixed outcomes. Your choices and actions shape your path forward.`;
 }
-

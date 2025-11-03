@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Celestia Arcana — Astro + Tarot Synthesizer (Claude via Anthropic API)
+Celestia Arcana — Astro + Tarot Synthesizer (ChatGPT via OpenAI API)
 - High-timeout + retry networking
 - Strict JSON extraction/repair
 - Schema normalizer (guarantees stable output)
@@ -68,9 +68,9 @@ ENABLE_RESPONSE_CACHE = os.environ.get("ENABLE_RESPONSE_CACHE", "true").lower() 
 # -----------------------------------------------------------------------------
 # Config
 # -----------------------------------------------------------------------------
-DEFAULT_MODEL = "claude-3-5-sonnet-20241022"
-ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
-ANTHROPIC_API_URL = "https://api.anthropic.com/v1/messages"
+DEFAULT_MODEL = "gpt-4o-mini"
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
+OPENAI_API_URL = "https://api.openai.com/v1/chat/completions"
 STOP_SEQUENCES = [s for s in os.environ.get("ASTRO_TAROT_STOPS", "").split(",") if s.strip()] or None
 
 TAROT_KB_PATH = os.environ.get("TAROT_KB_PATH", "data/celestia_arcana_knowledge.json")
@@ -429,8 +429,8 @@ def _get_cache_key(system: str, user: str, model: str, temp: float, num: int) ->
     content = f"{system}||{user}||{model}||{temp}||{num}"
     return hashlib.sha256(content.encode()).hexdigest()
 
-def call_claude(system: str, user: str, model: str, temp: float, num: int) -> str:
-    """Call Claude via Anthropic API with optional response caching and performance tracking."""
+def call_chatgpt(system: str, user: str, model: str, temp: float, num: int) -> str:
+    """Call ChatGPT via OpenAI API with optional response caching and performance tracking."""
     # Check cache first
     if ENABLE_RESPONSE_CACHE:
         cache_key = _get_cache_key(system, user, model, temp, num)
@@ -440,12 +440,11 @@ def call_claude(system: str, user: str, model: str, temp: float, num: int) -> st
             return _RESPONSE_CACHE[cache_key]
         _PERF_STATS["cache_misses"] += 1
 
-    if not ANTHROPIC_API_KEY:
-        raise ValueError("ANTHROPIC_API_KEY environment variable not set")
+    if not OPENAI_API_KEY:
+        raise ValueError("OPENAI_API_KEY environment variable not set")
 
     headers = {
-        "x-api-key": ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
+        "Authorization": f"Bearer {OPENAI_API_KEY}",
         "content-type": "application/json"
     }
 
@@ -453,18 +452,25 @@ def call_claude(system: str, user: str, model: str, temp: float, num: int) -> st
         "model": model,
         "max_tokens": int(num),
         "temperature": float(temp),
-        "system": system,
         "messages": [
+            {"role": "system", "content": system},
             {"role": "user", "content": user}
         ]
     }
 
-    r = _post_with_retry(ANTHROPIC_API_URL, payload, headers=headers, timeout=(60, 3600))
-    r.raise_for_status()
+    r = _post_with_retry(OPENAI_API_URL, payload, headers=headers, timeout=(60, 3600))
+    try:
+        r.raise_for_status()
+    except Exception as e:
+        print(f"[error] API request failed: {e}", file=sys.stderr)
+        print(f"[error] Response: {r.text}", file=sys.stderr)
+        raise
+
     try:
         obj = r.json()
-        response = obj.get("content", [{}])[0].get("text", "")
-    except Exception:
+        response = obj.get("choices", [{}])[0].get("message", {}).get("content", "")
+    except Exception as e:
+        print(f"[error] Failed to parse response: {e}", file=sys.stderr)
         response = r.text
 
     # Cache the response
@@ -476,8 +482,8 @@ def call_claude(system: str, user: str, model: str, temp: float, num: int) -> st
 
 # Alias for backward compatibility
 def call_ollama(system: str, user: str, model: str, temp: float, num: int) -> str:
-    """Backward compatibility wrapper - calls Claude instead."""
-    return call_claude(system, user, model, temp, num)
+    """Backward compatibility wrapper - calls ChatGPT instead."""
+    return call_chatgpt(system, user, model, temp, num)
 
 def _extract_balanced_json(text: str) -> Optional[str]:
     t = text.strip()
@@ -542,7 +548,7 @@ def parse_model_json(raw: str) -> Dict[str, Any]:
         raise ValueError(f"JSON parse failed at {e.pos}: {e.msg}\n--- snippet ---\n{snippet}")
 
 def repair_to_json(raw_text: str, model: str, temperature: float = 0.1, max_retries: int = 2) -> str:
-    """Repair malformed JSON by calling Claude with retry logic."""
+    """Repair malformed JSON by calling ChatGPT with retry logic."""
     fixer_system = (
         "You are a JSON repair tool. Input may be malformed JSON. "
         "Return only a single valid JSON object that matches schema; no markdown or comments."
@@ -551,7 +557,7 @@ def repair_to_json(raw_text: str, model: str, temperature: float = 0.1, max_retr
 
     for attempt in range(max_retries + 1):
         try:
-            response = call_claude(fixer_system, fixer_user, model, temperature, 1500)
+            response = call_chatgpt(fixer_system, fixer_user, model, temperature, 1500)
             if response:
                 print(f"[repair] Success on attempt {attempt + 1}", file=sys.stderr)
                 return response

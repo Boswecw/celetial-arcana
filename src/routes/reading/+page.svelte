@@ -1,8 +1,17 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import { celestiaArcanaCards } from '$lib/decks/celestia-arcana';
   import ReadingFeedback from '$lib/components/ReadingFeedback.svelte';
   import ReadingExplainer from '$lib/components/ReadingExplainer.svelte';
+
+  type ShuffleCard = {
+    id: number;
+    image: string;
+    left: number;
+    top: number;
+    x: number;
+    y: number;
+  };
 
   let birthMonth = '';
   let birthDay = '';
@@ -23,10 +32,13 @@
   let dealtCards: any[] = [];
   let readingId = '';
   let drawnCards: any[] = [];
-  let showVideoPopup = false;
+  let showVideoPopup = true;
   let videoSrc = '/reading-animation.mp4';
   let videoElement: HTMLVideoElement;
-  let videoEnded = false;
+  let showShuffleOverlay = false;
+  let shuffleCards: ShuffleCard[] = [];
+  let shuffleResults: { id: string; image: string; name: string }[] = [];
+  let shuffleInterval: ReturnType<typeof setInterval> | null = null;
   let isSpeaking = false;
   let speechSynthesis: SpeechSynthesisUtterance | null = null;
   let combinedReading = '';
@@ -109,6 +121,51 @@
     }
 
     return drawn;
+  }
+
+  function getRandomDeckCard() {
+    const randomIndex = Math.floor(Math.random() * celestiaArcanaCards.length);
+    return celestiaArcanaCards[randomIndex];
+  }
+
+  function spawnShuffleCard() {
+    const randomCard = getRandomDeckCard();
+    const card: ShuffleCard = {
+      id: Date.now() + Math.random(),
+      image: randomCard.image,
+      left: Math.random() * 60 + 20, // percent within overlay
+      top: Math.random() * 50 + 15,
+      x: Math.random() * 600 - 300,
+      y: Math.random() * 300 - 150,
+    };
+
+    shuffleCards = [...shuffleCards, card];
+
+    setTimeout(() => {
+      shuffleCards = shuffleCards.filter((c) => c.id !== card.id);
+    }, 400);
+  }
+
+  function startShuffleOverlay() {
+    if (shuffleInterval) {
+      clearInterval(shuffleInterval);
+    }
+    shuffleResults = [];
+    shuffleCards = [];
+    showShuffleOverlay = true;
+    spawnShuffleCard();
+    shuffleInterval = setInterval(spawnShuffleCard, 80);
+  }
+
+  function stopShuffleOverlay() {
+    if (shuffleInterval) {
+      clearInterval(shuffleInterval);
+      shuffleInterval = null;
+    }
+    setTimeout(() => {
+      showShuffleOverlay = false;
+      shuffleCards = [];
+    }, 400);
   }
 
   async function shuffleDeck() {
@@ -221,32 +278,19 @@
     error = '';
     reading = null;
     dealtCards = [];
-    videoEnded = false;
+    shuffleResults = [];
+
+    startShuffleOverlay();
 
     try {
-      // Show video popup FIRST
-      showVideoPopup = true;
-      console.log('Video popup shown:', showVideoPopup);
-
-      // Start a minimum video duration timer (3 seconds)
-      const minVideoDuration = 3000;
-      const videoStartTime = Date.now();
-
-      // Reset video element to ensure it plays from the beginning
-      if (videoElement) {
-        videoElement.currentTime = 0;
-        // Use a small delay to ensure the video is ready to play
-        setTimeout(() => {
-          videoElement?.play().catch(err => {
-            console.error('Video play error:', err);
-            // If autoplay fails, the user can click play button
-          });
-        }, 100);
-      }
-
       const spread = spreads[spreadType as keyof typeof spreads];
       const newDrawnCards = drawCards(spread.positions.length);
       drawnCards = newDrawnCards;
+      shuffleResults = newDrawnCards.map((d, i) => ({
+        id: `${d.card.id}-${i}`,
+        image: d.card.image,
+        name: d.card.name,
+      }));
 
       // Shuffle animation
       await shuffleDeck();
@@ -350,41 +394,19 @@
       };
 
       readingId = `reading-${Date.now()}`;
-
-      // Wait for video to end OR minimum duration, whichever is longer
-      const waitForVideoEnd = new Promise<void>((resolve) => {
-        const checkInterval = setInterval(() => {
-          if (videoEnded || (videoElement && videoElement.ended)) {
-            clearInterval(checkInterval);
-            resolve();
-          }
-        }, 100);
-
-        // Fallback timeout (video duration + buffer)
-        setTimeout(() => {
-          clearInterval(checkInterval);
-          resolve();
-        }, 60000); // 60 second max wait
-      });
-
-      const elapsedTime = Date.now() - videoStartTime;
-      const remainingMinTime = Math.max(0, minVideoDuration - elapsedTime);
-
-      // Wait for both minimum duration AND video to end
-      await Promise.all([
-        new Promise(resolve => setTimeout(resolve, remainingMinTime)),
-        waitForVideoEnd
-      ]);
-
-      // Close video popup and show results
-      showVideoPopup = false;
     } catch (err) {
       error = `Error: ${err}`;
-      showVideoPopup = false;
     } finally {
+      stopShuffleOverlay();
       loading = false;
     }
   }
+
+  onDestroy(() => {
+    if (shuffleInterval) {
+      clearInterval(shuffleInterval);
+    }
+  });
 </script>
 
 <div class="min-h-screen p-8 lg:p-20 overflow-x-hidden" style="background: linear-gradient(135deg, #0B0724 0%, #17133A 100%);">
@@ -891,6 +913,38 @@
   </div>
 </div>
 
+{#if showShuffleOverlay}
+  <div class="shuffle-overlay fixed inset-0 z-[9998] flex items-center justify-center px-6 py-10">
+    <div class="shuffle-container">
+      <h1>✨ Celestia Arcana ✨</h1>
+
+      <div class="shuffle-area">
+        {#each shuffleCards as card (card.id)}
+          <div
+            class="shuffling-card"
+            style={`background-image: url('${card.image}'); left: ${card.left}%; top: ${card.top}%; --x: ${card.x}px; --y: ${card.y}px;`}
+          ></div>
+        {/each}
+      </div>
+
+      <div class="shuffle-info">
+        <p>Drawing your cards and weaving the cosmic story...</p>
+      </div>
+
+      {#if shuffleResults.length}
+        <div class="shuffle-results">
+          {#each shuffleResults as result (result.id)}
+            <div class="shuffle-result-wrapper">
+              <div class="shuffle-result-card" style={`background-image: url('${result.image}');`}></div>
+              <div class="shuffle-result-name">{result.name}</div>
+            </div>
+          {/each}
+        </div>
+      {/if}
+    </div>
+  </div>
+{/if}
+
 <!-- Video Popup (outside main container for proper z-index) -->
 {#if showVideoPopup}
   <div
@@ -921,7 +975,7 @@
         muted
         on:ended={() => {
           console.log('Video ended');
-          videoEnded = true;
+          showVideoPopup = false;
         }}
         on:play={() => console.log('Video playing')}
         on:pause={() => console.log('Video paused')}
@@ -993,5 +1047,120 @@
 
   :global(.animate-fade-in) {
     animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  .shuffle-overlay {
+    background: rgba(12, 8, 36, 0.92);
+    backdrop-filter: blur(8px);
+  }
+
+  .shuffle-container {
+    width: min(820px, 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 2.5rem 1.5rem;
+    border-radius: 1.5rem;
+    background: linear-gradient(135deg, rgba(15, 12, 41, 0.95), rgba(48, 43, 99, 0.95));
+    border: 1px solid rgba(198, 167, 255, 0.35);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+    text-align: center;
+  }
+
+  .shuffle-container h1 {
+    font-size: clamp(2rem, 5vw, 2.5rem);
+    color: #fffcea;
+    text-shadow: 0 0 20px rgba(255, 200, 0, 0.5);
+    letter-spacing: 2px;
+  }
+
+  .shuffle-area {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    height: clamp(320px, 50vh, 450px);
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 0 50px rgba(255, 200, 0, 0.2);
+  }
+
+  .shuffling-card {
+    position: absolute;
+    width: clamp(110px, 20vw, 150px);
+    aspect-ratio: 3 / 4;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    pointer-events: none;
+    animation: shuffleOverlay 0.4s ease-in-out;
+  }
+
+  .shuffle-info {
+    font-size: 0.95rem;
+    color: #d0c7ff;
+    max-width: 520px;
+  }
+
+  .shuffle-results {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    min-height: 160px;
+    width: 100%;
+  }
+
+  .shuffle-result-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .shuffle-result-card {
+    width: clamp(140px, 22vw, 180px);
+    height: clamp(220px, 32vw, 280px);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 0.75rem;
+    border: 2px solid rgba(255, 200, 0, 0.3);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    animation: cardAppear 0.8s ease-out forwards;
+  }
+
+  .shuffle-result-name {
+    font-size: 0.9rem;
+    color: #ffc800;
+    font-weight: bold;
+    text-transform: capitalize;
+    text-align: center;
+    max-width: 180px;
+  }
+
+  @keyframes shuffleOverlay {
+    0% {
+      opacity: 0;
+      transform: translate(0, 0) rotate(0deg);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(calc(var(--x)), calc(var(--y))) rotate(360deg);
+    }
+  }
+
+  @keyframes cardAppear {
+    0% {
+      opacity: 0;
+      transform: scale(0) rotateY(90deg);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) rotateY(0deg);
+    }
   }
 </style>

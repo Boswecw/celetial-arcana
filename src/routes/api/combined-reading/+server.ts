@@ -35,7 +35,7 @@ interface CombinedReadingRequest {
 }
 
 async function generateCombinedReading(payload: CombinedReadingRequest): Promise<string> {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.OPENAI_API_KEY;
 
   if (!apiKey) {
     // Fallback to simple combination
@@ -106,30 +106,32 @@ At the end, provide 2-3 specific, actionable next steps that directly address th
 
 Make these actions specific to their question: "${payload.question}"`;
 
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
+        Authorization: `Bearer ${apiKey}`,
         "content-type": "application/json",
       },
       body: JSON.stringify({
-        model: "claude-3-5-sonnet-20241022",
+        model: "gpt-4o-mini",
         max_tokens: 1024,
-        system: systemPrompt,
-        messages: [{ role: "user", content: userMessage }],
+        temperature: 0.7,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userMessage },
+        ],
       }),
     });
 
     if (!response.ok) {
-      console.error("Claude API error:", await response.text());
+      console.error("OpenAI API error:", await response.text());
       return generateSimpleCombined(payload);
     }
 
     const data = await response.json();
-    return data.content[0].text;
+    return data.choices[0].message.content;
   } catch (error) {
-    console.error("Error calling Claude API:", error);
+    console.error("Error calling OpenAI API:", error);
     return generateSimpleCombined(payload);
   }
 }
@@ -160,4 +162,3 @@ export const POST: RequestHandler = async ({ request }) => {
     return error(500, `Combined reading generation failed: ${message}`);
   }
 };
-

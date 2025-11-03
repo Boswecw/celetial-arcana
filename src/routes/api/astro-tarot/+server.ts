@@ -76,17 +76,21 @@ function executePythonScript(payload: AstroTarotRequest): Promise<PythonOutput> 
     const args = [
       '--question', payload.question,
       '--timeframe', payload.timeframe,
-      '--model', payload.model || 'claude-3-5-sonnet-20241022',
+      '--model', payload.model || 'gpt-4o-mini',
       '--temperature', String(payload.temperature || 0.2),
       '--num-predict', String(payload.num_predict || 1500),
       '--postprocess', // Enable postprocessing with faith-aware validator
     ];
 
-    // Spawn Python process
+    // Spawn Python process with environment variables
     const pythonProcess = spawn('python3', [scriptPath, ...args], {
       cwd: projectRoot,
       timeout: 3600000, // 1 hour timeout
       stdio: ['pipe', 'pipe', 'pipe'],
+      env: {
+        ...process.env,
+        OPENAI_API_KEY: process.env.OPENAI_API_KEY || '',
+      },
     });
 
     let stdout = '';
@@ -150,4 +154,3 @@ export const POST: RequestHandler = async ({ request }) => {
     return error(500, `Astro-Tarot synthesis failed: ${message}`);
   }
 };
-
