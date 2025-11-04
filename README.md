@@ -258,23 +258,62 @@ This project includes extensive performance optimizations:
 
 ## 📦 Deployment
 
-### Netlify
+### ⚠️ Important: Python Astrological Synthesis
+
+The **Astro-Tarot synthesis feature** requires Python and cannot run on serverless platforms (Netlify Functions, Vercel Functions) as they don't support Python runtime by default.
+
+**Options:**
+
+1. **Deploy to Python-supporting platforms (Recommended):**
+   - **[Render](https://render.com)** ⭐ - Pre-configured with `render.yaml`, free tier available
+   - [Railway](https://railway.app) - Auto-detects dependencies, $5/month
+   - [Fly.io](https://fly.io) - Custom Dockerfile required
+   - Traditional VPS (DigitalOcean, Linode, etc.)
+
+2. **Use static deployment** (without astrological synthesis):
+   - Netlify, Vercel, Cloudflare Pages
+   - Note: Traditional tarot readings will still work, but astro-tarot endpoint will return errors
+
+### Render (Recommended) ⭐
+
+This project includes `render.yaml` for one-click deployment:
+
+1. Push your code to GitHub
+2. Create account at [render.com](https://render.com)
+3. Click "New" → "Blueprint"
+4. Select your repository
+5. Add `OPENAI_API_KEY` environment variable in dashboard
+6. Deploy automatically!
+
+**Free tier available** (with cold starts) or Starter plan $7/month for always-on.
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed step-by-step instructions.
+
+### Railway (Alternative)
 
 ```bash
-# Install Netlify adapter
-bun add -D @sveltejs/adapter-netlify
+# Install Railway CLI
+npm i -g @railway/cli
 
-# Deploy
-netlify deploy --prod
+# Login and deploy
+railway login
+railway init
+railway up
+
+# Add OPENAI_API_KEY in Railway dashboard
 ```
 
-### Vercel
+### Netlify/Vercel (Limited - No Python)
+
+**Warning:** Astrological synthesis will not work on these platforms.
 
 ```bash
-# Install Vercel adapter
-bun add -D @sveltejs/adapter-vercel
+# Netlify
+bun add -D @sveltejs/adapter-netlify
+netlify deploy --prod
 
-# Deploy
+# Vercel
+bun add -D @sveltejs/adapter-vercel
 vercel --prod
 ```
 
@@ -445,6 +484,26 @@ bun install
 # Rebuild
 bun run build
 ```
+
+### "Python not available in serverless environments" Error
+
+If you get this error when deployed to Netlify/Vercel:
+
+**The astrological synthesis feature requires Python and cannot run on serverless platforms.**
+
+**Solutions:**
+
+1. **Deploy to a Python-supporting platform:**
+   - Railway, Render, Fly.io, or traditional VPS
+   - See [Deployment section](#-deployment) for details
+
+2. **Disable astrological synthesis:**
+   - The app will still work for traditional tarot readings
+   - Only the `/api/astro-tarot` endpoint will fail
+
+3. **Use a separate Python service:**
+   - Deploy the Python script separately as an API
+   - Update the fetch URL in the astro-tarot endpoint
 
 ---
 

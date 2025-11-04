@@ -1,0 +1,46 @@
+# Render Blueprint for Celestia Arcana
+# This file configures automatic deployment to Render with full Python + Node support
+
+services:
+  - type: web
+    name: celestia-arcana
+    runtime: node
+    plan: starter  # Free tier available
+    region: oregon  # Change to your preferred region
+
+    # Build Configuration
+    buildCommand: |
+      # Install Node dependencies
+      bun install
+      # Install Python dependencies
+      pip install -r requirements.txt
+      # Build SvelteKit application
+      bun run build
+
+    # Start Command
+    startCommand: node build/index.js
+
+    # Environment Variables
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: OPENAI_API_KEY
+        sync: false  # Set manually in Render dashboard
+      - key: ASTRO_TAROT_MODEL
+        value: gpt-4o-mini
+      - key: ENABLE_RESPONSE_CACHE
+        value: true
+
+    # Auto-deploy on Git push
+    autoDeploy: true
+
+    # Health check
+    healthCheckPath: /
+
+    # Disk storage (optional, for caching)
+    disk:
+      name: celestia-data
+      mountPath: /app/data
+      sizeGB: 1

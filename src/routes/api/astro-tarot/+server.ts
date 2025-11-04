@@ -4,8 +4,36 @@ import { spawn } from 'child_process';
 import { join } from 'path';
 import { execSync } from 'child_process';
 
+// Detect if running in serverless environment
+function isServerlessEnvironment(): boolean {
+  const env = process.env;
+  return !!(
+    env.AWS_LAMBDA_FUNCTION_NAME ||
+    env.NETLIFY ||
+    env.VERCEL ||
+    env.AWS_EXECUTION_ENV ||
+    env.LAMBDA_TASK_ROOT ||
+    (env.PATH && env.PATH.includes('/var/lang/bin'))
+  );
+}
+
 // Detect Python executable
 function findPythonExecutable(): string {
+  // Check if in serverless environment
+  if (isServerlessEnvironment()) {
+    const serverlessMsg =
+      'Python astrological synthesis is not available in serverless environments (Netlify/Vercel Functions). ' +
+      'This feature requires a server with Python runtime. ' +
+      'Please deploy to a platform that supports Python (e.g., a VPS, Railway, Render) or disable astrological synthesis.';
+    console.warn('[Python Detection] Serverless environment detected:', {
+      AWS_LAMBDA: !!process.env.AWS_LAMBDA_FUNCTION_NAME,
+      NETLIFY: !!process.env.NETLIFY,
+      VERCEL: !!process.env.VERCEL,
+      PATH: process.env.PATH
+    });
+    throw new Error(serverlessMsg);
+  }
+
   // Check if user specified a Python path via environment variable
   const envPython = process.env.PYTHON_PATH || process.env.PYTHON_EXECUTABLE;
   if (envPython) {
