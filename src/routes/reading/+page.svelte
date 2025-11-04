@@ -740,7 +740,7 @@
               }
               aria-label="Toggle traditional tarot reading"
             />
-            <span class="slider" />
+            <span class="slider"></span>
           </label>
           <span class="text-sm font-semibold" style="color: #C6A7FF;">Traditional Reading</span>
         </div>

@@ -167,7 +167,6 @@
       </div>
     </div>
     </div>
-    </div>
   </div>
 
   <footer class="landing-footer">
