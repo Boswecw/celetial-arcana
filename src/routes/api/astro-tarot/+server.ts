@@ -65,8 +65,8 @@ interface PythonOutput {
 
 function executePythonScript(payload: AstroTarotRequest): Promise<PythonOutput> {
   return new Promise((resolvePromise, reject) => {
-    // Get the project root directory from environment or use a hardcoded path
-    const projectRoot = process.env.PROJECT_ROOT || '/home/charles/projects/Coding2025/celestia-arcana';
+    // Use current working directory as project root
+    const projectRoot = process.cwd();
     const scriptPath = join(projectRoot, 'astro_tarot_reader.py');
 
     console.log('[astro-tarot] Project root:', projectRoot);
