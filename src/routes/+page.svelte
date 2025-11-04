@@ -15,8 +15,13 @@
       animation: twinkle 2s ease-in-out infinite;
     }
 
-    .realistic-star {
+    .hero-star {
       pointer-events: none;
+      position: absolute;
+      width: clamp(28px, 4vw, 44px);
+      height: clamp(28px, 4vw, 44px);
+      right: clamp(-10px, -1vw, -20px);
+      top: clamp(-12px, -1vw, -32px);
     }
 
     @keyframes twinkle {
@@ -65,20 +70,20 @@
   <div class="max-w-4xl mx-auto text-center space-y-8 relative z-10">
     <!-- Hero Title -->
     <div class="space-y-4 relative">
-      <!-- Bright Star positioned relative to title -->
-      <svg class="realistic-star" style="position: absolute; top: -20px; right: -60px; width: 40px; height: 40px;" viewBox="0 0 40 40" fill="none">
-        <!-- Center dot -->
-        <circle cx="20" cy="20" r="3" fill="white"/>
-        <!-- 6 light rays evenly spaced at 60 degree intervals -->
-        <line x1="20" y1="2" x2="20" y2="12" stroke="white" stroke-width="0.8" opacity="0.6"/>
-        <line x1="37.3" y1="8" x2="30.6" y2="14" stroke="white" stroke-width="0.8" opacity="0.5"/>
-        <line x1="37.3" y1="32" x2="30.6" y2="26" stroke="white" stroke-width="0.8" opacity="0.5"/>
-        <line x1="20" y1="38" x2="20" y2="28" stroke="white" stroke-width="0.8" opacity="0.5"/>
-        <line x1="2.7" y1="32" x2="9.4" y2="26" stroke="white" stroke-width="0.8" opacity="0.5"/>
-        <line x1="2.7" y1="8" x2="9.4" y2="14" stroke="white" stroke-width="0.8" opacity="0.5"/>
-      </svg>
-      <h1 class="text-6xl md:text-7xl font-bold" style="background: linear-gradient(135deg, #7B61FF, #FF4EDB); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-        Celestia Arcana
+      <h1
+        class="text-5xl sm:text-6xl md:text-7xl font-bold inline-flex items-center gap-2 sm:gap-3"
+        style="background: linear-gradient(135deg, #7B61FF, #FF4EDB); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"
+      >
+        <span>Celestia Arcana</span>
+        <svg class="w-8 sm:w-10 md:w-12 h-auto bright-star" viewBox="0 0 40 40" fill="none">
+          <circle cx="20" cy="20" r="3" fill="white"/>
+          <line x1="20" y1="2" x2="20" y2="12" stroke="white" stroke-width="0.8" opacity="0.6"/>
+          <line x1="37.3" y1="8" x2="30.6" y2="14" stroke="white" stroke-width="0.8" opacity="0.5"/>
+          <line x1="37.3" y1="32" x2="30.6" y2="26" stroke="white" stroke-width="0.8" opacity="0.5"/>
+          <line x1="20" y1="38" x2="20" y2="28" stroke="white" stroke-width="0.8" opacity="0.5"/>
+          <line x1="2.7" y1="32" x2="9.4" y2="26" stroke="white" stroke-width="0.8" opacity="0.5"/>
+          <line x1="2.7" y1="8" x2="9.4" y2="14" stroke="white" stroke-width="0.8" opacity="0.5"/>
+        </svg>
       </h1>
       <p class="text-xl md:text-2xl" style="color: #C6A7FF;">
         Discover the cosmic wisdom of tarot, guided by the stars
