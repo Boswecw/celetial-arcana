@@ -2,6 +2,23 @@ import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from '@sveltejs/kit';
 import { spawn } from 'child_process';
 import { join } from 'path';
+import { execSync } from 'child_process';
+
+// Detect Python executable
+function findPythonExecutable(): string {
+  const candidates = ['python3', 'python', '/usr/bin/python3', '/usr/local/bin/python3'];
+
+  for (const cmd of candidates) {
+    try {
+      execSync(`${cmd} --version`, { stdio: 'ignore' });
+      return cmd;
+    } catch {
+      // Continue to next candidate
+    }
+  }
+
+  throw new Error('Python not found. Please install Python 3.6+ to use astrological synthesis features.');
+}
 
 interface AstroTarotRequest {
   question: string;
@@ -65,15 +82,26 @@ interface PythonOutput {
 
 function executePythonScript(payload: AstroTarotRequest): Promise<PythonOutput> {
   return new Promise((resolvePromise, reject) => {
+    // Find Python executable
+    let pythonCmd: string;
+    try {
+      pythonCmd = findPythonExecutable();
+    } catch (err) {
+      reject(err);
+      return;
+    }
+
     // Use current working directory as project root
     const projectRoot = process.cwd();
     const scriptPath = join(projectRoot, 'astro_tarot_reader.py');
 
+    console.log('[astro-tarot] Python executable:', pythonCmd);
     console.log('[astro-tarot] Project root:', projectRoot);
     console.log('[astro-tarot] Script path:', scriptPath);
 
     // Build command-line arguments with postprocessing enabled
     const args = [
+      scriptPath,
       '--question', payload.question,
       '--timeframe', payload.timeframe,
       '--model', payload.model || 'gpt-4o-mini',
@@ -83,7 +111,7 @@ function executePythonScript(payload: AstroTarotRequest): Promise<PythonOutput> 
     ];
 
     // Spawn Python process with environment variables
-    const pythonProcess = spawn('python3', [scriptPath, ...args], {
+    const pythonProcess = spawn(pythonCmd, args, {
       cwd: projectRoot,
       timeout: 3600000, // 1 hour timeout
       stdio: ['pipe', 'pipe', 'pipe'],

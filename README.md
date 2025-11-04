@@ -28,17 +28,39 @@
 ### Prerequisites
 
 - [Bun](https://bun.sh/) ≥ 1.1 (recommended) or Node.js 18+
+- Python 3.6+ (for astrological synthesis)
 - OpenAI API key for AI readings
 
 ### Installation
+
+#### Option 1: Quick Setup (Recommended)
 
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/celestia-arcana.git
 cd celestia-arcana
 
-# Install dependencies
+# Run automated setup script
+./setup.sh
+
+# Add your OPENAI_API_KEY to .env
+# Then start the dev server
+bun run dev
+```
+
+#### Option 2: Manual Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/celestia-arcana.git
+cd celestia-arcana
+
+# Install JavaScript dependencies
 bun install
+
+# Install Python dependencies (for astrological synthesis)
+pip3 install -r requirements.txt
+# or: python3 -m pip install -r requirements.txt
 
 # Copy environment variables
 cp .env.example .env
@@ -338,6 +360,66 @@ See [LICENSE](LICENSE) for more information.
 - **Issues**: [GitHub Issues](https://github.com/yourusername/celestia-arcana/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/yourusername/celestia-arcana/discussions)
 - **Email**: your-email@example.com
+
+---
+
+## 🔧 Troubleshooting
+
+### "Python not found" Error
+
+If you get `spawn python3 ENOENT` error:
+
+```bash
+# Check if Python is installed
+python3 --version
+
+# If not installed, install Python 3.6+
+# On Ubuntu/Debian:
+sudo apt-get install python3 python3-pip
+
+# On macOS (with Homebrew):
+brew install python3
+
+# On Windows:
+# Download from https://python.org
+```
+
+### Missing Python Dependencies
+
+If readings fail with import errors:
+
+```bash
+# Install Python dependencies
+pip3 install -r requirements.txt
+
+# Or with full path:
+python3 -m pip install -r requirements.txt
+
+# Verify installation:
+python3 -c "import openai; print('OpenAI OK')"
+python3 -c "import requests; print('Requests OK')"
+```
+
+### OpenAI API Key Issues
+
+If you get API authentication errors:
+
+1. Verify `.env` file exists and contains: `OPENAI_API_KEY=sk-your-key-here`
+2. Restart the development server after adding the key
+3. Check your OpenAI API key is valid at [platform.openai.com](https://platform.openai.com)
+
+### Build Errors
+
+```bash
+# Clear build cache
+rm -rf .svelte-kit build node_modules
+
+# Reinstall dependencies
+bun install
+
+# Rebuild
+bun run build
+```
 
 ---
 
