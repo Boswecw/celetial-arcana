@@ -1,4 +1,4 @@
-<div class="min-h-screen flex flex-col items-center justify-center px-4 relative overflow-hidden" style="background: linear-gradient(135deg, #0B0724 0%, #17133A 100%);">
+<div class="min-h-screen flex flex-col items-center px-4 relative overflow-hidden" style="background: linear-gradient(135deg, #0B0724 0%, #17133A 100%);">
   <style>
     .star {
       position: absolute;
@@ -67,7 +67,8 @@
   <div class="star" style="top: 60%; left: 40%; opacity: 0.6;"></div>
   <div class="star" style="top: 75%; left: 60%; opacity: 0.5;"></div>
 
-  <div class="max-w-4xl mx-auto text-center space-y-8 relative z-10">
+  <div class="flex-1 flex items-center justify-center w-full z-10">
+    <div class="max-w-4xl mx-auto text-center space-y-8 relative">
     <!-- Hero Title -->
     <div class="space-y-4 relative">
       <div class="inline-flex items-center justify-center">
@@ -165,5 +166,13 @@
         <p style="color: #B3A9C7;">Cosmic Accuracy</p>
       </div>
     </div>
+    </div>
+    </div>
   </div>
+
+  <footer class="landing-footer">
+    <p>
+      © {new Date().getFullYear()} Boswell Digital Solutions LLC · Celestia Arcana (CC BY-NC-SA)
+    </p>
+  </footer>
 </div>

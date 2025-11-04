@@ -110,7 +110,7 @@
     toastTimeout = window.setTimeout(() => {
       showToast = false;
       toastTimeout = null;
-    }, 4000);
+    }, 6000);
   }
 
   $: if (readingId === '') {
@@ -760,6 +760,15 @@
             <label for="question" class="block text-lg font-semibold mb-3 flex items-center gap-2" style="color: #C6A7FF;">
               <span>❓</span>
               Your Question (optional)
+              <button
+                type="button"
+                on:click={() => scheduleToast('💡 Questions give your reading focus and direction, helping the cards speak to what you need. They\'re optional though — you can explore broadly ("What do I need to know?") or simply see what unfolds without a specific question. The cards will reveal what\'s needed either way.')}
+                class="info-icon-button"
+                aria-label="Why questions are optional"
+                title="Click for more info"
+              >
+                ℹ️
+              </button>
             </label>
             <textarea
               id="question"
@@ -1501,18 +1510,35 @@
     backdrop-filter: blur(8px);
   }
 
+  .info-icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.25rem;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+    line-height: 1;
+  }
+
+  .info-icon-button:hover {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+
   .toast-notification {
     position: fixed;
     top: 2rem;
     right: 2rem;
     z-index: 11000;
-    max-width: 320px;
+    max-width: 420px;
     padding: 0.9rem 1.2rem;
     background: linear-gradient(135deg, rgba(123, 97, 255, 0.92), rgba(255, 78, 219, 0.88));
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 1rem;
     color: #EDEBFF;
     font-size: 0.95rem;
+    line-height: 1.5;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
     animation: toastFade 0.25s ease-out;
   }

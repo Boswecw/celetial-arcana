@@ -35,6 +35,13 @@
 
 <div class="min-h-screen p-8" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
   <div class="max-w-6xl mx-auto">
+    <!-- Back Link -->
+    <div class="mb-8">
+      <a href="/" class="inline-flex items-center text-lg font-semibold transition-all duration-200 hover:opacity-80" style="color: #C6A7FF;">
+        ← Back to Home
+      </a>
+    </div>
+
     <!-- Header -->
     <div class="mb-12">
       <h1 class="text-5xl font-bold mb-4" style="color: #C6A7FF;">

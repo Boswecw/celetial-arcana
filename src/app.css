@@ -178,6 +178,16 @@
     transform: translateY(-2px);
   }
 
+  .landing-footer {
+    width: 100%;
+    text-align: center;
+    margin-top: 4rem;
+    padding: 2.5rem 1rem 3rem;
+    color: #8f82c9;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+  }
+
   .reversed-card-image {
     transform: rotate(180deg);
   }
