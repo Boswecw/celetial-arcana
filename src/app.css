@@ -76,8 +76,8 @@
 
   .card-surface {
     background: rgba(23, 19, 58, 0.25);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(10px) saturate(180%);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
     border: 1px solid rgba(123, 97, 255, 0.4);
     border-radius: 0.75rem;
     transition: all 0.3s ease;
@@ -181,11 +181,14 @@
   .landing-footer {
     width: 100%;
     text-align: center;
-    margin-top: 4rem;
+    margin-top: auto;
     padding: 2.5rem 1rem 3rem;
-    color: #8f82c9;
+    color: #B3A9C7;
     font-size: 0.95rem;
     letter-spacing: 0.02em;
+    border-top: 1px solid rgba(123, 97, 255, 0.2);
+    background: rgba(11, 7, 36, 0.5);
+    z-index: 10;
   }
 
   .reversed-card-image {

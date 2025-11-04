@@ -247,7 +247,7 @@
                   title={card.name}
                 >
                   <div class="w-20 h-28 rounded-lg border-2 overflow-hidden mb-2 transition-all group-hover:shadow-lg" style="border-color: #7B61FF; box-shadow: 0 5px 10px rgba(123, 97, 255, 0.2); group-hover:border-color: #FF4EDB;">
-                    <img src="/cards/{card.filename}" alt={card.name} class="w-full h-full object-cover" />
+                    <img src="/cards/{card.filename}" alt={card.name} loading="lazy" class="w-full h-full object-cover" />
                   </div>
                   <p style="color: #C6A7FF;" class="text-xs font-semibold text-center line-clamp-2">{card.name}</p>
                 </button>
@@ -293,6 +293,7 @@
         <img
           src="/cards/{selectedCard.filename}"
           alt={selectedCard.name}
+          loading="lazy"
           class="w-full h-full object-cover"
         />
       </div>

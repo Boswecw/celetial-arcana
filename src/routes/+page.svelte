@@ -1,4 +1,4 @@
-<div class="min-h-screen flex flex-col items-center px-4 relative overflow-hidden" style="background: linear-gradient(135deg, #0B0724 0%, #17133A 100%);">
+<div class="min-h-screen flex flex-col items-center px-4 relative" style="background: linear-gradient(135deg, #0B0724 0%, #17133A 100%);">
   <style>
     .star {
       position: absolute;
@@ -30,42 +30,22 @@
     }
   </style>
 
-  <!-- Scattered Stars Background -->
+  <!-- Scattered Stars Background (optimized to 15 key positions) -->
   <div class="star" style="top: 8%; left: 10%; opacity: 0.8;"></div>
-  <div class="star" style="top: 12%; left: 15%; opacity: 0.6;"></div>
-  <div class="star" style="top: 20%; left: 8%; opacity: 0.5;"></div>
   <div class="star" style="top: 15%; left: 22%; opacity: 0.7;"></div>
   <div class="star" style="top: 35%; left: 5%; opacity: 0.6;"></div>
-  <div class="star" style="top: 45%; left: 18%; opacity: 0.5;"></div>
   <div class="star" style="top: 10%; left: 85%; opacity: 0.7;"></div>
-  <div class="star" style="top: 18%; left: 92%; opacity: 0.6;"></div>
   <div class="star" style="top: 28%; left: 88%; opacity: 0.5;"></div>
-  <div class="star" style="top: 35%; left: 95%; opacity: 0.7;"></div>
   <div class="star" style="top: 42%; left: 80%; opacity: 0.6;"></div>
   <div class="star" style="top: 5%; left: 45%; opacity: 0.8;"></div>
-  <div class="star" style="top: 8%; left: 55%; opacity: 0.6;"></div>
-  <div class="star" style="top: 15%; left: 40%; opacity: 0.5;"></div>
   <div class="star" style="top: 20%; left: 60%; opacity: 0.7;"></div>
   <div class="star" style="top: 85%; left: 50%; opacity: 0.6;"></div>
   <div class="star" style="top: 75%; left: 25%; opacity: 0.5;"></div>
-  <div class="star" style="top: 80%; left: 75%; opacity: 0.7;"></div>
-  <div class="star" style="top: 65%; left: 12%; opacity: 0.6;"></div>
   <div class="star" style="top: 70%; left: 88%; opacity: 0.5;"></div>
-  <div class="star" style="top: 25%; left: 30%; opacity: 0.6;"></div>
-  <div class="star" style="top: 30%; left: 70%; opacity: 0.5;"></div>
   <div class="star" style="top: 50%; left: 35%; opacity: 0.7;"></div>
   <div class="star" style="top: 55%; left: 65%; opacity: 0.6;"></div>
-  <div class="star" style="top: 55%; left: 20%; opacity: 0.5;"></div>
-  <div class="star" style="top: 50%; left: 80%; opacity: 0.6;"></div>
-  <div class="star" style="top: 70%; left: 42%; opacity: 0.5;"></div>
   <div class="star" style="top: 65%; left: 58%; opacity: 0.7;"></div>
   <div class="star" style="top: 90%; left: 15%; opacity: 0.6;"></div>
-  <div class="star" style="top: 88%; left: 85%; opacity: 0.5;"></div>
-  <div class="star" style="top: 40%; left: 50%; opacity: 0.6;"></div>
-  <div class="star" style="top: 35%; left: 25%; opacity: 0.5;"></div>
-  <div class="star" style="top: 45%; left: 75%; opacity: 0.7;"></div>
-  <div class="star" style="top: 60%; left: 40%; opacity: 0.6;"></div>
-  <div class="star" style="top: 75%; left: 60%; opacity: 0.5;"></div>
 
   <div class="flex-1 flex items-center justify-center w-full z-10">
     <div class="max-w-4xl mx-auto text-center space-y-8 relative">
@@ -73,7 +53,7 @@
     <div class="space-y-4 relative">
       <div class="inline-flex items-center justify-center">
         <img
-          src="/Celestia_Arcana_banner.png"
+          src="/Celestia_Arcana_banner.avif"
           alt="Celestia Arcana"
           class="h-12 sm:h-16 md:h-20 lg:h-24 w-auto max-w-full"
         />

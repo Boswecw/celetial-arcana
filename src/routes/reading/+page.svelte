@@ -322,7 +322,9 @@
   function startShuffleOverlay() {
     shuffleResults = [];
     showShuffleOverlay = true;
-    shuffleCards = celestiaArcanaCards.map((card, index) => createSwirlCard(card, index));
+    // Only use 20 cards for animation (performance optimization)
+    const selectedCards = celestiaArcanaCards.slice(0, 20);
+    shuffleCards = selectedCards.map((card, index) => createSwirlCard(card, index));
   }
 
   function stopShuffleOverlay() {
@@ -358,7 +360,7 @@
     isDealing = false;
   }
 
-  function speakReading(text: string, options: { autoplay?: boolean } = {}) {
+  async function speakReading(text: string, options: { autoplay?: boolean } = {}) {
     const { autoplay = false } = options;
 
     console.log('speakReading called', { autoplay, textLength: text.length, isSpeaking });
@@ -386,116 +388,13 @@
 
     isSpeaking = true;
     console.log('Starting speech synthesis...');
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 0.85; // Slightly slower, more deliberate
-    utterance.pitch = 0.65; // Lower pitch for older woman voice
-    utterance.volume = 0.95;
 
     const voices =
       availableVoices.length > 0 ? availableVoices : window.speechSynthesis.getVoices();
 
-    // Prioritize older woman voice descriptors
-    const olderWomanDescriptors = [
-      'grandma',
-      'grandmother',
-      'elder',
-      'mature',
-      'senior',
-      'old',
-      'aged',
-    ];
-
-    const womanDescriptors = [
-      'female',
-      'woman',
-      'lady',
-      'mom',
-      'mother',
-    ];
-
-    const qualityDescriptors = [
-      'sage',
-      'wise',
-      'story',
-      'narrator',
-      'reader',
-    ];
-
-    const sanitize = (value: string) => value.toLowerCase();
-    const isBritish = (voice: SpeechSynthesisVoice) => {
-      const lang = sanitize(voice.lang || '');
-      const name = sanitize(voice.name || '');
-      return lang.includes('en-gb') || name.includes('brit') || name.includes('uk');
-    };
-
-    // Filter out male voices (including known male voice names)
-    const isMale = (voice: SpeechSynthesisVoice) => {
-      const name = sanitize(voice.name);
-      return name.includes('male') ||
-             name.includes('man') ||
-             name.includes('boy') ||
-             name.includes('david') ||
-             name.includes('mark') ||
-             name.includes('james') ||
-             name.includes('george') ||
-             name.includes('daniel') ||
-             name.includes('michael') ||
-             name.includes('christopher') ||
-             name.includes('guy');
-    };
-
-    const usVoices = voices.filter(
-      (voice) =>
-        !isBritish(voice) &&
-        !isMale(voice) &&
-        sanitize(voice.lang || '').includes('en-us')
-    );
-
-    const allEnglishVoices = voices.filter(
-      (voice) => !isBritish(voice) && !isMale(voice) && sanitize(voice.lang || '').startsWith('en')
-    );
-
-    // All available non-male voices
-    const nonMaleVoices = voices.filter(voice => !isMale(voice));
-
-    // Debug: Log available voices
-    console.log('Available voices:', voices.map(v => `${v.name} (${v.lang})`));
-    console.log('US non-male voices:', usVoices.map(v => v.name));
-    console.log('All English non-male voices:', allEnglishVoices.map(v => v.name));
-
-    // Try to find voices in priority order:
-    // 1. US voices with "older woman" keywords
-    // 2. US female voices with quality descriptors
-    // 3. US female voices
-    // 4. Any English female voice
-    // 5. Any non-male voice
-    // 6. Fallback to first available
-    const selectedVoice =
-      usVoices.find((voice) =>
-        olderWomanDescriptors.some((descriptor) => sanitize(voice.name).includes(descriptor))
-      ) ||
-      usVoices.find((voice) => {
-        const name = sanitize(voice.name);
-        return womanDescriptors.some(d => name.includes(d)) &&
-               qualityDescriptors.some(d => name.includes(d));
-      }) ||
-      usVoices.find((voice) => {
-        const name = sanitize(voice.name);
-        return womanDescriptors.some(d => name.includes(d));
-      }) ||
-      usVoices[0] ||
-      allEnglishVoices.find((voice) => {
-        const name = sanitize(voice.name);
-        return womanDescriptors.some(d => name.includes(d));
-      }) ||
-      allEnglishVoices[0] ||
-      nonMaleVoices[0] ||
-      voices[0];
-
-    if (selectedVoice) {
-      utterance.voice = selectedVoice;
-      console.log('Selected voice:', selectedVoice.name, selectedVoice.lang);
-    }
+    // Use utility function for voice selection and utterance creation
+    const { createReadingUtterance } = await import('$lib/utils/voiceSelection');
+    const utterance = createReadingUtterance(text, voices);
 
     utterance.onend = () => {
       console.log('Speech ended');
@@ -553,18 +452,43 @@
 
       const birthMonthNum = parseInt(birthMonth, 10) || null;
       const birthDayNum = parseInt(birthDay, 10) || null;
+      const derivedSun = deriveSunSign(birthMonthNum, birthDayNum);
+      const fallbackSun = derivedSun ? `${derivedSun.name} 0°` : 'Pisces 0°';
+      const fallbackElement = derivedSun ? [derivedSun.element] : [];
 
       // Format date from individual inputs (YYYY-MM-DD)
       const formattedDate = `${birthYear}-${String(birthMonth).padStart(2, '0')}-${String(birthDay).padStart(2, '0')}`;
 
-      // Get ephemeris data
-      const ephemerisRes = await fetch(
+      // OPTIMIZATION: Start ephemeris and traditional reading in parallel
+      const ephemerisPromise = fetch(
         `/api/ephemeris?date=${formattedDate}&time=${time.replace(':', '%3A')}&lat=${latitude}&lon=${longitude}`
-      );
-      const ephemeris = await ephemerisRes.json();
-      const derivedSun = deriveSunSign(birthMonthNum, birthDayNum);
-      const fallbackSun = derivedSun ? `${derivedSun.name} 0°` : 'Pisces 0°';
-      const fallbackElement = derivedSun ? [derivedSun.element] : [];
+      ).then(res => res.json());
+
+      // Prepare spread data early (doesn't depend on ephemeris)
+      const spreadData = newDrawnCards.map((d, i) => ({
+        position: spread.positions[i],
+        card: d.card.name,
+        orientation: d.reversed ? 'reversed' : 'upright',
+        element: d.card.element || '',
+      }));
+
+      // Start traditional reading early (doesn't depend on ephemeris initially)
+      const traditionalReadingPromise = fetch('/api/reading', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          question,
+          draw: newDrawnCards.map((d, i) => ({
+            position: spread.positions[i],
+            reversed: d.reversed,
+            card: d.card,
+          })),
+          ephemeris: null, // Will be updated later if needed
+        }),
+      });
+
+      // Wait for ephemeris to prepare astro data
+      const ephemeris = await ephemerisPromise;
 
       // Prepare astro data for Python script
       const astroData = {
@@ -577,15 +501,7 @@
       };
       userZodiac = astroData.sun?.split(' ')[0] || derivedSun?.name || '';
 
-      // Prepare spread data for Python script
-      const spreadData = newDrawnCards.map((d, i) => ({
-        position: spread.positions[i],
-        card: d.card.name,
-        orientation: d.reversed ? 'reversed' : 'upright',
-        element: d.card.element || '',
-      }));
-
-      // Call Python Astro-Tarot synthesis API
+      // Call Python Astro-Tarot synthesis API (now with ephemeris data)
       const astroTarotRes = await fetch('/api/astro-tarot', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -633,24 +549,8 @@
         }
       }
 
-      // OPTIMIZATION: Parallelize Traditional Reading and Combined Reading API calls
-      // Make both requests simultaneously, then handle the dependency
-      const readingResPromise = fetch('/api/reading', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          question,
-          draw: newDrawnCards.map((d, i) => ({
-            position: spread.positions[i],
-            reversed: d.reversed,
-            card: d.card,
-          })),
-          ephemeris,
-        }),
-      });
-
-      // Wait for traditional reading to complete
-      const readingRes = await readingResPromise;
+      // Wait for traditional reading to complete (started earlier)
+      const readingRes = await traditionalReadingPromise;
       const traditionalReading = await readingRes.json();
 
       // Generate combined reading (cards + horoscope synthesis)
@@ -968,6 +868,7 @@
                         <img
                           src={dealtCard.card.image}
                           alt={dealtCard.card.name}
+                          loading="lazy"
                           class={`w-full h-full object-cover ${dealtCard.reversed ? 'reversed-card-image' : ''}`}
                         />
                       </div>
@@ -1042,6 +943,7 @@
                       <img
                         src={card.card.image}
                         alt={card.card.name}
+                        loading="lazy"
                         class={`w-full h-full object-cover ${card.reversed ? 'reversed-card-image' : ''}`}
                       />
                     </div>
@@ -1278,7 +1180,7 @@
         controls
         autoplay
         playsinline
-        preload="auto"
+        preload="none"
         on:ended={() => {
           console.log('Video ended');
           showVideoPopup = false;

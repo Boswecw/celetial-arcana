@@ -1,5 +1,3 @@
-import { v4 as uuid } from "uuid";
-
 export type Card = {
   id: string;
   name: string;
@@ -53,7 +51,7 @@ export function drawSpread(
     const idx = Math.floor(rng() * pool.length);
     const [card] = pool.splice(idx, 1);
     picks.push({
-      id: uuid(),
+      id: crypto.randomUUID(),
       card,
       reversed: rng() > 0.5,
       position: pos,

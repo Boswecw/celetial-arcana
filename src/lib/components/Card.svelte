@@ -29,6 +29,7 @@ no description yet
     <img
       src={face}
       alt={title}
+      loading="lazy"
       class={`absolute inset-0 w-full h-full rounded-xl border-2 [backface-visibility:hidden] transition-all duration-300 ${reversed ? 'reversed-card-image' : ''}`}
       style="border-color: rgba(123, 97, 255, 0.5);"
       on:mouseenter={(e) => {
