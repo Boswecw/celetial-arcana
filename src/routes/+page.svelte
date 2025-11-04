@@ -127,7 +127,7 @@
         <div class="text-4xl mb-2">✨</div>
         <h3 class="text-2xl font-bold bg-gradient-to-r from-[#C6A7FF] to-[#7B61FF] bg-clip-text text-transparent">78 Sacred Cards</h3>
         <p class="text-base leading-relaxed" style="color: #C6A7FF;">
-          The complete Rider-Waite-Smith deck with upright and reversed interpretations
+          The complete Celestia Arcana deck with upright and reversed interpretations
         </p>
       </div>
 
@@ -136,7 +136,7 @@
         <div class="text-4xl mb-2">🌙</div>
         <h3 class="text-2xl font-bold bg-gradient-to-r from-[#FF4EDB] to-[#C6A7FF] bg-clip-text text-transparent">Cosmic Alignment</h3>
         <p class="text-base leading-relaxed" style="color: #C6A7FF;">
-          Readings influenced by real celestial positions and planetary movements
+          Readings influenced by your Sun sign, celestial positions, and planetary movements
         </p>
       </div>
 
