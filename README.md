@@ -1,6 +1,10 @@
-# Celestia Arcana ✨  
+<div align="center">
+  <img src="static/Celestia_Arcana_banner.png" alt="Celestia Arcana" width="600">
 
-An immersive SvelteKit experience that blends tarot, astrology, and AI narration into one flowing reading. The app animates the entire tarot deck while a multi-stage pipeline gathers astrological context, generates a hybrid reading, and narrates it aloud based on user preferences.
+  # ✨
+
+  An immersive SvelteKit experience that blends tarot, astrology, and AI narration into one flowing reading. The app animates the entire tarot deck while a multi-stage pipeline gathers astrological context, generates a hybrid reading, and narrates it aloud based on user preferences.
+</div>
 
 ---
 

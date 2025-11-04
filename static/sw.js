@@ -1,5 +1,5 @@
-const CACHE_NAME = 'celestia-arcana-v1.0.0';
-const STATIC_CACHE = 'celestia-arcana-static-v1.0.0';
+const CACHE_NAME = 'celestia-arcana-v1.0.2';
+const STATIC_CACHE = 'celestia-arcana-static-v1.0.2';
 
 // Assets to cache for offline functionality
 const CACHE_ASSETS = [
@@ -9,7 +9,8 @@ const CACHE_ASSETS = [
   '/reading',
   '/manifest.json',
   '/pwa.js',
-  '/pwa-styles.css'
+  '/pwa-styles.css',
+  '/Celestia_Arcana_banner.png'
 ];
 
 // Install event - cache static assets
