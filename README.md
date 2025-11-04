@@ -85,6 +85,19 @@ bun run build
 bun run preview
 ```
 
+### Verify Setup
+
+```bash
+# Test Python detection and dependencies
+bun run test:python
+# or: npm run test:python
+```
+
+This will verify:
+- ✅ Python is installed and detected
+- ✅ Required Python packages (openai, requests) are installed
+- ✅ OpenAI API key is configured
+
 ---
 
 ## 📁 Project Structure
@@ -367,8 +380,9 @@ See [LICENSE](LICENSE) for more information.
 
 ### "Python not found" Error
 
-If you get `spawn python3 ENOENT` error:
+If you get `spawn python3 ENOENT` or `Python not found` error:
 
+**Option 1: Install Python**
 ```bash
 # Check if Python is installed
 python3 --version
@@ -383,6 +397,17 @@ brew install python3
 # On Windows:
 # Download from https://python.org
 ```
+
+**Option 2: Set Python Path Manually**
+
+If Python is installed but not detected, add to your `.env` file:
+```env
+PYTHON_PATH=/usr/bin/python3
+# or wherever your Python is located
+# Find it with: which python3
+```
+
+Then restart the dev server.
 
 ### Missing Python Dependencies
 

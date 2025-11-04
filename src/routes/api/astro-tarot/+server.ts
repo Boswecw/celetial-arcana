@@ -6,18 +6,70 @@ import { execSync } from 'child_process';
 
 // Detect Python executable
 function findPythonExecutable(): string {
-  const candidates = ['python3', 'python', '/usr/bin/python3', '/usr/local/bin/python3'];
-
-  for (const cmd of candidates) {
+  // Check if user specified a Python path via environment variable
+  const envPython = process.env.PYTHON_PATH || process.env.PYTHON_EXECUTABLE;
+  if (envPython) {
     try {
-      execSync(`${cmd} --version`, { stdio: 'ignore' });
-      return cmd;
+      execSync(`${envPython} --version`, { stdio: 'pipe', timeout: 5000 });
+      console.log(`[Python Detection] ✓ Using env var: ${envPython}`);
+      return envPython;
     } catch {
-      // Continue to next candidate
+      console.log(`[Python Detection] ⚠ Env var Python path invalid: ${envPython}`);
     }
   }
 
-  throw new Error('Python not found. Please install Python 3.6+ to use astrological synthesis features.');
+  const candidates = [
+    'python3',
+    'python',
+    '/usr/bin/python3',
+    '/usr/local/bin/python3',
+    '/bin/python3',
+    '/opt/homebrew/bin/python3',
+    'C:\\Python312\\python.exe',
+    'C:\\Python311\\python.exe',
+    'C:\\Python310\\python.exe'
+  ];
+
+  console.log('[Python Detection] Starting search...');
+  console.log('[Python Detection] PATH:', process.env.PATH);
+
+  for (const cmd of candidates) {
+    try {
+      const result = execSync(`${cmd} --version`, {
+        stdio: 'pipe',
+        timeout: 5000,
+        env: process.env
+      });
+      const version = result.toString().trim();
+      console.log(`[Python Detection] ✓ Found: ${cmd} (${version})`);
+      return cmd;
+    } catch (err) {
+      console.log(`[Python Detection] ✗ Not found: ${cmd}`);
+    }
+  }
+
+  // Try using 'which' or 'where' to find Python
+  try {
+    const whichCmd = process.platform === 'win32' ? 'where' : 'which';
+    const result = execSync(`${whichCmd} python3`, {
+      stdio: 'pipe',
+      timeout: 5000
+    });
+    const pythonPath = result.toString().trim().split('\n')[0];
+    if (pythonPath) {
+      console.log(`[Python Detection] ✓ Found via ${whichCmd}: ${pythonPath}`);
+      return pythonPath;
+    }
+  } catch {
+    console.log('[Python Detection] which/where command failed');
+  }
+
+  const errorMsg = 'Python not found. Please install Python 3.6+ and ensure it is in your PATH.\n' +
+    'Tried: ' + candidates.join(', ') + '\n' +
+    'Current PATH: ' + (process.env.PATH || 'not set');
+
+  console.error('[Python Detection]', errorMsg);
+  throw new Error(errorMsg);
 }
 
 interface AstroTarotRequest {
