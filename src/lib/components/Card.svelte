@@ -29,8 +29,8 @@ no description yet
     <img
       src={face}
       alt={title}
-      class="absolute inset-0 w-full h-full rounded-xl border-2 [backface-visibility:hidden] transition-all duration-300"
-      style="border-color: rgba(123, 97, 255, 0.5); {reversed ? 'transform: rotateY(180deg);' : ''}"
+      class={`absolute inset-0 w-full h-full rounded-xl border-2 [backface-visibility:hidden] transition-all duration-300 ${reversed ? 'reversed-card-image' : ''}`}
+      style="border-color: rgba(123, 97, 255, 0.5);"
       on:mouseenter={(e) => {
         e.currentTarget.style.borderColor = '#FF4EDB';
         e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(255, 78, 219, 0.5)';
@@ -54,4 +54,3 @@ no description yet
     perspective: 1000px;
   }
 </style>
-

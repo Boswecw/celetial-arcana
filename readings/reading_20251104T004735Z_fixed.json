@@ -1,0 +1,121 @@
+{
+  "meta": {
+    "question": "Will I get a girlfriend?",
+    "timeframe": "next 30 days",
+    "spread_name": "Astro-Tarot Relationship Reading",
+    "timestamp": "2025-11-04T00:47:35.860385Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": [
+        "Earth",
+        "Air"
+      ],
+      "notable_aspects": [
+        {
+          "aspect": "Sun conjunct Mercury",
+          "orb": "1°",
+          "interpretation": "Heightened communication and insight; clarity of thought."
+        },
+        {
+          "aspect": "Moon trine Pluto",
+          "orb": "2°",
+          "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+        },
+        {
+          "aspect": "Venus sextile Mars",
+          "orb": "3°",
+          "interpretation": "Creative harmony between desire and action."
+        }
+      ],
+      "lunar_phase": "Full Moon"
+    },
+    "themes": [
+      "Relationships",
+      "Emotional renewal",
+      "Communication"
+    ]
+  },
+  "spread_summary": {
+    "layout": [
+      "Past: The Hermit",
+      "Present: The Lovers",
+      "Future: Ten of Stones"
+    ],
+    "card_elements_count": {
+      "Fire": 0,
+      "Earth": 1,
+      "Air": 0,
+      "Water": 0
+    },
+    "majors_count": 2
+  },
+  "resonance": {
+    "matches": [
+      {
+        "type": "Astrology",
+        "detail": "Full Moon energy",
+        "why": "Highlights the need for emotional clarity and release, aligning with the introspection of The Hermit."
+      },
+      {
+        "type": "Tarot",
+        "detail": "The Lovers reversed",
+        "why": "Indicates current challenges in relationships, mirroring the need for self-reflection before seeking connection."
+      }
+    ],
+    "tensions": [
+      {
+        "type": "Astrology",
+        "detail": "Venus sextile Mars",
+        "why": "While there is potential for attraction, the reversed Lovers suggests misalignment in current romantic pursuits."
+      }
+    ],
+    "element_balance": {
+      "astro": "Earth, Air",
+      "tarot": "Fire:0; Earth:1; Air:0; Water:0",
+      "comment": "Strong Earth influence suggests stability is needed in relationships, while Spirit cards indicate inner work is essential."
+    }
+  },
+  "interpretation": {
+    "theme": "Navigating Relationships with Introspection",
+    "positions": [
+      {
+        "card": "The Hermit",
+        "position": "Past",
+        "element": "Spirit",
+        "insight": "Your past has involved deep introspection and soul-searching, which has prepared you for future connections."
+      },
+      {
+        "card": "The Lovers",
+        "position": "Present",
+        "element": "Spirit",
+        "insight": "Currently, you may feel disconnected or misaligned in your romantic pursuits, indicating a need for clarity in what you truly desire."
+      },
+      {
+        "card": "Ten of Stones",
+        "position": "Future",
+        "element": "Earth",
+        "insight": "In the near future, stability and potential for a lasting relationship may emerge, suggesting a solid foundation for love."
+      }
+    ],
+    "timing": [
+      "Next 30 days"
+    ],
+    "action_items": [
+      "Engage in self-reflection to understand your relationship values and desires.",
+      "Communicate openly with potential partners to clarify intentions and avoid misunderstandings.",
+      "Focus on building a stable foundation in your life, which will attract the right partner."
+    ],
+    "affirmations": [
+      "I am open to love and ready to build meaningful connections.",
+      "I trust my inner guidance to lead me to the right relationship."
+    ]
+  },
+  "confidence": {
+    "overall": 0.85,
+    "notes": "The reading is grounded in both astrological insights and tarot interpretations, providing a clear path forward."
+  }
+}

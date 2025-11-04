@@ -1,0 +1,126 @@
+{
+  "meta": {
+    "question": "How well will my job at barrel 53 go for me?",
+    "timeframe": "next 30 days",
+    "spread_name": "Career Insights",
+    "timestamp": "2025-11-04T00:43:05.973281Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": [
+        "Earth",
+        "Air"
+      ],
+      "notable_aspects": [
+        {
+          "aspect": "Sun conjunct Mercury",
+          "orb": "1°",
+          "interpretation": "Heightened communication and insight; clarity of thought."
+        },
+        {
+          "aspect": "Moon trine Pluto",
+          "orb": "2°",
+          "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+        },
+        {
+          "aspect": "Venus sextile Mars",
+          "orb": "3°",
+          "interpretation": "Creative harmony between desire and action."
+        }
+      ],
+      "lunar_phase": "Full Moon"
+    },
+    "themes": [
+      "Communication",
+      "Emotional Depth",
+      "Creative Action"
+    ]
+  },
+  "spread_summary": {
+    "layout": [
+      "Past: The Hermit",
+      "Present: The Lovers",
+      "Future: Ten of Stones"
+    ],
+    "card_elements_count": {
+      "Fire": 0,
+      "Earth": 1,
+      "Air": 0,
+      "Water": 0
+    },
+    "majors_count": 2
+  },
+  "resonance": {
+    "matches": [
+      {
+        "type": "Astrology",
+        "detail": "Full Moon in Taurus",
+        "why": "Emphasizes stability and emotional grounding, aligning with the Ten of Stones."
+      },
+      {
+        "type": "Tarot",
+        "detail": "The Lovers reversed",
+        "why": "Indicates current misalignment in relationships, reflecting potential challenges at work."
+      }
+    ],
+    "tensions": [
+      {
+        "type": "Astrology",
+        "detail": "Moon trine Pluto",
+        "why": "While it offers emotional renewal, it may also bring subconscious fears to the surface."
+      },
+      {
+        "type": "Tarot",
+        "detail": "The Hermit",
+        "why": "Past introspection may lead to feelings of isolation if not balanced with social connections."
+      }
+    ],
+    "element_balance": {
+      "astro": "Earth and Air",
+      "tarot": "Fire:0; Earth:1; Air:0; Water:0",
+      "comment": "Strong Earth presence suggests stability, but Spirit cards indicate a need for inner guidance."
+    }
+  },
+  "interpretation": {
+    "theme": "Navigating Relationships and Stability at Work",
+    "positions": [
+      {
+        "card": "The Hermit",
+        "position": "Past",
+        "element": "Spirit",
+        "insight": "Your past focus on introspection has shaped your current approach to work, but may also lead to feelings of isolation."
+      },
+      {
+        "card": "The Lovers",
+        "position": "Present",
+        "element": "Spirit",
+        "insight": "Currently, there may be misalignments or conflicts in your workplace relationships that need addressing."
+      },
+      {
+        "card": "Ten of Stones",
+        "position": "Future",
+        "element": "Earth",
+        "insight": "In the future, you are likely to find stability and potential wealth through your job, provided you navigate current challenges."
+      }
+    ],
+    "timing": [
+      "Next 30 days"
+    ],
+    "action_items": [
+      "Engage in open communication with colleagues to address any misunderstandings.",
+      "Reflect on your values and how they align with your work environment.",
+      "Utilize the Full Moon energy to release any emotional baggage that may hinder your progress."
+    ],
+    "affirmations": [
+      "I embrace clarity in my communication and seek harmony in my relationships at work.",
+      "I am open to receiving stability and abundance in my career."
+    ]
+  },
+  "confidence": {
+    "overall": 0.85,
+    "notes": "Strong insights from both tarot and astrology provide a clear path forward."
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "meta": {
+    "question": "How well will my job go for me?",
+    "timeframe": "next 30 days",
+    "spread_name": "Career Insights",
+    "timestamp": "2025-11-04T00:34:25.043690Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": [
+        "Earth",
+        "Air"
+      ],
+      "notable_aspects": [
+        {
+          "aspect": "Sun conjunct Mercury",
+          "orb": "1°",
+          "interpretation": "Heightened communication and insight; clarity of thought."
+        },
+        {
+          "aspect": "Moon trine Pluto",
+          "orb": "2°",
+          "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+        },
+        {
+          "aspect": "Venus sextile Mars",
+          "orb": "3°",
+          "interpretation": "Creative harmony between desire and action."
+        }
+      ],
+      "lunar_phase": "Full Moon"
+    },
+    "themes": [
+      "Communication",
+      "Emotional depth",
+      "Creative action"
+    ]
+  },
+  "spread_summary": {
+    "layout": [
+      "Past: The Hermit",
+      "Present: The Lovers",
+      "Future: Ten of Stones"
+    ],
+    "card_elements_count": {
+      "Fire": 0,
+      "Earth": 1,
+      "Air": 0,
+      "Water": 0
+    },
+    "majors_count": 2
+  },
+  "resonance": {
+    "matches": [
+      {
+        "type": "Astrology",
+        "detail": "Sun conjunct Mercury",
+        "why": "This aspect supports clear communication and decision-making in your job."
+      },
+      {
+        "type": "Tarot",
+        "detail": "The Lovers reversed",
+        "why": "Indicates potential misalignment in current job relationships or choices."
+      }
+    ],
+    "tensions": [
+      {
+        "type": "Astrology",
+        "detail": "Full Moon energy",
+        "why": "This phase encourages release and reflection, which may challenge current job dynamics."
+      }
+    ],
+    "element_balance": {
+      "astro": "Earth and Air",
+      "tarot": "Fire:0; Earth:1; Air:0; Water:0",
+      "comment": "Strong Earth influence in both astrology and tarot suggests a focus on stability and practicality."
+    }
+  },
+  "interpretation": {
+    "theme": "Navigating Job Dynamics",
+    "positions": [
+      {
+        "card": "The Hermit",
+        "position": "Past",
+        "element": "Spirit",
+        "insight": "You have recently engaged in deep introspection about your career path, seeking inner guidance."
+      },
+      {
+        "card": "The Lovers",
+        "position": "Present",
+        "element": "Spirit",
+        "insight": "Currently, you may feel a disconnect or misalignment in your job relationships or choices, indicating a need for reevaluation."
+      },
+      {
+        "card": "Ten of Stones",
+        "position": "Future",
+        "element": "Earth",
+        "insight": "In the coming month, you are likely to find stability and potential wealth in your job, suggesting a positive outcome."
+      }
+    ],
+    "timing": [
+      "Next 30 days"
+    ],
+    "action_items": [
+      "Reflect on your current job relationships and identify areas of misalignment.",
+      "Utilize the clarity from the Sun conjunct Mercury to communicate openly with colleagues.",
+      "Focus on building a supportive network that aligns with your values and goals."
+    ],
+    "affirmations": [
+      "I trust my inner guidance to lead me to fulfilling work.",
+      "I am open to aligning my career with my true values."
+    ]
+  },
+  "confidence": {
+    "overall": 0.85,
+    "notes": "The combination of tarot and astrological insights provides a strong foundation for understanding your job situation."
+  }
+}

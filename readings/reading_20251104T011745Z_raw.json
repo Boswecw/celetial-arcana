@@ -1,0 +1,127 @@
+{
+  "meta": {
+    "question": "Will I get my own place?",
+    "timeframe": "next 30 days",
+    "spread_name": "Astro-Tarot Reading",
+    "timestamp": "2025-11-04T01:17:45.545322Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": [
+        "Earth",
+        "Air"
+      ],
+      "notable_aspects": [
+        {
+          "aspect": "Sun conjunct Mercury",
+          "orb": "1°",
+          "interpretation": "Heightened communication and insight; clarity of thought."
+        },
+        {
+          "aspect": "Moon trine Pluto",
+          "orb": "2°",
+          "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+        },
+        {
+          "aspect": "Venus sextile Mars",
+          "orb": "3°",
+          "interpretation": "Creative harmony between desire and action."
+        }
+      ],
+      "lunar_phase": "Full Moon"
+    },
+    "themes": [
+      "Emotional renewal",
+      "Clarity in relationships",
+      "Stability and legacy"
+    ]
+  },
+  "spread_summary": {
+    "layout": [
+      "Past: The Hermit",
+      "Present: The Lovers",
+      "Future: Ten of Stones"
+    ],
+    "card_elements_count": {
+      "Fire": 0,
+      "Earth": 1,
+      "Air": 0,
+      "Water": 0
+    },
+    "majors_count": 2
+  },
+  "resonance": {
+    "matches": [
+      {
+        "type": "Astrology",
+        "detail": "Full Moon in Taurus",
+        "why": "Emphasizes stability and emotional grounding, aligning with the Ten of Stones."
+      },
+      {
+        "type": "Tarot",
+        "detail": "The Lovers reversed",
+        "why": "Indicates current misalignment in relationships, affecting your housing situation."
+      }
+    ],
+    "tensions": [
+      {
+        "type": "Astrology",
+        "detail": "Sun in Libra",
+        "why": "Focus on relationships may distract from practical steps needed for independence."
+      },
+      {
+        "type": "Tarot",
+        "detail": "The Hermit",
+        "why": "Past introspection may lead to feelings of isolation, impacting your confidence in seeking a new place."
+      }
+    ],
+    "element_balance": {
+      "astro": "Earth and Air",
+      "tarot": "Fire:0; Earth:1; Air:0; Water:0",
+      "comment": "Strong Earth presence supports stability, but Air suggests a need for communication and clarity."
+    }
+  },
+  "interpretation": {
+    "theme": "Navigating emotional and practical challenges towards independence.",
+    "positions": [
+      {
+        "card": "The Hermit",
+        "position": "Past",
+        "element": "Spirit",
+        "insight": "Your past introspection has led to a deeper understanding of your needs, but may have also caused feelings of isolation."
+      },
+      {
+        "card": "The Lovers",
+        "position": "Present",
+        "element": "Spirit",
+        "insight": "Currently, there is a misalignment in your relationships or choices that may hinder your ability to secure a new place."
+      },
+      {
+        "card": "Ten of Stones",
+        "position": "Future",
+        "element": "Earth",
+        "insight": "In the near future, stability and a sense of legacy will emerge, indicating the potential for securing your own place."
+      }
+    ],
+    "timing": [
+      "Within the next 30 days"
+    ],
+    "action_items": [
+      "Communicate openly with those around you about your desire for independence.",
+      "Reflect on what you truly value in a living space and align your actions with these values.",
+      "Utilize the Full Moon energy to release any emotional blockages that may be preventing you from moving forward."
+    ],
+    "affirmations": [
+      "I am open to receiving the stability I seek.",
+      "I trust my intuition to guide me towards my own space.",
+      "I communicate my needs clearly and effectively."
+    ]
+  },
+  "confidence": {
+    "overall": 0.85,
+    "notes": "The combination of tarot and astrological influences strongly supports the potential for securing your own place."
+  }
+}

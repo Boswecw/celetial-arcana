@@ -1,0 +1,121 @@
+{
+  "meta": {
+    "question": "how well will my app Livy sell?",
+    "timeframe": "next 30 days",
+    "spread_name": "Three Card Spread",
+    "timestamp": "2025-11-04T00:14:25.470595Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": [
+        "Earth",
+        "Air"
+      ],
+      "notable_aspects": [
+        {
+          "aspect": "Sun conjunct Mercury",
+          "orb": "1°",
+          "interpretation": "Heightened communication and insight; clarity of thought."
+        },
+        {
+          "aspect": "Moon trine Pluto",
+          "orb": "2°",
+          "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+        },
+        {
+          "aspect": "Venus sextile Mars",
+          "orb": "3°",
+          "interpretation": "Creative harmony between desire and action."
+        }
+      ],
+      "lunar_phase": "Full Moon"
+    },
+    "themes": [
+      "communication",
+      "emotional depth",
+      "creative action"
+    ]
+  },
+  "spread_summary": {
+    "layout": [
+      "Past: The Hermit",
+      "Present: The Lovers",
+      "Future: Ten of Stones"
+    ],
+    "card_elements_count": {
+      "Fire": 0,
+      "Earth": 1,
+      "Air": 0,
+      "Water": 0
+    },
+    "majors_count": 2
+  },
+  "resonance": {
+    "matches": [
+      {
+        "type": "astrology",
+        "detail": "Full Moon",
+        "why": "The Full Moon signifies a time of culmination and release, aligning with the introspective nature of The Hermit."
+      },
+      {
+        "type": "tarot",
+        "detail": "The Lovers (reversed)",
+        "why": "Indicates current misalignment in partnerships or choices, reflecting potential challenges in marketing or audience connection."
+      }
+    ],
+    "tensions": [
+      {
+        "type": "astrology",
+        "detail": "Venus sextile Mars",
+        "why": "While there is creative harmony, the reversed Lovers suggest that this energy may not be fully realized in your current approach."
+      }
+    ],
+    "element_balance": {
+      "astro": "Earth and Air",
+      "tarot": "Fire:0; Earth:1; Air:0; Water:0",
+      "comment": "A strong Earth presence suggests stability and practicality, but the reversed Lovers indicate a need for clarity in relationships and choices."
+    }
+  },
+  "interpretation": {
+    "theme": "Navigating Relationships and Stability",
+    "positions": [
+      {
+        "card": "The Hermit",
+        "position": "Past",
+        "element": "Spirit",
+        "insight": "Your past efforts were focused on introspection and understanding your app's core value."
+      },
+      {
+        "card": "The Lovers",
+        "position": "Present",
+        "element": "Spirit",
+        "insight": "Currently, there may be misalignment in your marketing strategy or partnerships, leading to potential disconnect with your audience."
+      },
+      {
+        "card": "Ten of Stones",
+        "position": "Future",
+        "element": "Earth",
+        "insight": "If you address current misalignments, the future looks promising with stability and potential wealth from your app."
+      }
+    ],
+    "timing": [
+      "next 30 days"
+    ],
+    "action_items": [
+      "Reassess your marketing strategy to ensure it aligns with your target audience's values and needs.",
+      "Engage in open communication with potential partners or collaborators to resolve any misunderstandings.",
+      "Leverage the Full Moon energy to release any outdated strategies and embrace new, practical approaches."
+    ],
+    "affirmations": [
+      "I align my actions with my values and the needs of my audience.",
+      "I embrace clarity and connection in my partnerships."
+    ]
+  },
+  "confidence": {
+    "overall": 0.85,
+    "notes": "The combination of strong Earth energy and the insights from the cards provide a solid foundation for understanding the potential of your app."
+  }
+}

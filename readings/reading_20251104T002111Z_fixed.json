@@ -1,0 +1,121 @@
+{
+  "meta": {
+    "question": "What guidance does the universe have for me?",
+    "timeframe": "next 30 days",
+    "spread_name": "Guidance Spread",
+    "timestamp": "2025-11-04T00:21:11.428209Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": [
+        "Earth",
+        "Air"
+      ],
+      "notable_aspects": [
+        {
+          "aspect": "Sun conjunct Mercury",
+          "orb": "1°",
+          "interpretation": "Heightened communication and insight; clarity of thought."
+        },
+        {
+          "aspect": "Moon trine Pluto",
+          "orb": "2°",
+          "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+        },
+        {
+          "aspect": "Venus sextile Mars",
+          "orb": "3°",
+          "interpretation": "Creative harmony between desire and action."
+        }
+      ],
+      "lunar_phase": "Full Moon"
+    },
+    "themes": [
+      "Introspection",
+      "Relationships",
+      "Stability"
+    ]
+  },
+  "spread_summary": {
+    "layout": [
+      "Past: The Hermit",
+      "Present: The Lovers",
+      "Future: Ten of Stones"
+    ],
+    "card_elements_count": {
+      "Fire": 0,
+      "Earth": 1,
+      "Air": 0,
+      "Water": 0
+    },
+    "majors_count": 2
+  },
+  "resonance": {
+    "matches": [
+      {
+        "type": "Astrology",
+        "detail": "Full Moon energy",
+        "why": "Highlights the need for release and emotional truth, aligning with The Hermit's introspection."
+      },
+      {
+        "type": "Astrology",
+        "detail": "Sun conjunct Mercury",
+        "why": "Supports clarity in communication, relevant to The Lovers' themes of relationships."
+      }
+    ],
+    "tensions": [
+      {
+        "type": "Astrology",
+        "detail": "The Lovers reversed",
+        "why": "Indicates potential misalignment in relationships, which may be exacerbated by the current astrological influences."
+      }
+    ],
+    "element_balance": {
+      "astro": "Earth, Air",
+      "tarot": "Fire:0; Earth:1; Air:0; Water:0",
+      "comment": "Strong Earth influence in both astrology and tarot suggests a focus on stability and practical matters."
+    }
+  },
+  "interpretation": {
+    "theme": "Navigating Relationships and Inner Guidance",
+    "positions": [
+      {
+        "card": "The Hermit",
+        "position": "Past",
+        "element": "Spirit",
+        "insight": "Your past focus on introspection has laid the groundwork for understanding your current relational dynamics."
+      },
+      {
+        "card": "The Lovers",
+        "position": "Present",
+        "element": "Spirit",
+        "insight": "Currently, you may be facing conflicts or misalignments in relationships; it's crucial to assess your values and connections."
+      },
+      {
+        "card": "Ten of Stones",
+        "position": "Future",
+        "element": "Earth",
+        "insight": "In the coming weeks, you will find stability and support, particularly in family or financial matters."
+      }
+    ],
+    "timing": [
+      "Next 30 days"
+    ],
+    "action_items": [
+      "Engage in self-reflection to clarify your values and relationship needs.",
+      "Communicate openly with loved ones to resolve misunderstandings.",
+      "Focus on building a stable foundation in your personal and financial life."
+    ],
+    "affirmations": [
+      "I trust my inner guidance to lead me to harmonious relationships.",
+      "I am open to receiving stability and support in my life."
+    ]
+  },
+  "confidence": {
+    "overall": 0.85,
+    "notes": "The synthesis of tarot and astrology provides a clear path forward, though attention to relationships is crucial."
+  }
+}

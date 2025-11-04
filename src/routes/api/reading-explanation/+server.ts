@@ -17,56 +17,57 @@ export const POST: RequestHandler = async ({ request }) => {
     // Build context from the reading
     const readingContext = buildReadingContext(body.reading);
 
-    // Call Ollama with conversation model
-    const response = await fetch("http://127.0.0.1:11434/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "phi",
-        messages: [
-          {
-            role: "system",
-            content: `You are Celestia, a mystical tarot and astrology guide. You explain readings in a warm, conversational way.
+    const apiKey = process.env.OPENAI_API_KEY;
+    const systemPrompt = `You are Celestia, a mystical tarot and astrology guide. You explain readings in a warm, conversational way.
 
 READING CONTEXT:
 ${readingContext}
 
 INSTRUCTIONS:
-- Explain the reading in simple, accessible language
-- Answer the user's specific question about what the reading means
-- DEEPLY CONNECT each card to the user's specific question and timeframe
-- Show HOW each card relates to their situation (not generic meanings)
-- Reference specific cards and astrological themes from the reading
-- Explain the RESONANCE between tarot cards and astrological influences
-- Connect card meanings to the action items and affirmations provided
-- Be warm, supportive, and empowering
-- Keep responses concise (2-3 paragraphs max)
-- Never make predictions; focus on reflection and guidance
-- Read-only: do not ask for feedback or suggest changes
+- Explain the reading in simple, accessible language.
+- Answer the user's specific question about what the reading means.
+- DEEPLY CONNECT each card to the user's specific question and timeframe.
+- Show HOW each card relates to their situation (not generic meanings).
+- Reference specific cards, astrological themes, and action items from the reading.
+- Explain the RESONANCE between tarot cards and astrological influences.
+- Be warm, supportive, and empowering.
+- Keep responses concise (2-3 paragraphs max).
+- Never make predictions; focus on reflection, agency, and guidance.
+- Read-only: do not ask for feedback or suggest changes.`;
 
-IMPORTANT: Focus on the SPECIFIC CONTEXT of their question, not generic card meanings.`,
-          },
-          {
-            role: "user",
-            content: body.userMessage,
-          },
-        ],
-        stream: false,
-        options: {
-          temperature: 0.7,
-          num_predict: 500,  // More tokens for detailed explanations
+    const userPrompt = `Question: ${body.userMessage}`;
+
+    let explanation = "";
+
+    if (apiKey) {
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
         },
-      }),
-    });
+        body: JSON.stringify({
+          model: "gpt-4o-mini",
+          max_tokens: 600,
+          temperature: 0.65,
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: userPrompt },
+          ],
+        }),
+      });
 
-    if (!response.ok) {
-      const errorData = await response.text();
-      console.error("[Ollama error]", errorData);
-      return error(500, "Failed to generate explanation");
+      if (!response.ok) {
+        const errorData = await response.text();
+        console.error("[OpenAI error]", errorData);
+        return error(500, "Failed to generate explanation");
+      }
+
+      const data = await response.json();
+      explanation = data.choices?.[0]?.message?.content?.trim() || "";
+    } else {
+      explanation = buildFallbackExplanation(readingContext, body.userMessage);
     }
-
-    const data = await response.json();
-    const explanation = data.message?.content || "";
 
     return json({
       success: true,
@@ -161,6 +162,25 @@ function buildReadingContext(reading: any): string {
     }
   }
 
+  if (reading.reading) {
+    context += `TRADITIONAL TAROT OVERVIEW:\n${reading.reading}\n\n`;
+  }
+
+  if (reading.combinedReading) {
+    context += `COMBINED INSIGHT:\n${reading.combinedReading}\n\n`;
+  }
+
+  if (reading.analysis?.cards?.length) {
+    context += `RULES ENGINE CARD NOTES:\n`;
+    reading.analysis.cards.forEach((card: any) => {
+      context += `- ${card.position}: ${card.name}${card.reversed ? " (reversed)" : ""} → ${card.meaning}\n`;
+    });
+    context += "\n";
+  }
+
   return context;
 }
 
+function buildFallbackExplanation(context: string, question: string): string {
+  return `Here is what the reading is emphasizing regarding "${question}":\n\n${context}\nThis is a condensed summary because no live AI service is connected. Focus on the repeating themes and action items above, and let me know if you'd like to dive into a specific card or astro influence.`;
+}

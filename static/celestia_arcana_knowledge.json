@@ -1,0 +1,1570 @@
+{
+  "meta": {
+    "source": "celestia_arcana_deck",
+    "version": "1.0.0",
+    "deck_name": "Celestia Arcana",
+    "total_cards": 78,
+    "tone": "celestial, mystical, inclusive"
+  },
+  "cards": [
+    {
+      "name": "The Fool",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "New beginnings",
+        "taking risks",
+        "innocence",
+        "spontaneity",
+        "faith in the journey"
+      ],
+      "keywords_reversed": [
+        "Recklessness",
+        "naivety",
+        "lack of planning",
+        "hesitation",
+        "fear of the unknown"
+      ]
+    },
+    {
+      "name": "The Magician",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "Manifestation",
+        "resourcefulness",
+        "power",
+        "inspired action",
+        "personal power"
+      ],
+      "keywords_reversed": [
+        "Manipulation",
+        "poor planning",
+        "untapped potential",
+        "lack of concentration"
+      ]
+    },
+    {
+      "name": "The High Priestess",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "Intuition",
+        "sacred knowledge",
+        "divine feminine",
+        "the subconscious",
+        "mystery"
+      ],
+      "keywords_reversed": [
+        "Secrets",
+        "disconnection from intuition",
+        "superficiality",
+        "hidden agendas"
+      ]
+    },
+    {
+      "name": "The Empress",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "Femininity",
+        "beauty",
+        "abundance",
+        "nature",
+        "sensuality",
+        "creativity",
+        "nurturing"
+      ],
+      "keywords_reversed": [
+        "Self-doubt",
+        "lack of growth",
+        "insecurity",
+        "dependence on others"
+      ]
+    },
+    {
+      "name": "The Emperor",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "Authority",
+        "establishment",
+        "structure",
+        "control",
+        "leadership",
+        "stability"
+      ],
+      "keywords_reversed": [
+        "Domination",
+        "excessive control",
+        "lack of discipline",
+        "immaturity"
+      ]
+    },
+    {
+      "name": "The Hierophant",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "Tradition",
+        "conformity",
+        "morality",
+        "ethics",
+        "education",
+        "spiritual guidance"
+      ],
+      "keywords_reversed": [
+        "Rebellion",
+        "subversion",
+        "unorthodoxy",
+        "personal beliefs",
+        "breaking free"
+      ]
+    },
+    {
+      "name": "The Lovers",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "Relationships",
+        "choices",
+        "alignment",
+        "values",
+        "connection",
+        "harmony",
+        "love"
+      ],
+      "keywords_reversed": [
+        "Misalignment",
+        "conflict",
+        "detachment",
+        "misunderstanding",
+        "separation"
+      ]
+    },
+    {
+      "name": "The Chariot",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "Control",
+        "willpower",
+        "determination",
+        "self-discipline",
+        "ambition"
+      ],
+      "keywords_reversed": [
+        "Self-doubt",
+        "lack of direction",
+        "aggression",
+        "lack of control"
+      ]
+    },
+    {
+      "name": "Strength",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "Inner strength",
+        "courage",
+        "patience",
+        "control",
+        "compassion"
+      ],
+      "keywords_reversed": [
+        "Self-doubt",
+        "weakness",
+        "insecurity",
+        "low energy",
+        "self-sabotage"
+      ]
+    },
+    {
+      "name": "The Hermit",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "Soul searching",
+        "introspection",
+        "inner guidance",
+        "contemplation"
+      ],
+      "keywords_reversed": [
+        "Isolation",
+        "loneliness",
+        "withdrawal",
+        "lost",
+        "disconnected"
+      ]
+    },
+    {
+      "name": "Wheel of Fortune",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "Good luck",
+        "karma",
+        "life cycles",
+        "destiny",
+        "turning point"
+      ],
+      "keywords_reversed": [
+        "Bad luck",
+        "resistance to change",
+        "breaking cycles",
+        "bad timing"
+      ]
+    },
+    {
+      "name": "Justice",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "Justice",
+        "fairness",
+        "truth",
+        "cause and effect",
+        "accountability"
+      ],
+      "keywords_reversed": [
+        "Injustice",
+        "bias",
+        "unfairness",
+        "lack of accountability"
+      ]
+    },
+    {
+      "name": "The Hanged Man",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "Suspension",
+        "restriction",
+        "letting go",
+        "pause",
+        "new perspective"
+      ],
+      "keywords_reversed": [
+        "Avoidance",
+        "stalling",
+        "resistance",
+        "indecision"
+      ]
+    },
+    {
+      "name": "Death",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "Transformation",
+        "endings",
+        "beginnings",
+        "change",
+        "cycles"
+      ],
+      "keywords_reversed": [
+        "Resistance to change",
+        "stagnation",
+        "decay"
+      ]
+    },
+    {
+      "name": "Temperance",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "Balance",
+        "moderation",
+        "patience",
+        "finding meaning",
+        "harmony"
+      ],
+      "keywords_reversed": [
+        "Imbalance",
+        "excess",
+        "lack of patience",
+        "extremes"
+      ]
+    },
+    {
+      "name": "The Devil",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "Bondage",
+        "materialism",
+        "playfulness",
+        "detachment",
+        "sexuality"
+      ],
+      "keywords_reversed": [
+        "Detachment",
+        "overcoming adversity",
+        "breaking free",
+        "reclaiming power"
+      ]
+    },
+    {
+      "name": "The Tower",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "Sudden change",
+        "upheaval",
+        "chaos",
+        "revelation",
+        "awakening"
+      ],
+      "keywords_reversed": [
+        "Averted disaster",
+        "delayed change",
+        "fear of change",
+        "stagnation"
+      ]
+    },
+    {
+      "name": "The Star",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "Hope",
+        "faith",
+        "purpose",
+        "renewal",
+        "spirituality",
+        "clarity",
+        "inspiration"
+      ],
+      "keywords_reversed": [
+        "Despair",
+        "lack of faith",
+        "disconnection",
+        "lost direction",
+        "hopelessness"
+      ]
+    },
+    {
+      "name": "The Moon",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "Illusion",
+        "fear",
+        "anxiety",
+        "subconscious",
+        "intuition",
+        "uncertainty"
+      ],
+      "keywords_reversed": [
+        "Clarity",
+        "release of fear",
+        "growing awareness",
+        "truth revealed"
+      ]
+    },
+    {
+      "name": "The Sun",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "Success",
+        "vitality",
+        "joy",
+        "warmth",
+        "illumination",
+        "positivity"
+      ],
+      "keywords_reversed": [
+        "Sadness",
+        "lack of clarity",
+        "depression",
+        "negativity",
+        "temporary setback"
+      ]
+    },
+    {
+      "name": "Judgement",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "Reckoning",
+        "awakening",
+        "renewal",
+        "reckoning",
+        "inner calling"
+      ],
+      "keywords_reversed": [
+        "Self-doubt",
+        "harsh self-criticism",
+        "doubt",
+        "an inner calling"
+      ]
+    },
+    {
+      "name": "The World",
+      "arcana": "Major",
+      "suit": null,
+      "number": null,
+      "element": "Spirit",
+      "keywords_upright": [
+        "Completion",
+        "accomplishment",
+        "fulfillment",
+        "wholeness",
+        "fulfillment"
+      ],
+      "keywords_reversed": [
+        "Incompleteness",
+        "lack of closure",
+        "seeking",
+        "lack of closure"
+      ]
+    },
+    {
+      "name": "Ace of Flames",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": 1,
+      "element": "Fire",
+      "keywords_upright": [
+        "Inspiration",
+        "new opportunities",
+        "growth",
+        "potential",
+        "new beginnings"
+      ],
+      "keywords_reversed": [
+        "Lack of energy",
+        "lack of growth",
+        "stagnation",
+        "lack of direction"
+      ]
+    },
+    {
+      "name": "Two of Flames",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": null,
+      "element": "Fire",
+      "keywords_upright": [
+        "Partnership",
+        "planning",
+        "decision-making",
+        "balance",
+        "unity"
+      ],
+      "keywords_reversed": [
+        "Imbalance",
+        "conflict",
+        "indecision",
+        "lack of planning"
+      ]
+    },
+    {
+      "name": "Three of Flames",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": null,
+      "element": "Fire",
+      "keywords_upright": [
+        "Collaboration",
+        "teamwork",
+        "communication",
+        "growth",
+        "expansion"
+      ],
+      "keywords_reversed": [
+        "Conflict",
+        "miscommunication",
+        "lack of teamwork",
+        "delays"
+      ]
+    },
+    {
+      "name": "Four of Flames",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": null,
+      "element": "Fire",
+      "keywords_upright": [
+        "Celebration",
+        "joy",
+        "harmony",
+        "community",
+        "gathering"
+      ],
+      "keywords_reversed": [
+        "Conflict",
+        "isolation",
+        "lack of celebration",
+        "boredom"
+      ]
+    },
+    {
+      "name": "Five of Flames",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": null,
+      "element": "Fire",
+      "keywords_upright": [
+        "Conflict",
+        "competition",
+        "tension",
+        "struggle",
+        "challenge"
+      ],
+      "keywords_reversed": [
+        "Resolution",
+        "harmony",
+        "peace",
+        "agreement",
+        "compromise"
+      ]
+    },
+    {
+      "name": "Six of Flames",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": null,
+      "element": "Fire",
+      "keywords_upright": [
+        "Success",
+        "victory",
+        "achievement",
+        "recognition",
+        "progress"
+      ],
+      "keywords_reversed": [
+        "Failure",
+        "setback",
+        "lack of recognition",
+        "stagnation"
+      ]
+    },
+    {
+      "name": "Seven of Flames",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": null,
+      "element": "Fire",
+      "keywords_upright": [
+        "Courage",
+        "determination",
+        "perseverance",
+        "defense",
+        "protection"
+      ],
+      "keywords_reversed": [
+        "Weakness",
+        "cowardice",
+        "lack of determination",
+        "vulnerability"
+      ]
+    },
+    {
+      "name": "Eight of Flames",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": null,
+      "element": "Fire",
+      "keywords_upright": [
+        "Speed",
+        "movement",
+        "progress",
+        "action",
+        "energy"
+      ],
+      "keywords_reversed": [
+        "Delays",
+        "stagnation",
+        "lack of progress",
+        "sluggishness"
+      ]
+    },
+    {
+      "name": "Nine of Flames",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": null,
+      "element": "Fire",
+      "keywords_upright": [
+        "Resilience",
+        "strength",
+        "endurance",
+        "perseverance",
+        "determination"
+      ],
+      "keywords_reversed": [
+        "Exhaustion",
+        "burnout",
+        "weakness",
+        "giving up"
+      ]
+    },
+    {
+      "name": "Ten of Flames",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": null,
+      "element": "Fire",
+      "keywords_upright": [
+        "Burden",
+        "responsibility",
+        "hard work",
+        "completion",
+        "success"
+      ],
+      "keywords_reversed": [
+        "Overwhelm",
+        "stress",
+        "burden",
+        "lack of support"
+      ]
+    },
+    {
+      "name": "Page of Flames",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": 11,
+      "element": "Fire",
+      "keywords_upright": [
+        "Enthusiasm",
+        "curiosity",
+        "exploration",
+        "discovery",
+        "adventure"
+      ],
+      "keywords_reversed": [
+        "Lack of direction",
+        "immaturity",
+        "lack of enthusiasm"
+      ]
+    },
+    {
+      "name": "Knight of Flames",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": 12,
+      "element": "Fire",
+      "keywords_upright": [
+        "Passion",
+        "energy",
+        "action",
+        "adventure",
+        "impulsiveness"
+      ],
+      "keywords_reversed": [
+        "Recklessness",
+        "lack of direction",
+        "aggression",
+        "impatience"
+      ]
+    },
+    {
+      "name": "Queen of Flames",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": 13,
+      "element": "Fire",
+      "keywords_upright": [
+        "Confidence",
+        "independence",
+        "determination",
+        "passion",
+        "creativity"
+      ],
+      "keywords_reversed": [
+        "Insecurity",
+        "lack of confidence",
+        "lack of independence"
+      ]
+    },
+    {
+      "name": "King of Flames",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": 14,
+      "element": "Fire",
+      "keywords_upright": [
+        "Leadership",
+        "authority",
+        "vision",
+        "entrepreneurship",
+        "passion"
+      ],
+      "keywords_reversed": [
+        "Lack of leadership",
+        "lack of vision",
+        "aggression",
+        "domination"
+      ]
+    },
+    {
+      "name": "Ace of Tides",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": 1,
+      "element": "Water",
+      "keywords_upright": [
+        "New feelings",
+        "relationships",
+        "creativity",
+        "joy",
+        "love"
+      ],
+      "keywords_reversed": [
+        "Blocked emotions",
+        "lack of creativity",
+        "emotional turmoil"
+      ]
+    },
+    {
+      "name": "Two of Tides",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": null,
+      "element": "Water",
+      "keywords_upright": [
+        "Partnership",
+        "connection",
+        "intimacy",
+        "unity",
+        "balance"
+      ],
+      "keywords_reversed": [
+        "Disconnection",
+        "conflict",
+        "imbalance",
+        "separation"
+      ]
+    },
+    {
+      "name": "Three of Tides",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": null,
+      "element": "Water",
+      "keywords_upright": [
+        "Celebration",
+        "joy",
+        "friendship",
+        "community",
+        "gathering"
+      ],
+      "keywords_reversed": [
+        "Loneliness",
+        "isolation",
+        "lack of celebration",
+        "sorrow"
+      ]
+    },
+    {
+      "name": "Four of Tides",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": null,
+      "element": "Water",
+      "keywords_upright": [
+        "Apathy",
+        "contemplation",
+        "meditation",
+        "rest",
+        "withdrawal"
+      ],
+      "keywords_reversed": [
+        "Engagement",
+        "action",
+        "movement",
+        "participation"
+      ]
+    },
+    {
+      "name": "Five of Tides",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": null,
+      "element": "Water",
+      "keywords_upright": [
+        "Loss",
+        "grief",
+        "sorrow",
+        "sadness",
+        "disappointment"
+      ],
+      "keywords_reversed": [
+        "Recovery",
+        "healing",
+        "forgiveness",
+        "moving forward"
+      ]
+    },
+    {
+      "name": "Six of Tides",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": null,
+      "element": "Water",
+      "keywords_upright": [
+        "Nostalgia",
+        "memories",
+        "childhood",
+        "innocence",
+        "joy"
+      ],
+      "keywords_reversed": [
+        "Living in the past",
+        "lack of progress",
+        "stagnation"
+      ]
+    },
+    {
+      "name": "Seven of Tides",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": null,
+      "element": "Water",
+      "keywords_upright": [
+        "Illusion",
+        "fantasy",
+        "wishful thinking",
+        "choices",
+        "opportunities"
+      ],
+      "keywords_reversed": [
+        "Clarity",
+        "reality",
+        "truth",
+        "decision-making"
+      ]
+    },
+    {
+      "name": "Eight of Tides",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": null,
+      "element": "Water",
+      "keywords_upright": [
+        "Abandonment",
+        "walking away",
+        "leaving",
+        "moving on",
+        "transition"
+      ],
+      "keywords_reversed": [
+        "Staying",
+        "commitment",
+        "engagement",
+        "connection"
+      ]
+    },
+    {
+      "name": "Nine of Tides",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": null,
+      "element": "Water",
+      "keywords_upright": [
+        "Satisfaction",
+        "contentment",
+        "fulfillment",
+        "abundance",
+        "wishes"
+      ],
+      "keywords_reversed": [
+        "Lack of satisfaction",
+        "dissatisfaction",
+        "unfulfilled wishes"
+      ]
+    },
+    {
+      "name": "Ten of Tides",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": null,
+      "element": "Water",
+      "keywords_upright": [
+        "Family",
+        "harmony",
+        "happiness",
+        "home",
+        "unity"
+      ],
+      "keywords_reversed": [
+        "Conflict",
+        "disharmony",
+        "family issues",
+        "separation"
+      ]
+    },
+    {
+      "name": "Page of Tides",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": 11,
+      "element": "Water",
+      "keywords_upright": [
+        "Curiosity",
+        "creativity",
+        "imagination",
+        "sensitivity",
+        "intuition"
+      ],
+      "keywords_reversed": [
+        "Lack of creativity",
+        "lack of sensitivity",
+        "immaturity"
+      ]
+    },
+    {
+      "name": "Knight of Tides",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": 12,
+      "element": "Water",
+      "keywords_upright": [
+        "Romance",
+        "charm",
+        "grace",
+        "imagination",
+        "sensitivity"
+      ],
+      "keywords_reversed": [
+        "Moodiness",
+        "insecurity",
+        "lack of direction",
+        "immaturity"
+      ]
+    },
+    {
+      "name": "Queen of Tides",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": 13,
+      "element": "Water",
+      "keywords_upright": [
+        "Compassion",
+        "creativity",
+        "intuition",
+        "nurturing",
+        "emotional"
+      ],
+      "keywords_reversed": [
+        "Insecurity",
+        "lack of compassion",
+        "emotional instability"
+      ]
+    },
+    {
+      "name": "King of Tides",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": 14,
+      "element": "Water",
+      "keywords_upright": [
+        "Emotional maturity",
+        "wisdom",
+        "compassion",
+        "leadership",
+        "calm"
+      ],
+      "keywords_reversed": [
+        "Emotional instability",
+        "lack of wisdom",
+        "moodiness"
+      ]
+    },
+    {
+      "name": "Ace of Stones",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": 1,
+      "element": "Earth",
+      "keywords_upright": [
+        "Prosperity",
+        "abundance",
+        "new opportunity",
+        "manifestation",
+        "wealth"
+      ],
+      "keywords_reversed": [
+        "Lack of abundance",
+        "missed opportunity",
+        "poverty",
+        "loss"
+      ]
+    },
+    {
+      "name": "Two of Stones",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": null,
+      "element": "Earth",
+      "keywords_upright": [
+        "Balance",
+        "adaptability",
+        "time management",
+        "resourcefulness",
+        "flexibility"
+      ],
+      "keywords_reversed": [
+        "Imbalance",
+        "lack of adaptability",
+        "poor time management"
+      ]
+    },
+    {
+      "name": "Three of Stones",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": null,
+      "element": "Earth",
+      "keywords_upright": [
+        "Teamwork",
+        "collaboration",
+        "learning",
+        "growth",
+        "skill development"
+      ],
+      "keywords_reversed": [
+        "Lack of teamwork",
+        "lack of collaboration",
+        "lack of growth"
+      ]
+    },
+    {
+      "name": "Four of Stones",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": null,
+      "element": "Earth",
+      "keywords_upright": [
+        "Security",
+        "stability",
+        "protection",
+        "conservation",
+        "grounding"
+      ],
+      "keywords_reversed": [
+        "Insecurity",
+        "instability",
+        "lack of protection",
+        "loss"
+      ]
+    },
+    {
+      "name": "Five of Stones",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": null,
+      "element": "Earth",
+      "keywords_upright": [
+        "Hardship",
+        "struggle",
+        "poverty",
+        "loss",
+        "difficulty"
+      ],
+      "keywords_reversed": [
+        "Recovery",
+        "improvement",
+        "overcoming hardship",
+        "abundance"
+      ]
+    },
+    {
+      "name": "Six of Stones",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": null,
+      "element": "Earth",
+      "keywords_upright": [
+        "Generosity",
+        "charity",
+        "sharing",
+        "community",
+        "gratitude"
+      ],
+      "keywords_reversed": [
+        "Selfishness",
+        "lack of generosity",
+        "greed",
+        "stinginess"
+      ]
+    },
+    {
+      "name": "Seven of Stones",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": null,
+      "element": "Earth",
+      "keywords_upright": [
+        "Perseverance",
+        "patience",
+        "growth",
+        "investment",
+        "reward"
+      ],
+      "keywords_reversed": [
+        "Lack of patience",
+        "lack of growth",
+        "impatience",
+        "lack of reward"
+      ]
+    },
+    {
+      "name": "Eight of Stones",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": null,
+      "element": "Earth",
+      "keywords_upright": [
+        "Skill",
+        "craftsmanship",
+        "mastery",
+        "learning",
+        "dedication"
+      ],
+      "keywords_reversed": [
+        "Lack of skill",
+        "lack of mastery",
+        "lack of dedication"
+      ]
+    },
+    {
+      "name": "Nine of Stones",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": null,
+      "element": "Earth",
+      "keywords_upright": [
+        "Abundance",
+        "luxury",
+        "comfort",
+        "security",
+        "self-sufficiency"
+      ],
+      "keywords_reversed": [
+        "Lack of abundance",
+        "insecurity",
+        "lack of comfort"
+      ]
+    },
+    {
+      "name": "Ten of Stones",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": null,
+      "element": "Earth",
+      "keywords_upright": [
+        "Wealth",
+        "family",
+        "legacy",
+        "inheritance",
+        "stability"
+      ],
+      "keywords_reversed": [
+        "Loss",
+        "lack of family support",
+        "instability",
+        "debt"
+      ]
+    },
+    {
+      "name": "Page of Stones",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": 11,
+      "element": "Earth",
+      "keywords_upright": [
+        "Curiosity",
+        "learning",
+        "study",
+        "practicality",
+        "reliability"
+      ],
+      "keywords_reversed": [
+        "Lack of curiosity",
+        "lack of learning",
+        "immaturity"
+      ]
+    },
+    {
+      "name": "Knight of Stones",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": 12,
+      "element": "Earth",
+      "keywords_upright": [
+        "Reliability",
+        "responsibility",
+        "hard work",
+        "dedication",
+        "loyalty"
+      ],
+      "keywords_reversed": [
+        "Unreliability",
+        "lack of responsibility",
+        "laziness"
+      ]
+    },
+    {
+      "name": "Queen of Stones",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": 13,
+      "element": "Earth",
+      "keywords_upright": [
+        "Practicality",
+        "nurturing",
+        "abundance",
+        "security",
+        "generosity"
+      ],
+      "keywords_reversed": [
+        "Lack of practicality",
+        "lack of nurturing",
+        "insecurity"
+      ]
+    },
+    {
+      "name": "King of Stones",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": 14,
+      "element": "Earth",
+      "keywords_upright": [
+        "Abundance",
+        "prosperity",
+        "leadership",
+        "security",
+        "reliability"
+      ],
+      "keywords_reversed": [
+        "Lack of abundance",
+        "lack of leadership",
+        "unreliability"
+      ]
+    },
+    {
+      "name": "Ace of Winds",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": 1,
+      "element": "Air",
+      "keywords_upright": [
+        "Clarity",
+        "truth",
+        "new ideas",
+        "communication",
+        "breakthrough"
+      ],
+      "keywords_reversed": [
+        "Confusion",
+        "lack of clarity",
+        "miscommunication",
+        "deception"
+      ]
+    },
+    {
+      "name": "Two of Winds",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": null,
+      "element": "Air",
+      "keywords_upright": [
+        "Indecision",
+        "stalemate",
+        "difficult choice",
+        "balance",
+        "truce"
+      ],
+      "keywords_reversed": [
+        "Decision-making",
+        "clarity",
+        "moving forward",
+        "resolution"
+      ]
+    },
+    {
+      "name": "Three of Winds",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": null,
+      "element": "Air",
+      "keywords_upright": [
+        "Heartbreak",
+        "sorrow",
+        "grief",
+        "pain",
+        "separation"
+      ],
+      "keywords_reversed": [
+        "Healing",
+        "forgiveness",
+        "moving forward",
+        "recovery"
+      ]
+    },
+    {
+      "name": "Four of Winds",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": null,
+      "element": "Air",
+      "keywords_upright": [
+        "Rest",
+        "recovery",
+        "meditation",
+        "contemplation",
+        "peace"
+      ],
+      "keywords_reversed": [
+        "Restlessness",
+        "anxiety",
+        "lack of peace",
+        "disturbance"
+      ]
+    },
+    {
+      "name": "Five of Winds",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": null,
+      "element": "Air",
+      "keywords_upright": [
+        "Conflict",
+        "tension",
+        "struggle",
+        "competition",
+        "defeat"
+      ],
+      "keywords_reversed": [
+        "Resolution",
+        "peace",
+        "harmony",
+        "agreement",
+        "victory"
+      ]
+    },
+    {
+      "name": "Six of Winds",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": null,
+      "element": "Air",
+      "keywords_upright": [
+        "Travel",
+        "movement",
+        "progress",
+        "communication",
+        "transition"
+      ],
+      "keywords_reversed": [
+        "Delays",
+        "stagnation",
+        "lack of progress",
+        "miscommunication"
+      ]
+    },
+    {
+      "name": "Seven of Winds",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": null,
+      "element": "Air",
+      "keywords_upright": [
+        "Deception",
+        "betrayal",
+        "theft",
+        "cunning",
+        "strategy"
+      ],
+      "keywords_reversed": [
+        "Honesty",
+        "truth",
+        "clarity",
+        "straightforwardness"
+      ]
+    },
+    {
+      "name": "Eight of Winds",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": null,
+      "element": "Air",
+      "keywords_upright": [
+        "Restriction",
+        "limitation",
+        "confinement",
+        "powerlessness",
+        "struggle"
+      ],
+      "keywords_reversed": [
+        "Freedom",
+        "liberation",
+        "release",
+        "empowerment"
+      ]
+    },
+    {
+      "name": "Nine of Winds",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": null,
+      "element": "Air",
+      "keywords_upright": [
+        "Anxiety",
+        "worry",
+        "fear",
+        "nightmares",
+        "despair"
+      ],
+      "keywords_reversed": [
+        "Hope",
+        "relief",
+        "clarity",
+        "peace",
+        "recovery"
+      ]
+    },
+    {
+      "name": "Ten of Winds",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": null,
+      "element": "Air",
+      "keywords_upright": [
+        "Betrayal",
+        "loss",
+        "pain",
+        "ruin",
+        "ending"
+      ],
+      "keywords_reversed": [
+        "Recovery",
+        "healing",
+        "new beginning",
+        "hope"
+      ]
+    },
+    {
+      "name": "Page of Winds",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": 11,
+      "element": "Air",
+      "keywords_upright": [
+        "Curiosity",
+        "communication",
+        "learning",
+        "new ideas",
+        "exploration"
+      ],
+      "keywords_reversed": [
+        "Lack of curiosity",
+        "lack of communication",
+        "immaturity"
+      ]
+    },
+    {
+      "name": "Knight of Winds",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": 12,
+      "element": "Air",
+      "keywords_upright": [
+        "Action",
+        "impulsiveness",
+        "haste",
+        "bravery",
+        "adventure"
+      ],
+      "keywords_reversed": [
+        "Recklessness",
+        "lack of direction",
+        "aggression",
+        "impatience"
+      ]
+    },
+    {
+      "name": "Queen of Winds",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": 13,
+      "element": "Air",
+      "keywords_upright": [
+        "Clarity",
+        "communication",
+        "intelligence",
+        "independence",
+        "honesty"
+      ],
+      "keywords_reversed": [
+        "Confusion",
+        "lack of clarity",
+        "lack of communication"
+      ]
+    },
+    {
+      "name": "King of Winds",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": 14,
+      "element": "Air",
+      "keywords_upright": [
+        "Authority",
+        "leadership",
+        "intellectual power",
+        "truth",
+        "justice"
+      ],
+      "keywords_reversed": [
+        "Lack of authority",
+        "lack of leadership",
+        "dishonesty"
+      ]
+    }
+  ]
+}

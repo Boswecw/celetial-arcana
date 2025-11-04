@@ -2,6 +2,7 @@
   import { celestiaArcanaCards } from '$lib/decks/celestia-arcana';
   import { getMeaningsBySuit } from '$lib/decks/tarot-meanings-map';
   import { onMount } from 'svelte';
+  import Toast from '$lib/components/Toast.svelte';
 
   interface DynamicCard {
     id: string;
@@ -18,11 +19,28 @@
     cards: DynamicCard[];
   }
 
+  interface KnowledgeCard {
+    name: string;
+    keywords_upright: string[];
+    keywords_reversed: string[];
+  }
+
+  interface KnowledgeData {
+    cards: KnowledgeCard[];
+  }
+
   let selectedCard: DynamicCard | null = null;
   let showModal = false;
   let allCards: DynamicCard[] = [];
   let cardSections: CardSection[] = [];
   let loading = true;
+  let knowledgeData: KnowledgeData | null = null;
+
+  // Toast state
+  let toastVisible = false;
+  let toastMessage = '';
+  let toastX = 0;
+  let toastY = 0;
 
   const suitOrder = ['Major Arcana', 'Flames', 'Tides', 'Stones', 'Winds'];
   const suitIcons: Record<string, string> = {
@@ -34,6 +52,9 @@
   };
 
   onMount(async () => {
+    // Load knowledge data
+    await loadKnowledgeData();
+
     // Load all cards from static directory
     await loadAllCards();
 
@@ -45,6 +66,16 @@
     window.addEventListener('keydown', handleEscape);
     return () => window.removeEventListener('keydown', handleEscape);
   });
+
+  async function loadKnowledgeData() {
+    try {
+      const response = await fetch('/celestia_arcana_knowledge.json');
+      if (!response.ok) throw new Error('Failed to load knowledge data');
+      knowledgeData = await response.json();
+    } catch (err) {
+      console.error('Error loading knowledge data:', err);
+    }
+  }
 
   async function loadAllCards() {
     try {
@@ -130,6 +161,33 @@
   function closeModal() {
     showModal = false;
   }
+
+  function showToast(event: MouseEvent, card: DynamicCard) {
+    if (!knowledgeData) return;
+
+    // Get card meaning from knowledge data
+    const cardData = knowledgeData.cards.find(
+      (c) => c.name.toLowerCase() === card.name.toLowerCase()
+    );
+
+    if (cardData) {
+      // Format the keywords for display
+      const uprightKeywords = cardData.keywords_upright.slice(0, 3).join(', ');
+      toastMessage = `${card.name}: ${uprightKeywords}`;
+
+      // Position toast near the cursor
+      const target = event.currentTarget as HTMLElement;
+      const rect = target.getBoundingClientRect();
+      toastX = rect.left + rect.width / 2;
+      toastY = rect.top;
+      toastVisible = true;
+    }
+  }
+
+  function hideToast() {
+    toastVisible = false;
+    toastMessage = '';
+  }
 </script>
 
 <div class="min-h-screen p-8">
@@ -182,6 +240,8 @@
               {#each section.cards as card (card.id)}
                 <button
                   on:click={() => openCardModal(card)}
+                  on:mouseenter={(e) => showToast(e, card)}
+                  on:mouseleave={hideToast}
                   class="flex flex-col items-center cursor-pointer group transition-all hover:scale-110"
                   type="button"
                   title={card.name}
@@ -267,3 +327,10 @@
   </div>
 {/if}
 
+<!-- Toast Notification -->
+<Toast
+  visible={toastVisible}
+  message={toastMessage}
+  x={toastX}
+  y={toastY}
+/>

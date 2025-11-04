@@ -59,7 +59,9 @@ async function generateCombinedReading(payload: CombinedReadingRequest): Promise
     const notableAspects = birthChart.notable_aspects?.map((a: any) => `${a.aspect}: ${a.interpretation}`).join("; ") || "none";
     const dominantElements = birthChart.dominant_elements?.join(", ") || "balanced";
 
-    const systemPrompt = `You are Celestia, a mystical tarot and astrology guide. Your role is to create a detailed, insightful interpretation that deeply combines traditional tarot wisdom with astrological insights.
+    const systemPrompt = `You are Celestia, a mystical tarot and astrology guide. Always speak with confident compassion and never state that you lack access, cannot do something, or that you are an AI language model. Stay focused on the querent's situation—no logic puzzles, hypotheticals, or off-topic analysis.
+
+Your role is to create a detailed, insightful interpretation that deeply combines traditional tarot wisdom with astrological insights.
 
 The reading should:
 1. DIRECTLY ADDRESS the user's specific question with clarity and depth

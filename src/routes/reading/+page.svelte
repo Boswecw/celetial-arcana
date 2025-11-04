@@ -7,10 +7,11 @@
   type ShuffleCard = {
     id: number;
     image: string;
-    left: number;
-    top: number;
-    x: number;
-    y: number;
+    radius: number;
+    duration: number;
+    start: number;
+    direction: 'normal' | 'reverse';
+    delay: number;
   };
 
   let birthMonth = '';
@@ -36,12 +37,20 @@
   let videoSrc = '/reading-animation.mp4';
   let videoElement: HTMLVideoElement;
   const astroTarotModel = import.meta.env.VITE_ASTRO_TAROT_MODEL || 'gpt-4o-mini';
+  let userZodiac = '';
+  let showTraditionalReading = true;
+  let showToast = false;
+  let toastTimeout: number | null = null;
+  let toastMessage = '';
+  let cardsContainerElement: HTMLDivElement;
 
   $: if (typeof document !== 'undefined') {
     if (showVideoPopup) {
       document.body.classList.add('video-popup-open');
       if (videoElement) {
         videoElement.currentTime = 0;
+        videoElement.muted = false;
+        videoElement.volume = 1;
         const playPromise = videoElement.play();
         if (playPromise && typeof playPromise.catch === 'function') {
           playPromise.catch((err) => console.error('Video autoplay blocked:', err));
@@ -59,11 +68,12 @@
   let showShuffleOverlay = false;
   let shuffleCards: ShuffleCard[] = [];
   let shuffleResults: { id: string; image: string; name: string }[] = [];
-  let shuffleInterval: ReturnType<typeof setInterval> | null = null;
   let isSpeaking = false;
   let speechSynthesis: SpeechSynthesisUtterance | null = null;
   let combinedReading = '';
   let maxDaysInMonth = 31;
+  let availableVoices: SpeechSynthesisVoice[] = [];
+  let narratedReadingId: string | null = null;
 
   // Calculate max days in selected month
   $: {
@@ -88,6 +98,52 @@
     }
   }
 
+  function scheduleToast(message: string) {
+    toastMessage = message;
+    showToast = true;
+    if (toastTimeout) {
+      clearTimeout(toastTimeout);
+    }
+    if (typeof window === 'undefined') {
+      return;
+    }
+    toastTimeout = window.setTimeout(() => {
+      showToast = false;
+      toastTimeout = null;
+    }, 4000);
+  }
+
+  $: if (readingId === '') {
+    narratedReadingId = null;
+  }
+
+  $: if (
+    reading &&
+    readingId &&
+    !loading &&
+    narratedReadingId !== readingId &&
+    (
+      (showTraditionalReading && (reading.reading || reading.combinedReading)) ||
+      (!showTraditionalReading && reading.combinedReading)
+    )
+  ) {
+    console.log('Auto-narration triggered!', {
+      readingId,
+      narratedReadingId,
+      showTraditionalReading,
+      hasReading: !!reading.reading,
+      hasCombinedReading: !!reading.combinedReading
+    });
+    narratedReadingId = readingId;
+    const textToSpeak = getReadingText();
+    console.log('Text to speak length:', textToSpeak.length);
+    if (textToSpeak) {
+      speakReading(textToSpeak, { autoplay: true });
+    } else {
+      console.warn('No text to speak!');
+    }
+  }
+
   onMount(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && showVideoPopup) {
@@ -98,11 +154,109 @@
     return () => window.removeEventListener('keydown', handleEscape);
   });
 
+  onMount(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    const refreshVoices = () => {
+      availableVoices = window.speechSynthesis.getVoices().filter(Boolean);
+    };
+    refreshVoices();
+    window.speechSynthesis.addEventListener('voiceschanged', refreshVoices);
+    return () => {
+      window.speechSynthesis.removeEventListener('voiceschanged', refreshVoices);
+    };
+  });
+
+  function showCardHoverToast(card: any, index: number) {
+    const spread = spreads[spreadType as keyof typeof spreads];
+    const position = spread.positions[index] || `Card ${index + 1}`;
+    const reversed = card.reversed ? ' (Reversed)' : '';
+
+    toastMessage = `🎴 ${position}: ${card.card.name}${reversed}`;
+    showToast = true;
+
+    // Clear any existing timeout
+    if (toastTimeout) {
+      clearTimeout(toastTimeout);
+      toastTimeout = null;
+    }
+  }
+
+  function hideCardHoverToast() {
+    // Don't hide immediately, add a small delay to prevent flickering
+    if (toastTimeout) {
+      clearTimeout(toastTimeout);
+    }
+
+    toastTimeout = window.setTimeout(() => {
+      showToast = false;
+      toastTimeout = null;
+    }, 300);
+  }
+
   const spreads = {
     'three-card': { name: 'Three Card', positions: ['Past', 'Present', 'Future'] },
     'celtic-cross': { name: 'Celtic Cross', positions: ['Situation', 'Challenge', 'Outcome', 'Foundation', 'Recent Past', 'Near Future', 'Self', 'Environment', 'Hopes/Fears', 'Final Outcome'] },
     'horseshoe': { name: 'Horseshoe', positions: ['Position 1', 'Position 2', 'Position 3', 'Position 4', 'Position 5', 'Position 6', 'Position 7'] },
   };
+
+  const zodiacData = [
+    { name: 'Capricorn', start: { month: 12, day: 22 }, end: { month: 1, day: 19 }, element: 'Earth' },
+    { name: 'Aquarius', start: { month: 1, day: 20 }, end: { month: 2, day: 18 }, element: 'Air' },
+    { name: 'Pisces', start: { month: 2, day: 19 }, end: { month: 3, day: 20 }, element: 'Water' },
+    { name: 'Aries', start: { month: 3, day: 21 }, end: { month: 4, day: 19 }, element: 'Fire' },
+    { name: 'Taurus', start: { month: 4, day: 20 }, end: { month: 5, day: 20 }, element: 'Earth' },
+    { name: 'Gemini', start: { month: 5, day: 21 }, end: { month: 6, day: 20 }, element: 'Air' },
+    { name: 'Cancer', start: { month: 6, day: 21 }, end: { month: 7, day: 22 }, element: 'Water' },
+    { name: 'Leo', start: { month: 7, day: 23 }, end: { month: 8, day: 22 }, element: 'Fire' },
+    { name: 'Virgo', start: { month: 8, day: 23 }, end: { month: 9, day: 22 }, element: 'Earth' },
+    { name: 'Libra', start: { month: 9, day: 23 }, end: { month: 10, day: 22 }, element: 'Air' },
+    { name: 'Scorpio', start: { month: 10, day: 23 }, end: { month: 11, day: 21 }, element: 'Water' },
+    { name: 'Sagittarius', start: { month: 11, day: 22 }, end: { month: 12, day: 21 }, element: 'Fire' }
+  ];
+
+  const zodiacSigns = zodiacData.map((z) => z.name);
+
+  function formatAscendant(value: number | undefined) {
+    if (typeof value !== 'number' || Number.isNaN(value)) {
+      return 'Capricorn 12°';
+    }
+    const normalized = ((value % 360) + 360) % 360;
+    const index = Math.floor(normalized / 30) % 12;
+    const degrees = Math.floor(normalized % 30);
+    const minutes = Math.round((normalized % 1) * 60);
+    return `${zodiacSigns[index]} ${degrees}°${String(minutes).padStart(2, '0')}`;
+  }
+
+  function isWithinRange(month: number, day: number, start: { month: number; day: number }, end: { month: number; day: number }) {
+    if (start.month === end.month && start.day === end.day) {
+      return month === start.month && day === start.day;
+    }
+
+    if (start.month < end.month || (start.month === end.month && start.day <= end.day)) {
+      if (month < start.month || month > end.month) return false;
+      if (month === start.month && day < start.day) return false;
+      if (month === end.month && day > end.day) return false;
+      return true;
+    }
+
+    // Range wraps across year end
+    if (month > start.month || month < end.month) return true;
+    if (month === start.month && day >= start.day) return true;
+    if (month === end.month && day <= end.day) return true;
+    return false;
+  }
+
+  function deriveSunSign(month: number | null, day: number | null) {
+    if (!month || !day) return null;
+    for (const entry of zodiacData) {
+      if (isWithinRange(month, day, entry.start, entry.end)) {
+        return entry;
+      }
+    }
+    return null;
+  }
 
   // Request geolocation on component mount
   onMount(() => {
@@ -144,45 +298,34 @@
     return drawn;
   }
 
-  function getRandomDeckCard() {
-    const randomIndex = Math.floor(Math.random() * celestiaArcanaCards.length);
-    return celestiaArcanaCards[randomIndex];
-  }
+  function createSwirlCard(card: any, index: number): ShuffleCard {
+    const cardsPerRing = 13;
+    const ring = Math.floor(index / cardsPerRing);
+    const ringOffset = index % cardsPerRing;
+    const baseRadius = 160 + ring * 110;
+    const radius = baseRadius + Math.random() * 60;
+    const duration = 12 + ring * 3 + Math.random() * 4;
+    const start = (360 / celestiaArcanaCards.length) * index + Math.random() * 15;
+    const delay = -(Math.random() * duration);
 
-  function spawnShuffleCard() {
-    const randomCard = getRandomDeckCard();
-    const card: ShuffleCard = {
-      id: Date.now() + Math.random(),
-      image: randomCard.image,
-      left: Math.random() * 60 + 20, // percent within overlay
-      top: Math.random() * 50 + 15,
-      x: Math.random() * 600 - 300,
-      y: Math.random() * 300 - 150,
+    return {
+      id: Date.now() + Math.random() + index,
+      image: card.image,
+      radius,
+      duration,
+      start,
+      direction: ring % 2 === 0 ? 'normal' : 'reverse',
+      delay,
     };
-
-    shuffleCards = [...shuffleCards, card];
-
-    setTimeout(() => {
-      shuffleCards = shuffleCards.filter((c) => c.id !== card.id);
-    }, 400);
   }
 
   function startShuffleOverlay() {
-    if (shuffleInterval) {
-      clearInterval(shuffleInterval);
-    }
     shuffleResults = [];
-    shuffleCards = [];
     showShuffleOverlay = true;
-    spawnShuffleCard();
-    shuffleInterval = setInterval(spawnShuffleCard, 80);
+    shuffleCards = celestiaArcanaCards.map((card, index) => createSwirlCard(card, index));
   }
 
   function stopShuffleOverlay() {
-    if (shuffleInterval) {
-      clearInterval(shuffleInterval);
-      shuffleInterval = null;
-    }
     setTimeout(() => {
       showShuffleOverlay = false;
       shuffleCards = [];
@@ -215,83 +358,170 @@
     isDealing = false;
   }
 
-  function speakReading(text: string) {
-    // Cancel any existing speech
+  function speakReading(text: string, options: { autoplay?: boolean } = {}) {
+    const { autoplay = false } = options;
+
+    console.log('speakReading called', { autoplay, textLength: text.length, isSpeaking });
+
     if (isSpeaking) {
       window.speechSynthesis.cancel();
       isSpeaking = false;
-      return;
+      if (!autoplay) {
+        console.log('Stopping speech, not autoplay');
+        return;
+      }
     }
 
     // Check browser support
     if (!('speechSynthesis' in window)) {
+      console.error('Speech synthesis not supported');
       alert('Speech synthesis not supported in your browser');
       return;
     }
 
-    isSpeaking = true;
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 0.9;
-    utterance.pitch = 1.2; // Slightly higher pitch for female voice
-    utterance.volume = 1;
+    if (!text || text.trim().length === 0) {
+      console.warn('No text to speak');
+      return;
+    }
 
-    // Set female voice
-    const voices = window.speechSynthesis.getVoices();
-    const femaleVoice = voices.find(voice => voice.name.includes('Female') || voice.name.includes('female'));
-    if (femaleVoice) {
-      utterance.voice = femaleVoice;
-    } else {
-      // Fallback: use first available voice and adjust pitch
-      const defaultVoice = voices.find(voice => !voice.name.includes('Male') && !voice.name.includes('male'));
-      if (defaultVoice) {
-        utterance.voice = defaultVoice;
-      }
+    isSpeaking = true;
+    console.log('Starting speech synthesis...');
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 0.85; // Slightly slower, more deliberate
+    utterance.pitch = 0.65; // Lower pitch for older woman voice
+    utterance.volume = 0.95;
+
+    const voices =
+      availableVoices.length > 0 ? availableVoices : window.speechSynthesis.getVoices();
+
+    // Prioritize older woman voice descriptors
+    const olderWomanDescriptors = [
+      'grandma',
+      'grandmother',
+      'elder',
+      'mature',
+      'senior',
+      'old',
+      'aged',
+    ];
+
+    const womanDescriptors = [
+      'female',
+      'woman',
+      'lady',
+      'mom',
+      'mother',
+    ];
+
+    const qualityDescriptors = [
+      'sage',
+      'wise',
+      'story',
+      'narrator',
+      'reader',
+    ];
+
+    const sanitize = (value: string) => value.toLowerCase();
+    const isBritish = (voice: SpeechSynthesisVoice) => {
+      const lang = sanitize(voice.lang || '');
+      const name = sanitize(voice.name || '');
+      return lang.includes('en-gb') || name.includes('brit') || name.includes('uk');
+    };
+
+    // Filter out male voices (including known male voice names)
+    const isMale = (voice: SpeechSynthesisVoice) => {
+      const name = sanitize(voice.name);
+      return name.includes('male') ||
+             name.includes('man') ||
+             name.includes('boy') ||
+             name.includes('david') ||
+             name.includes('mark') ||
+             name.includes('james') ||
+             name.includes('george') ||
+             name.includes('daniel') ||
+             name.includes('michael') ||
+             name.includes('christopher') ||
+             name.includes('guy');
+    };
+
+    const usVoices = voices.filter(
+      (voice) =>
+        !isBritish(voice) &&
+        !isMale(voice) &&
+        sanitize(voice.lang || '').includes('en-us')
+    );
+
+    const allEnglishVoices = voices.filter(
+      (voice) => !isBritish(voice) && !isMale(voice) && sanitize(voice.lang || '').startsWith('en')
+    );
+
+    // All available non-male voices
+    const nonMaleVoices = voices.filter(voice => !isMale(voice));
+
+    // Debug: Log available voices
+    console.log('Available voices:', voices.map(v => `${v.name} (${v.lang})`));
+    console.log('US non-male voices:', usVoices.map(v => v.name));
+    console.log('All English non-male voices:', allEnglishVoices.map(v => v.name));
+
+    // Try to find voices in priority order:
+    // 1. US voices with "older woman" keywords
+    // 2. US female voices with quality descriptors
+    // 3. US female voices
+    // 4. Any English female voice
+    // 5. Any non-male voice
+    // 6. Fallback to first available
+    const selectedVoice =
+      usVoices.find((voice) =>
+        olderWomanDescriptors.some((descriptor) => sanitize(voice.name).includes(descriptor))
+      ) ||
+      usVoices.find((voice) => {
+        const name = sanitize(voice.name);
+        return womanDescriptors.some(d => name.includes(d)) &&
+               qualityDescriptors.some(d => name.includes(d));
+      }) ||
+      usVoices.find((voice) => {
+        const name = sanitize(voice.name);
+        return womanDescriptors.some(d => name.includes(d));
+      }) ||
+      usVoices[0] ||
+      allEnglishVoices.find((voice) => {
+        const name = sanitize(voice.name);
+        return womanDescriptors.some(d => name.includes(d));
+      }) ||
+      allEnglishVoices[0] ||
+      nonMaleVoices[0] ||
+      voices[0];
+
+    if (selectedVoice) {
+      utterance.voice = selectedVoice;
+      console.log('Selected voice:', selectedVoice.name, selectedVoice.lang);
     }
 
     utterance.onend = () => {
+      console.log('Speech ended');
       isSpeaking = false;
     };
 
-    utterance.onerror = () => {
+    utterance.onerror = (event) => {
+      console.error('Speech error:', event);
       isSpeaking = false;
     };
 
+    utterance.onstart = () => {
+      console.log('Speech started successfully');
+    };
+
+    console.log('Calling speechSynthesis.speak()');
     window.speechSynthesis.speak(utterance);
+    console.log('speechSynthesis.speak() called, speaking:', window.speechSynthesis.speaking);
   }
 
   function getReadingText(): string {
     if (!reading) return '';
-
-    let text = '';
-
-    // Add astro-tarot synthesis
-    if (reading.astroTarot) {
-      const astro = reading.astroTarot;
-      text += `Astro-Tarot Synthesis. `;
-
-      if (astro.interpretation?.theme) {
-        text += `Theme: ${astro.interpretation.theme}. `;
-      }
-
-      if (astro.astro_summary?.themes) {
-        text += `Astrological themes: ${astro.astro_summary.themes.join(', ')}. `;
-      }
-
-      if (astro.interpretation?.action_items) {
-        text += `Action items: ${astro.interpretation.action_items.join('. ')}. `;
-      }
-
-      if (astro.interpretation?.affirmations) {
-        text += `Affirmations: ${astro.interpretation.affirmations.join('. ')}. `;
-      }
+    if (showTraditionalReading) {
+      return [reading.reading, reading.combinedReading].filter(Boolean).join(' ');
     }
-
-    // Add traditional reading
-    if (reading.reading) {
-      text += `Traditional reading: ${reading.reading}`;
-    }
-
-    return text;
+    return reading.combinedReading || '';
   }
 
   async function submitReading() {
@@ -300,6 +530,8 @@
     reading = null;
     dealtCards = [];
     shuffleResults = [];
+    narratedReadingId = null;
+    readingId = '';
 
     startShuffleOverlay();
 
@@ -319,6 +551,9 @@
       // Deal animation
       await dealCards(newDrawnCards, spread.positions);
 
+      const birthMonthNum = parseInt(birthMonth, 10) || null;
+      const birthDayNum = parseInt(birthDay, 10) || null;
+
       // Format date from individual inputs (YYYY-MM-DD)
       const formattedDate = `${birthYear}-${String(birthMonth).padStart(2, '0')}-${String(birthDay).padStart(2, '0')}`;
 
@@ -327,16 +562,20 @@
         `/api/ephemeris?date=${formattedDate}&time=${time.replace(':', '%3A')}&lat=${latitude}&lon=${longitude}`
       );
       const ephemeris = await ephemerisRes.json();
+      const derivedSun = deriveSunSign(birthMonthNum, birthDayNum);
+      const fallbackSun = derivedSun ? `${derivedSun.name} 0°` : 'Pisces 0°';
+      const fallbackElement = derivedSun ? [derivedSun.element] : [];
 
       // Prepare astro data for Python script
       const astroData = {
-        sun: ephemeris.sun || 'Leo 10°',
-        moon: ephemeris.moon || 'Taurus 5°',
-        asc: ephemeris.asc || 'Capricorn 12°',
-        dominant_elements: ephemeris.dominant_elements || [],
+        sun: ephemeris.sun || ephemeris.planet_details?.sun?.sign || fallbackSun,
+        moon: ephemeris.moon || ephemeris.planet_details?.moon?.sign || 'Taurus 5°',
+        asc: ephemeris.asc || formatAscendant(ephemeris.ascendant),
+        dominant_elements: ephemeris.dominant_elements || fallbackElement,
         notable_aspects: ephemeris.notable_aspects || [],
         lunar_phase: ephemeris.lunar_phase || 'Waxing Crescent',
       };
+      userZodiac = astroData.sun?.split(' ')[0] || derivedSun?.name || '';
 
       // Prepare spread data for Python script
       const spreadData = newDrawnCards.map((d, i) => ({
@@ -367,6 +606,32 @@
       }
 
       const astroTarotReading = await astroTarotRes.json();
+      if (derivedSun) {
+        const expectedSun = derivedSun.name.toLowerCase();
+        const currentSun = astroTarotReading?.astro_summary?.core?.sun || '';
+        const hasExpectedSun = currentSun.toLowerCase().startsWith(expectedSun);
+
+        if (!hasExpectedSun) {
+          const remainder = currentSun.includes(' ')
+            ? currentSun.slice(currentSun.indexOf(' ') + 1)
+            : '0°';
+          const updatedCore = {
+            ...(astroTarotReading?.astro_summary?.core ?? {}),
+            sun: `${derivedSun.name} ${remainder}`.trim(),
+          };
+
+          if (!updatedCore.dominant_elements || updatedCore.dominant_elements.length === 0) {
+            updatedCore.dominant_elements = [derivedSun.element];
+          }
+
+          const astroSummary = {
+            ...(astroTarotReading?.astro_summary ?? {}),
+            core: updatedCore,
+          };
+
+          astroTarotReading.astro_summary = astroSummary;
+        }
+      }
 
       // OPTIMIZATION: Parallelize Traditional Reading and Combined Reading API calls
       // Make both requests simultaneously, then handle the dependency
@@ -424,8 +689,8 @@
   }
 
   onDestroy(() => {
-    if (shuffleInterval) {
-      clearInterval(shuffleInterval);
+    if (toastTimeout) {
+      clearTimeout(toastTimeout);
     }
     if (typeof document !== 'undefined') {
       document.body.classList.remove('video-popup-open');
@@ -452,15 +717,44 @@
       <p class="text-sm" style="color: #B3A9C7;">Discover cosmic guidance tailored to your unique astrological profile</p>
     </div>
 
+    {#if showToast}
+      <div class="toast-notification" role="status" aria-live="polite">
+        {toastMessage}
+      </div>
+    {/if}
+
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 overflow-hidden">
       <!-- Input Form -->
-      <div class="lg:col-span-1 overflow-x-hidden" style="background: linear-gradient(135deg, rgba(123, 97, 255, 0.15), rgba(255, 78, 219, 0.08)); border: 2px solid rgba(123, 97, 255, 0.3); border-radius: 2rem; padding: 2.5rem 1.5rem; backdrop-filter: blur(10px);">
-        <div class="flex items-center gap-3 mb-8">
-          <span class="text-3xl">📋</span>
-          <h2 class="text-3xl font-bold" style="color: #EDEBFF;">Your Information</h2>
+      <div class="lg:col-span-1 space-y-4">
+        <div class="toggle-banner inline-flex items-center gap-3" style="z-index: 10;">
+          <label class="toggle-switch">
+            <input
+              type="checkbox"
+              bind:checked={showTraditionalReading}
+              on:change={() =>
+                scheduleToast(
+                  showTraditionalReading
+                    ? 'Traditional tarot insight enabled — you will see and hear the full narrative.'
+                    : 'Traditional tarot insight hidden — focus stays on astro synthesis.'
+                )
+              }
+              aria-label="Toggle traditional tarot reading"
+            />
+            <span class="slider" />
+          </label>
+          <span class="text-sm font-semibold" style="color: #C6A7FF;">Traditional Reading</span>
         </div>
 
-        <div class="space-y-6">
+        <div
+          class="overflow-x-hidden"
+          style="background: linear-gradient(135deg, rgba(123, 97, 255, 0.15), rgba(255, 78, 219, 0.08)); border: 2px solid rgba(123, 97, 255, 0.3); border-radius: 2rem; padding: 2.5rem 1.5rem; backdrop-filter: blur(10px);"
+        >
+          <div class="flex items-center gap-3 mb-8">
+            <span class="text-3xl">📋</span>
+            <h2 class="text-3xl font-bold" style="color: #EDEBFF;">Your Information</h2>
+          </div>
+
+          <div class="space-y-6">
           <!-- Question -->
           <div>
             <label for="question" class="block text-lg font-semibold mb-3 flex items-center gap-2" style="color: #C6A7FF;">
@@ -618,6 +912,7 @@
               {error}
             </div>
           {/if}
+          </div>
         </div>
       </div>
 
@@ -717,25 +1012,31 @@
 
           <!-- Cards Display Section (Top) -->
           {#if drawnCards.length > 0}
-            <div class="mb-12 pb-8 border-b-2" style="border-color: rgba(123, 97, 255, 0.3);">
+            <div bind:this={cardsContainerElement} class="mb-12 pb-8 border-b-2" style="border-color: rgba(123, 97, 255, 0.3);">
               <h3 class="text-2xl font-bold mb-6 flex items-center gap-2" style="color: #C6A7FF;">
                 <span>🎴</span>
                 Your Cards
               </h3>
-              <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                {#each drawnCards as card}
-                  <div class="flex flex-col items-center">
+              <div class="grid grid-cols-3 gap-4 max-w-4xl mx-auto">
+                {#each drawnCards as card, index}
+                  <div
+                    class="flex flex-col items-center"
+                    on:mouseenter={() => showCardHoverToast(card, index)}
+                    on:mouseleave={hideCardHoverToast}
+                    role="button"
+                    tabindex="0"
+                  >
                     <div
-                      class="w-32 h-48 rounded-xl border-2 overflow-hidden mb-3 transition-all duration-300 hover:shadow-2xl hover:scale-105"
-                      style="border: 2px solid #7B61FF; box-shadow: 0 15px 35px rgba(123, 97, 255, 0.3); transform: {card.reversed ? 'rotateY(180deg)' : 'none'}; background: linear-gradient(135deg, rgba(123, 97, 255, 0.1), rgba(255, 78, 219, 0.05));"
+                      class="w-24 h-36 rounded-lg border-2 overflow-hidden mb-2 transition-all duration-300 hover:shadow-2xl hover:scale-105"
+                      style="border: 2px solid #7B61FF; box-shadow: 0 10px 25px rgba(123, 97, 255, 0.3); background: linear-gradient(135deg, rgba(123, 97, 255, 0.1), rgba(255, 78, 219, 0.05));"
                     >
                       <img
                         src={card.card.image}
                         alt={card.card.name}
-                        class="w-full h-full object-cover"
+                        class={`w-full h-full object-cover ${card.reversed ? 'reversed-card-image' : ''}`}
                       />
                     </div>
-                    <p class="text-sm font-semibold text-center" style="color: #EDEBFF;">{card.card.name}</p>
+                    <p class="text-xs font-semibold text-center" style="color: #EDEBFF;">{card.card.name}</p>
                     {#if card.reversed}
                       <p class="text-xs" style="color: #FF4EDB;">Reversed</p>
                     {/if}
@@ -764,6 +1065,28 @@
                 <p class="text-lg leading-relaxed" style="color: #EDEBFF; line-height: 1.8;">
                   {reading.combinedReading}
                 </p>
+                <div class="mt-6 pt-4 border-t" style="border-color: rgba(123, 97, 255, 0.3);">
+                  <p class="text-sm italic" style="color: rgba(237, 235, 255, 0.7);">
+                    Disclaimer: This reading is for entertainment purposes only. Tarot and astrology are not substitutes for professional advice.
+                  </p>
+                </div>
+              </div>
+            {/if}
+
+            {#if showTraditionalReading && reading.reading}
+              <div class="p-7 rounded-xl mb-8" style="background: linear-gradient(135deg, rgba(77, 242, 176, 0.12), rgba(123, 97, 255, 0.08)); border: 2px solid rgba(77, 242, 176, 0.4); box-shadow: 0 8px 24px rgba(77, 242, 176, 0.15);">
+                <h3 class="text-2xl font-bold mb-4 flex items-center gap-2" style="color: #4DF2B0;">
+                  <span>🔍</span>
+                  Traditional Tarot Insight
+                </h3>
+                <p class="text-lg leading-relaxed" style="color: #EDEBFF; line-height: 1.8;">
+                  {reading.reading}
+                </p>
+                <div class="mt-6 pt-4 border-t" style="border-color: rgba(77, 242, 176, 0.3);">
+                  <p class="text-sm italic" style="color: rgba(237, 235, 255, 0.7);">
+                    Disclaimer: This reading is for entertainment purposes only. Tarot and astrology are not substitutes for professional advice.
+                  </p>
+                </div>
               </div>
             {/if}
 
@@ -866,43 +1189,6 @@
 
 
 
-            <!-- Disclaimer -->
-            {#if reading.disclaimer}
-              <div class="p-6 rounded-xl text-lg" style="background: linear-gradient(135deg, rgba(255, 200, 87, 0.15), rgba(255, 200, 87, 0.05)); border: 2px solid #FFC857; color: #EDEBFF; box-shadow: 0 5px 15px rgba(255, 200, 87, 0.1);">
-                <div class="flex items-start gap-3">
-                  <span class="text-2xl">💫</span>
-                  <p>{reading.disclaimer}</p>
-                </div>
-              </div>
-            {/if}
-
-            <!-- Warnings -->
-            {#if reading.warnings && reading.warnings.length > 0}
-              <div class="space-y-3">
-                {#each reading.warnings as warning}
-                  <div class="p-5 rounded-xl text-lg" style="background: linear-gradient(135deg, rgba(77, 242, 176, 0.15), rgba(77, 242, 176, 0.05)); border: 2px solid #4DF2B0; color: #EDEBFF; box-shadow: 0 5px 15px rgba(77, 242, 176, 0.1);">
-                    <div class="flex items-start gap-3">
-                      <span class="text-xl">✓</span>
-                      <p>{warning}</p>
-                    </div>
-                  </div>
-                {/each}
-              </div>
-            {/if}
-
-            <!-- Crisis Resources -->
-            {#if reading.resources}
-              <div class="p-6 rounded-xl text-lg" style="background: linear-gradient(135deg, rgba(198, 167, 255, 0.15), rgba(198, 167, 255, 0.05)); border: 2px solid #C6A7FF; color: #EDEBFF; box-shadow: 0 5px 15px rgba(198, 167, 255, 0.1);">
-                <div class="flex items-start gap-3">
-                  <span class="text-2xl">🤝</span>
-                  <div>
-                    <strong class="text-xl block mb-2">Support Resources:</strong>
-                    <p>{reading.resources}</p>
-                  </div>
-                </div>
-              </div>
-            {/if}
-
             <!-- Feedback Component -->
             {#if reading && readingId && drawnCards.length > 0}
               <ReadingFeedback
@@ -910,6 +1196,7 @@
                 cards={drawnCards.map((d) => d.card.name)}
                 themes={reading.analysis?.themes || []}
                 astroTarotThemes={reading.astroTarot?.astro_summary?.themes || []}
+                {userZodiac}
                 {question}
                 onFeedbackSubmitted={() => {
                   // Optional: Show success message or refresh
@@ -938,33 +1225,18 @@
 </div>
 
 {#if showShuffleOverlay}
-  <div class="shuffle-overlay fixed inset-0 z-[9998] flex items-center justify-center px-6 py-10">
-    <div class="shuffle-container">
+  <div class="shuffle-overlay">
+    <div class="shuffle-area">
+      {#each shuffleCards as card (card.id)}
+        <div
+          class="shuffling-card"
+          style={`background-image: url('${card.image}'); --radius: ${card.radius}px; --duration: ${card.duration}s; --start: ${card.start}deg; --direction: ${card.direction}; --delay: ${card.delay}s;`}
+        ></div>
+      {/each}
+    </div>
+    <div class="shuffle-caption">
       <h1>✨ Celestia Arcana ✨</h1>
-
-      <div class="shuffle-area">
-        {#each shuffleCards as card (card.id)}
-          <div
-            class="shuffling-card"
-            style={`background-image: url('${card.image}'); left: ${card.left}%; top: ${card.top}%; --x: ${card.x}px; --y: ${card.y}px;`}
-          ></div>
-        {/each}
-      </div>
-
-      <div class="shuffle-info">
-        <p>Drawing your cards and weaving the cosmic story...</p>
-      </div>
-
-      {#if shuffleResults.length}
-        <div class="shuffle-results">
-          {#each shuffleResults as result (result.id)}
-            <div class="shuffle-result-wrapper">
-              <div class="shuffle-result-card" style={`background-image: url('${result.image}');`}></div>
-              <div class="shuffle-result-name">{result.name}</div>
-            </div>
-          {/each}
-        </div>
-      {/if}
+      <p>Drawing every card to weave your cosmic story...</p>
     </div>
   </div>
 {/if}
@@ -996,7 +1268,6 @@
         src={videoSrc}
         controls
         autoplay
-        muted
         playsinline
         preload="auto"
         on:ended={() => {
@@ -1013,6 +1284,10 @@
           console.log('Video metadata loaded, duration:', videoElement?.duration);
         }}
         on:loadeddata={() => {
+          if (videoElement) {
+            videoElement.muted = false;
+            videoElement.volume = 1;
+          }
           const playPromise = videoElement?.play();
           if (playPromise && typeof playPromise.catch === 'function') {
             playPromise.catch((err) => console.error('Video play after load failed:', err));
@@ -1089,106 +1364,181 @@
   }
 
   .shuffle-overlay {
-    background: rgba(12, 8, 36, 0.92);
-    backdrop-filter: blur(8px);
-  }
-
-  .shuffle-container {
-    width: min(820px, 100%);
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    background: radial-gradient(circle at center, rgba(20, 15, 60, 0.95), rgba(5, 3, 20, 0.98));
+    backdrop-filter: blur(8px) saturate(150%);
+    overflow: hidden;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 2rem;
-    padding: 2.5rem 1.5rem;
-    border-radius: 1.5rem;
-    background: linear-gradient(135deg, rgba(15, 12, 41, 0.95), rgba(48, 43, 99, 0.95));
-    border: 1px solid rgba(198, 167, 255, 0.35);
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
-    text-align: center;
-  }
-
-  .shuffle-container h1 {
-    font-size: clamp(2rem, 5vw, 2.5rem);
-    color: #fffcea;
-    text-shadow: 0 0 20px rgba(255, 200, 0, 0.5);
-    letter-spacing: 2px;
+    justify-content: center;
+    pointer-events: none;
   }
 
   .shuffle-area {
-    position: relative;
-    width: 100%;
-    max-width: 800px;
-    height: clamp(320px, 50vh, 450px);
-    background: rgba(0, 0, 0, 0.35);
-    border-radius: 1rem;
+    position: absolute;
+    inset: 0;
     overflow: hidden;
-    box-shadow: 0 0 50px rgba(255, 200, 0, 0.2);
   }
 
   .shuffling-card {
     position: absolute;
-    width: clamp(110px, 20vw, 150px);
+    top: 50%;
+    left: 50%;
+    width: clamp(60px, 15vw, 150px);
     aspect-ratio: 3 / 4;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    border-radius: 0.75rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    border-radius: clamp(0.375rem, 1vw, 0.75rem);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
     pointer-events: none;
-    animation: shuffleOverlay 0.4s ease-in-out;
+    transform-origin: center;
+    opacity: 0.5;
+    transform: translate(-50%, -50%) rotate(var(--start)) translateX(calc(var(--radius) * var(--radius-scale, 1)));
+    animation: swirlOrbit var(--duration) linear infinite;
+    animation-direction: var(--direction, normal);
+    animation-delay: var(--delay, 0s);
+    animation-fill-mode: both;
+    will-change: transform;
   }
 
-  .shuffle-info {
-    font-size: 0.95rem;
-    color: #d0c7ff;
-    max-width: 520px;
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
+    .shuffling-card {
+      --radius-scale: 0.4;
+      width: clamp(40px, 12vw, 80px);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
+    }
+
+    .shuffle-caption h1 {
+      font-size: clamp(1.5rem, 8vw, 2.5rem);
+    }
+
+    .shuffle-caption p {
+      font-size: clamp(0.875rem, 3.5vw, 1.25rem);
+      padding: 0 1rem;
+    }
   }
 
-  .shuffle-results {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    flex-wrap: wrap;
-    min-height: 160px;
-    width: 100%;
+  /* Small phone screens */
+  @media (max-width: 480px) {
+    .shuffling-card {
+      --radius-scale: 0.3;
+      width: clamp(35px, 10vw, 60px);
+    }
   }
 
-  .shuffle-result-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .shuffle-result-card {
-    width: clamp(140px, 22vw, 180px);
-    height: clamp(220px, 32vw, 280px);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    border-radius: 0.75rem;
-    border: 2px solid rgba(255, 200, 0, 0.3);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-    animation: cardAppear 0.8s ease-out forwards;
-  }
-
-  .shuffle-result-name {
-    font-size: 0.9rem;
-    color: #ffc800;
-    font-weight: bold;
-    text-transform: capitalize;
+  .shuffle-caption {
+    position: relative;
+    z-index: 1;
     text-align: center;
-    max-width: 180px;
+    color: #eae4ff;
+    text-shadow: 0 0 18px rgba(123, 97, 255, 0.65);
+    pointer-events: auto;
   }
 
-  @keyframes shuffleOverlay {
-    0% {
+  .shuffle-caption h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    margin-bottom: 1rem;
+  }
+
+  .shuffle-caption p {
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    color: #d7ceff;
+  }
+
+  .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+  }
+
+  .toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .toggle-switch .slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: rgba(123, 97, 255, 0.4);
+    border-radius: 9999px;
+    transition: background-color 0.2s ease;
+  }
+
+  .toggle-switch .slider::before {
+    content: "";
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    top: 3px;
+    background-color: #0B0724;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  }
+
+  .toggle-switch input:checked + .slider {
+    background: linear-gradient(135deg, #7B61FF, #FF4EDB);
+  }
+
+  .toggle-switch input:checked + .slider::before {
+    transform: translateX(20px);
+  }
+
+  .toggle-banner {
+    padding: 0.4rem 0.75rem;
+    background: rgba(11, 7, 36, 0.65);
+    border: 1px solid rgba(123, 97, 255, 0.5);
+    border-radius: 9999px;
+    box-shadow: 0 10px 25px rgba(11, 7, 36, 0.35);
+    backdrop-filter: blur(8px);
+  }
+
+  .toast-notification {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    z-index: 11000;
+    max-width: 320px;
+    padding: 0.9rem 1.2rem;
+    background: linear-gradient(135deg, rgba(123, 97, 255, 0.92), rgba(255, 78, 219, 0.88));
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1rem;
+    color: #EDEBFF;
+    font-size: 0.95rem;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+    animation: toastFade 0.25s ease-out;
+  }
+
+  @keyframes toastFade {
+    from {
       opacity: 0;
-      transform: translate(0, 0) rotate(0deg);
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes swirlOrbit {
+    0% {
+      transform: translate(-50%, -50%) rotate(var(--start)) translateX(calc(var(--radius) * var(--radius-scale, 1)));
+      opacity: 0.55;
+    }
+    50% {
+      opacity: 1;
     }
     100% {
-      opacity: 1;
-      transform: translate(calc(var(--x)), calc(var(--y))) rotate(360deg);
+      transform: translate(-50%, -50%) rotate(calc(var(--start) + 360deg)) translateX(calc(var(--radius) * var(--radius-scale, 1)));
+      opacity: 0.55;
     }
   }
 

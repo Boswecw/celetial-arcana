@@ -1,0 +1,122 @@
+{
+  "meta": {
+    "question": "How good of an Idea is Livy - My historical tour with photographs and reading app going to sell?",
+    "timeframe": "next 30 days",
+    "spread_name": "Three-Card Spread",
+    "timestamp": "2025-11-03T23:54:12.463396Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": [
+        "Earth",
+        "Air"
+      ],
+      "notable_aspects": [
+        {
+          "aspect": "Sun conjunct Mercury",
+          "orb": "1°",
+          "interpretation": "Heightened communication and insight; clarity of thought."
+        },
+        {
+          "aspect": "Moon trine Pluto",
+          "orb": "2°",
+          "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+        },
+        {
+          "aspect": "Venus sextile Mars",
+          "orb": "3°",
+          "interpretation": "Creative harmony between desire and action."
+        }
+      ],
+      "lunar_phase": "Full Moon"
+    },
+    "themes": [
+      "Communication",
+      "Emotional Depth",
+      "Creative Action"
+    ]
+  },
+  "spread_summary": {
+    "layout": [
+      "Past: The Hermit",
+      "Present: The Lovers",
+      "Future: Ten of Stones"
+    ],
+    "card_elements_count": {
+      "Fire": 0,
+      "Earth": 1,
+      "Air": 0,
+      "Water": 0
+    },
+    "majors_count": 2
+  },
+  "resonance": {
+    "matches": [
+      {
+        "type": "Astrology",
+        "detail": "Full Moon energy",
+        "why": "Highlights the need for balance and emotional truth, aligning with The Lovers' themes of connection."
+      },
+      {
+        "type": "Tarot",
+        "detail": "The Hermit",
+        "why": "Indicates a period of introspection that has informed your current project."
+      }
+    ],
+    "tensions": [
+      {
+        "type": "Astrology",
+        "detail": "The Lovers (Reversed)",
+        "why": "Suggests potential misalignment or conflict in partnerships or choices related to the project."
+      }
+    ],
+    "element_balance": {
+      "astro": "Earth and Air",
+      "tarot": "Fire:0; Earth:1; Air:0; Water:0",
+      "comment": "Strong Earth influence suggests practicality; however, the Spirit element from the Major Arcana indicates a need for deeper connection."
+    }
+  },
+  "interpretation": {
+    "theme": "Navigating Relationships and Stability",
+    "positions": [
+      {
+        "card": "The Hermit",
+        "position": "Past",
+        "element": "Spirit",
+        "insight": "Your past introspection has laid the groundwork for this project, emphasizing the importance of inner guidance."
+      },
+      {
+        "card": "The Lovers",
+        "position": "Present",
+        "element": "Spirit",
+        "insight": "Currently, there may be misalignments or conflicts in partnerships or choices regarding the project, indicating a need for clarity."
+      },
+      {
+        "card": "Ten of Stones",
+        "position": "Future",
+        "element": "Earth",
+        "insight": "The future looks promising with stability and potential wealth, suggesting that the project could lead to a solid legacy."
+      }
+    ],
+    "timing": [
+      "Next 30 days"
+    ],
+    "action_items": [
+      "Engage in open communication with partners to resolve any misunderstandings.",
+      "Utilize the Full Moon energy to release any emotional blocks and align your values with the project's goals.",
+      "Focus on practical steps to enhance the project's visibility and appeal."
+    ],
+    "affirmations": [
+      "I trust my inner guidance to lead me to success.",
+      "I embrace clarity and harmony in my partnerships.",
+      "My project brings stability and value to my community."
+    ]
+  },
+  "confidence": {
+    "overall": 0.85,
+    "notes": "The combination of introspection and potential for stability suggests a strong foundation for success."
+  }
+}

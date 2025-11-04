@@ -1,0 +1,127 @@
+{
+  "meta": {
+    "question": "will I ever gain in fortune?",
+    "timeframe": "next 30 days",
+    "spread_name": "Astro-Tarot Fortune Reading",
+    "timestamp": "2025-11-04T00:52:33.838464Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": [
+        "Earth",
+        "Air"
+      ],
+      "notable_aspects": [
+        {
+          "aspect": "Sun conjunct Mercury",
+          "orb": "1°",
+          "interpretation": "Heightened communication and insight; clarity of thought."
+        },
+        {
+          "aspect": "Moon trine Pluto",
+          "orb": "2°",
+          "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+        },
+        {
+          "aspect": "Venus sextile Mars",
+          "orb": "3°",
+          "interpretation": "Creative harmony between desire and action."
+        }
+      ],
+      "lunar_phase": "Full Moon"
+    },
+    "themes": [
+      "balance",
+      "emotional truth",
+      "practical progress"
+    ]
+  },
+  "spread_summary": {
+    "layout": [
+      "Past: The Hermit",
+      "Present: The Lovers",
+      "Future: Ten of Stones"
+    ],
+    "card_elements_count": {
+      "Fire": 0,
+      "Earth": 1,
+      "Air": 0,
+      "Water": 0
+    },
+    "majors_count": 2
+  },
+  "resonance": {
+    "matches": [
+      {
+        "type": "astrology",
+        "detail": "Full Moon in Taurus",
+        "why": "Emphasizes stability and material gains, aligning with the Ten of Stones."
+      },
+      {
+        "type": "tarot",
+        "detail": "The Lovers reversed",
+        "why": "Indicates current misalignment in values affecting fortune."
+      }
+    ],
+    "tensions": [
+      {
+        "type": "astrology",
+        "detail": "Sun in Libra",
+        "why": "Focus on relationships may distract from financial pursuits."
+      },
+      {
+        "type": "tarot",
+        "detail": "The Hermit",
+        "why": "Past introspection may have led to isolation, impacting current fortune."
+      }
+    ],
+    "element_balance": {
+      "astro": "Earth and Air",
+      "tarot": "Fire:0; Earth:1; Air:0; Water:0",
+      "comment": "Strong Earth presence supports material gains, but Spirit cards indicate a need for inner alignment."
+    }
+  },
+  "interpretation": {
+    "theme": "Navigating Inner Guidance to Achieve Fortune",
+    "positions": [
+      {
+        "card": "The Hermit",
+        "position": "Past",
+        "element": "Spirit",
+        "insight": "Your past introspection has led to a deeper understanding of your values, but may have caused isolation."
+      },
+      {
+        "card": "The Lovers",
+        "position": "Present",
+        "element": "Spirit",
+        "insight": "Currently, there is a misalignment in your relationships or values that is hindering your ability to attract fortune."
+      },
+      {
+        "card": "Ten of Stones",
+        "position": "Future",
+        "element": "Earth",
+        "insight": "If you can align your values and relationships, stability and wealth are on the horizon."
+      }
+    ],
+    "timing": [
+      "next 30 days"
+    ],
+    "action_items": [
+      "Reflect on your current relationships and values; identify any misalignments that could be blocking your fortune.",
+      "Engage in open communication with loved ones to clarify intentions and support.",
+      "Focus on practical steps to build stability, such as budgeting or investing in your skills."
+    ],
+    "affirmations": [
+      "I align my values with my actions to attract abundance.",
+      "I embrace open communication to foster supportive relationships.",
+      "I trust in my inner guidance to lead me toward financial stability."
+    ]
+  },
+  "confidence": {
+    "overall": 0.85,
+    "notes": "The reading strongly connects the astrological influences with the tarot insights, providing a clear path forward."
+  }
+}

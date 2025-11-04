@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import InfoTooltip from '$lib/components/InfoTooltip.svelte';
 
   let date = new Date().toISOString().split('T')[0];
   let time = '12:00';
@@ -126,11 +127,24 @@
     </div>
 
     <!-- Header -->
-    <div class="text-center mb-16">
+    <div class="text-center mb-12">
       <h1 class="text-7xl font-bold mb-4" style="background: linear-gradient(135deg, #7B61FF, #FF4EDB); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
         Cosmic Alignment
       </h1>
-      <p class="text-2xl" style="color: #C6A7FF;">Discover your birth chart and planetary positions</p>
+      <p class="text-2xl mb-6" style="color: #C6A7FF;">Discover your birth chart and planetary positions</p>
+
+      <!-- Info Banner -->
+      <div class="max-w-4xl mx-auto card-surface p-6 rounded-2xl" style="background: linear-gradient(135deg, rgba(123, 97, 255, 0.1), rgba(255, 78, 219, 0.1)); border: 2px solid rgba(123, 97, 255, 0.3);">
+        <div class="flex items-start gap-4">
+          <div class="text-3xl">✨</div>
+          <div class="text-left">
+            <h3 class="text-lg font-bold mb-2" style="color: #EDEBFF;">What is a Birth Chart?</h3>
+            <p class="text-sm leading-relaxed" style="color: #C6A7FF;">
+              Your birth chart is a snapshot of the sky at the exact moment and location of your birth. It reveals the positions of planets, your rising sign (Ascendant), and how celestial energies influence your personality, relationships, and life path. Hover over the info icons (ℹ️) throughout the page for helpful tips!
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -141,32 +155,48 @@
         <div class="space-y-6">
           <!-- Date -->
           <div>
-            <label for="date" class="block text-lg font-semibold mb-3" style="color: #C6A7FF;">Birth Date</label>
+            <div class="flex items-center gap-2 mb-3">
+              <label for="date" class="text-lg font-semibold" style="color: #C6A7FF;">Birth Date</label>
+              <InfoTooltip text="Your birth date determines your Sun sign and all planetary positions. This is the foundation of your birth chart and reveals your core personality traits and life path." />
+            </div>
             <input
               id="date"
               type="date"
               bind:value={date}
-              class="w-full p-4 rounded-lg bg-opacity-50 border-2 focus:outline-none text-lg"
+              class="w-full p-4 rounded-lg bg-opacity-50 border-2 focus:outline-none text-lg transition-all"
               style="background-color: rgba(123, 97, 255, 0.1); border-color: #7B61FF; color: #EDEBFF;"
+              placeholder="Select your birth date"
             />
+            <p class="text-xs mt-2" style="color: #B3A9C7;">
+              📅 This will calculate your Sun, Moon, and planetary signs
+            </p>
           </div>
 
           <!-- Time -->
           <div>
-            <label for="time" class="block text-lg font-semibold mb-3" style="color: #C6A7FF;">Birth Time</label>
+            <div class="flex items-center gap-2 mb-3">
+              <label for="time" class="text-lg font-semibold" style="color: #C6A7FF;">Birth Time</label>
+              <InfoTooltip text="Your exact birth time is crucial for calculating your Ascendant (rising sign) and house placements. Even a few minutes can change your rising sign! If unknown, use 12:00 PM as an approximation." />
+            </div>
             <input
               id="time"
               type="time"
               bind:value={time}
-              class="w-full p-4 rounded-lg bg-opacity-50 border-2 focus:outline-none text-lg"
+              class="w-full p-4 rounded-lg bg-opacity-50 border-2 focus:outline-none text-lg transition-all"
               style="background-color: rgba(123, 97, 255, 0.1); border-color: #7B61FF; color: #EDEBFF;"
             />
+            <p class="text-xs mt-2" style="color: #B3A9C7;">
+              ⏰ This calculates your Ascendant (Rising Sign) and Midheaven
+            </p>
           </div>
 
           <!-- Location -->
           <div>
             <div class="flex items-center justify-between mb-3">
-              <span class="block text-lg font-semibold" style="color: #C6A7FF;">Your Location</span>
+              <div class="flex items-center gap-2">
+                <span class="text-lg font-semibold" style="color: #C6A7FF;">Your Location</span>
+                <InfoTooltip text="Your birth location determines the time zone and affects house calculations. The location where you were born is important, not where you live now. We'll try to detect your current location, or you can enter coordinates manually." />
+              </div>
               {#if locationLoading}
                 <span class="text-sm" style="color: #FFC857;">📍 Getting location...</span>
               {:else if latitude !== 0 && longitude !== 0}
@@ -178,30 +208,40 @@
             {/if}
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label for="latitude" class="block text-sm font-semibold mb-2" style="color: #C6A7FF;">Latitude</label>
+                <div class="flex items-center gap-2 mb-2">
+                  <label for="latitude" class="text-sm font-semibold" style="color: #C6A7FF;">Latitude</label>
+                  <InfoTooltip text="Latitude is your north-south position on Earth. Positive values are north of the equator (e.g., New York is 40.71), negative values are south (e.g., Sydney is -33.87)." />
+                </div>
                 <input
                   id="latitude"
                   type="number"
                   bind:value={latitude}
                   step="0.01"
                   placeholder="e.g., 40.7128"
-                  class="w-full p-4 rounded-lg bg-opacity-50 border-2 focus:outline-none text-lg"
+                  class="w-full p-4 rounded-lg bg-opacity-50 border-2 focus:outline-none text-lg transition-all"
                   style="background-color: rgba(123, 97, 255, 0.1); border-color: #7B61FF; color: #EDEBFF;"
                 />
               </div>
               <div>
-                <label for="longitude" class="block text-sm font-semibold mb-2" style="color: #C6A7FF;">Longitude</label>
+                <div class="flex items-center gap-2 mb-2">
+                  <label for="longitude" class="text-sm font-semibold" style="color: #C6A7FF;">Longitude</label>
+                  <InfoTooltip text="Longitude is your east-west position on Earth. Negative values are west of the Prime Meridian (e.g., New York is -74.00), positive values are east (e.g., Tokyo is 139.69)." />
+                </div>
                 <input
                   id="longitude"
                   type="number"
                   bind:value={longitude}
                   step="0.01"
                   placeholder="e.g., -74.0060"
-                  class="w-full p-4 rounded-lg bg-opacity-50 border-2 focus:outline-none text-lg"
+                  class="w-full p-4 rounded-lg bg-opacity-50 border-2 focus:outline-none text-lg transition-all"
                   style="background-color: rgba(123, 97, 255, 0.1); border-color: #7B61FF; color: #EDEBFF;"
                 />
               </div>
             </div>
+            <p class="text-xs mt-2" style="color: #B3A9C7;">
+              🌍 Location helps calculate accurate house placements and local time zone.<br/>
+              💡 Tip: Search "[your birth city] coordinates" to find your exact latitude and longitude
+            </p>
           </div>
 
           <!-- Calculate Button -->
@@ -225,7 +265,10 @@
         {:else if chartData}
           <!-- Planetary Positions -->
           <div class="card-surface p-8 rounded-2xl mb-8">
-            <h3 class="text-3xl font-bold mb-6" style="color: #C6A7FF;">☀️ Planetary Positions</h3>
+            <div class="flex items-center gap-2 mb-6">
+              <h3 class="text-3xl font-bold" style="color: #C6A7FF;">☀️ Planetary Positions</h3>
+              <InfoTooltip text="These show where each planet was located in the zodiac at your birth time. Each planet represents different aspects of your personality and life." />
+            </div>
             <div class="grid grid-cols-2 gap-4">
               {#each Object.entries(chartData.planets) as [planet, longitude]}
                 <div class="p-4 rounded-lg" style="background-color: rgba(123, 97, 255, 0.1); border-left: 4px solid #7B61FF;">
@@ -245,7 +288,10 @@
 
           <!-- Angles -->
           <div class="card-surface p-8 rounded-2xl mb-8">
-            <h3 class="text-3xl font-bold mb-6" style="color: #C6A7FF;">📐 Angles</h3>
+            <div class="flex items-center gap-2 mb-6">
+              <h3 class="text-3xl font-bold" style="color: #C6A7FF;">📐 Angles</h3>
+              <InfoTooltip text="Ascendant (Rising Sign) is how you appear to others. Midheaven (MC) represents your career path and public image. Both are calculated from your exact birth time and location." />
+            </div>
             <div class="grid grid-cols-2 gap-4">
               <div class="p-4 rounded-lg" style="background-color: rgba(123, 97, 255, 0.1); border-left: 4px solid #7B61FF;">
                 <p class="text-sm" style="color: #C6A7FF;">Ascendant</p>
@@ -267,7 +313,10 @@
           <!-- Aspects -->
           {#if chartData.aspects && chartData.aspects.length > 0}
             <div class="card-surface p-8 rounded-2xl">
-              <h3 class="text-3xl font-bold mb-6" style="color: #C6A7FF;">⚡ Aspects</h3>
+              <div class="flex items-center gap-2 mb-6">
+                <h3 class="text-3xl font-bold" style="color: #C6A7FF;">⚡ Aspects</h3>
+                <InfoTooltip text="Aspects are angular relationships between planets. They show how planetary energies interact: harmoniously (trine, sextile) or with tension (square, opposition)." />
+              </div>
               <div class="space-y-3">
                 {#each chartData.aspects as aspect}
                   <div class="p-4 rounded-lg" style="background-color: rgba(123, 97, 255, 0.1); border-left: 4px solid #7B61FF;">
@@ -285,8 +334,99 @@
             </div>
           {/if}
         {:else}
-          <div class="card-surface p-8 rounded-2xl text-center">
-            <p style="color: #B3A9C7;">Enter your birth information and click "Calculate Chart" to see your cosmic alignment</p>
+          <!-- Educational Empty State -->
+          <div class="space-y-6">
+            <!-- Privacy Disclaimer -->
+            <div class="card-surface p-6 rounded-2xl privacy-banner" style="background: linear-gradient(135deg, rgba(77, 242, 176, 0.25), rgba(67, 217, 157, 0.2)); border: 3px solid #4DF2B0; box-shadow: 0 0 30px rgba(77, 242, 176, 0.4);">
+              <div class="flex items-start gap-4">
+                <div class="text-3xl animate-pulse">🔒</div>
+                <div class="text-left">
+                  <h3 class="text-xl font-bold mb-3" style="color: #4DF2B0; text-shadow: 0 0 10px rgba(77, 242, 176, 0.5);">🛡️ Your Privacy is 100% Protected</h3>
+                  <p class="text-base leading-relaxed font-medium" style="color: #EDEBFF;">
+                    ✅ All calculations are performed <strong style="color: #4DF2B0;">locally in your browser</strong><br/>
+                    ✅ We <strong style="color: #4DF2B0;">never store, transmit, or collect</strong> any personal information<br/>
+                    ✅ Your birth data and location details remain <strong style="color: #4DF2B0;">completely private</strong>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Educational Content -->
+            <div class="card-surface p-8 rounded-2xl">
+              <h3 class="text-2xl font-bold mb-6 text-center" style="color: #EDEBFF;">Understanding Your Birth Chart</h3>
+
+              <div class="space-y-6">
+                <!-- Planets Section -->
+                <div>
+                  <h4 class="text-lg font-bold mb-4" style="color: #C6A7FF;">☀️ The Planets</h4>
+                  <div class="grid grid-cols-2 gap-3">
+                    <div class="p-3 rounded-lg" style="background-color: rgba(123, 97, 255, 0.1);">
+                      <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xl">{planetEmojis.sun}</span>
+                        <span class="font-semibold text-sm" style="color: #EDEBFF;">Sun</span>
+                      </div>
+                      <p class="text-xs" style="color: #B3A9C7;">Your core self, ego, identity</p>
+                    </div>
+                    <div class="p-3 rounded-lg" style="background-color: rgba(123, 97, 255, 0.1);">
+                      <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xl">{planetEmojis.moon}</span>
+                        <span class="font-semibold text-sm" style="color: #EDEBFF;">Moon</span>
+                      </div>
+                      <p class="text-xs" style="color: #B3A9C7;">Emotions, instincts, habits</p>
+                    </div>
+                    <div class="p-3 rounded-lg" style="background-color: rgba(123, 97, 255, 0.1);">
+                      <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xl">{planetEmojis.mercury}</span>
+                        <span class="font-semibold text-sm" style="color: #EDEBFF;">Mercury</span>
+                      </div>
+                      <p class="text-xs" style="color: #B3A9C7;">Communication, thinking</p>
+                    </div>
+                    <div class="p-3 rounded-lg" style="background-color: rgba(123, 97, 255, 0.1);">
+                      <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xl">{planetEmojis.venus}</span>
+                        <span class="font-semibold text-sm" style="color: #EDEBFF;">Venus</span>
+                      </div>
+                      <p class="text-xs" style="color: #B3A9C7;">Love, beauty, values</p>
+                    </div>
+                    <div class="p-3 rounded-lg" style="background-color: rgba(123, 97, 255, 0.1);">
+                      <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xl">{planetEmojis.mars}</span>
+                        <span class="font-semibold text-sm" style="color: #EDEBFF;">Mars</span>
+                      </div>
+                      <p class="text-xs" style="color: #B3A9C7;">Action, energy, drive</p>
+                    </div>
+                    <div class="p-3 rounded-lg" style="background-color: rgba(123, 97, 255, 0.1);">
+                      <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xl">{planetEmojis.jupiter}</span>
+                        <span class="font-semibold text-sm" style="color: #EDEBFF;">Jupiter</span>
+                      </div>
+                      <p class="text-xs" style="color: #B3A9C7;">Expansion, luck, growth</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Zodiac Signs Section -->
+                <div>
+                  <h4 class="text-lg font-bold mb-4" style="color: #C6A7FF;">♈ The Zodiac Signs</h4>
+                  <div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                    {#each zodiacSigns as sign}
+                      <div class="p-2 rounded-lg text-center" style="background-color: rgba(255, 78, 219, 0.1);">
+                        <div class="text-lg mb-1">{getZodiacEmoji(sign)}</div>
+                        <p class="text-xs font-semibold" style="color: #EDEBFF;">{sign}</p>
+                      </div>
+                    {/each}
+                  </div>
+                  <p class="text-xs mt-3 text-center" style="color: #B3A9C7;">
+                    Each planet falls into a zodiac sign, coloring how that planet's energy expresses itself in your life
+                  </p>
+                </div>
+
+                <!-- CTA -->
+                <div class="text-center pt-4">
+                  <p class="text-lg" style="color: #C6A7FF;">👈 Fill in your birth information to discover your unique cosmic blueprint!</p>
+                </div>
+              </div>
+            </div>
           </div>
         {/if}
       </div>

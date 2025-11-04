@@ -1,0 +1,126 @@
+{
+  "meta": {
+    "question": "how well will my job go for me at 53 Barrel?",
+    "timeframe": "next 30 days",
+    "spread_name": "Job Insight Spread",
+    "timestamp": "2025-11-04T00:38:12.173167Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": [
+        "Earth",
+        "Air"
+      ],
+      "notable_aspects": [
+        {
+          "aspect": "Sun conjunct Mercury",
+          "orb": "1°",
+          "interpretation": "Heightened communication and insight; clarity of thought."
+        },
+        {
+          "aspect": "Moon trine Pluto",
+          "orb": "2°",
+          "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+        },
+        {
+          "aspect": "Venus sextile Mars",
+          "orb": "3°",
+          "interpretation": "Creative harmony between desire and action."
+        }
+      ],
+      "lunar_phase": "Full Moon"
+    },
+    "themes": [
+      "communication",
+      "emotional depth",
+      "creative action"
+    ]
+  },
+  "spread_summary": {
+    "layout": [
+      "Past: The Hermit",
+      "Present: The Lovers",
+      "Future: Ten of Stones"
+    ],
+    "card_elements_count": {
+      "Fire": 0,
+      "Earth": 1,
+      "Air": 0,
+      "Water": 0
+    },
+    "majors_count": 2
+  },
+  "resonance": {
+    "matches": [
+      {
+        "type": "astrology",
+        "detail": "Sun conjunct Mercury",
+        "why": "This aspect supports clear communication, which is crucial for job success."
+      },
+      {
+        "type": "tarot",
+        "detail": "The Lovers reversed",
+        "why": "Indicates potential misalignment in current work relationships, needing attention."
+      }
+    ],
+    "tensions": [
+      {
+        "type": "astrology",
+        "detail": "Full Moon energy",
+        "why": "This phase may bring emotional clarity but also highlights what needs to be released."
+      },
+      {
+        "type": "tarot",
+        "detail": "The Lovers reversed",
+        "why": "Suggests conflict or misunderstanding in current job dynamics."
+      }
+    ],
+    "element_balance": {
+      "astro": "Earth and Air",
+      "tarot": "Fire:0; Earth:1; Air:0; Water:0",
+      "comment": "A strong Earth presence suggests stability, but the Air element indicates the need for communication."
+    }
+  },
+  "interpretation": {
+    "theme": "Navigating job dynamics with introspection and clarity.",
+    "positions": [
+      {
+        "card": "The Hermit",
+        "position": "Past",
+        "element": "Spirit",
+        "insight": "Your past focus on introspection has prepared you for deeper understanding of your work environment."
+      },
+      {
+        "card": "The Lovers",
+        "position": "Present",
+        "element": "Spirit",
+        "insight": "Currently, there may be misalignments or conflicts in relationships at work that need addressing."
+      },
+      {
+        "card": "Ten of Stones",
+        "position": "Future",
+        "element": "Earth",
+        "insight": "In the future, stability and potential wealth from your job are indicated, suggesting a positive outcome."
+      }
+    ],
+    "timing": [
+      "next 30 days"
+    ],
+    "action_items": [
+      "Engage in open communication with colleagues to resolve any misunderstandings.",
+      "Reflect on your values and how they align with your current job role.",
+      "Prepare for potential financial stability by planning for future investments or savings."
+    ],
+    "affirmations": [
+      "I communicate clearly and effectively in my work relationships.",
+      "I embrace stability and growth in my career path."
+    ]
+  },
+  "confidence": {
+    "overall": 0.85,
+    "notes": "The reading is grounded in both tarot and astrological insights, providing a clear path forward."
+  }
+}

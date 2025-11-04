@@ -1,8 +1,8 @@
 {
   "meta": {
-    "question": "How well will my first Novel Sale?",
+    "question": "Will I get my own place?",
     "timeframe": "next 30 days",
-    "spread_name": "Novel Sale Reading",
+    "spread_name": "Astro-Tarot Reading",
     "timestamp": "2023-10-22T17:00:00Z"
   },
   "astro_summary": {
@@ -18,37 +18,38 @@
       ],
       "lunar_phase": "Full Moon"
     },
-    "themes": ["communication", "emotional depth", "creative action"]
+    "themes": ["Emotional renewal", "Clarity in relationships", "Stability and legacy"]
   },
   "spread_summary": {
-    "layout": ["Past: The Hermit", "Present: The Lovers", "Future: Ten of Stones"],
-    "card_elements_count": {"Fire":0,"Earth":2,"Air":1,"Water":0},
+    "layout": ["Past: The Hermit", "Present: The Lovers (reversed)", "Future: Ten of Stones"],
+    "card_elements_count": {"Fire":1,"Earth":2,"Air":1,"Water":0},
     "majors_count": 2
   },
   "resonance": {
     "matches": [
-      {"type":"astrology","detail":"Sun conjunct Mercury","why":"This aspect supports clear communication, essential for promoting your novel."},
-      {"type":"tarot","detail":"The Lovers reversed","why":"Indicates potential misalignment in current relationships or partnerships affecting your novel's sale."}
+      {"type":"Astrology","detail":"Full Moon in Taurus","why":"Emphasizes stability and emotional grounding, aligning with the Ten of Stones."},
+      {"type":"Tarot","detail":"The Lovers reversed","why":"Indicates current misalignment in relationships, affecting your housing situation."}
     ],
     "tensions": [
-      {"type":"astrology","detail":"Venus sextile Mars","why":"While there's creative harmony, it may not translate into immediate sales without addressing current conflicts."}
+      {"type":"Astrology","detail":"Sun in Libra","why":"Focus on relationships may distract from practical steps needed for independence."},
+      {"type":"Tarot","detail":"The Hermit","why":"Past introspection may lead to feelings of isolation, impacting your confidence in seeking a new place."}
     ],
-    "element_balance": {"astro":"Earth and Air","tarot":"Earth and Spirit","comment":"Strong Earth influence suggests stability and practicality, while Spirit cards indicate introspection and alignment issues."}
+    "element_balance": {"astro":"Earth and Air","tarot":"2 Earth, 1 Fire, 1 Air","comment":"Strong Earth presence supports stability, but Air suggests a need for communication and clarity."}
   },
   "interpretation": {
-    "theme":"Navigating introspection and alignment for future stability.",
+    "theme":"Navigating emotional and practical challenges towards independence.",
     "positions":[
-      {"card":"The Hermit","position":"Past","element":"Spirit","insight":"You have spent time in introspection, which has shaped your writing and approach to your novel."},
-      {"card":"The Lovers","position":"Present","element":"Spirit","insight":"Currently, there may be conflicts or misalignments in your partnerships or marketing strategies that could hinder your novel's sale."},
-      {"card":"Ten of Stones","position":"Future","element":"Earth","insight":"In the future, there is potential for stability and success, indicating that your novel could lead to financial gain and legacy."}
+      {"card":"The Hermit","position":"Past","element":"Spirit","insight":"Your past introspection has led to a deeper understanding of your needs, but may have also caused feelings of isolation."},
+      {"card":"The Lovers","position":"Present","element":"Spirit","insight":"Currently, there is a misalignment in your relationships or choices that may hinder your ability to secure a new place."},
+      {"card":"Ten of Stones","position":"Future","element":"Earth","insight":"In the near future, stability and a sense of legacy will emerge, indicating the potential for securing your own place."}
     ],
-    "timing": ["next 30 days"],
+    "timing": ["Within the next 30 days"],
     "action_items": [
-      "Reflect on your current partnerships and ensure they align with your vision for the novel.",
-      "Utilize the Full Moon energy to release any emotional blocks or misalignments that may be affecting your confidence.",
-      "Engage in clear communication about your novel's value to potential buyers or partners."
+      "Communicate openly with those around you about your desire for independence.",
+      "Reflect on what you truly value in a living space and align your actions with these values.",
+      "Utilize the Full Moon energy to release any emotional blockages that may be preventing you from moving forward."
     ],
-    "affirmations": ["I embrace clarity and alignment in my creative journey.", "I trust in the stability and success of my novel."]
+    "affirmations": ["I am open to receiving the stability I seek.", "I trust my intuition to guide me towards my own space.", "I communicate my needs clearly and effectively."]
   },
-  "confidence": {"overall": 0.85, "notes": "The reading shows strong potential for success, but emphasizes the need for alignment and clear communication."}
+  "confidence": {"overall": 0.85, "notes": "The combination of tarot and astrological influences strongly supports the potential for securing your own place."}
 }

@@ -1,0 +1,127 @@
+{
+  "meta": {
+    "question": "how well will my job go for me at 53 barrel?",
+    "timeframe": "next 30 days",
+    "spread_name": "Career Insights",
+    "timestamp": "2025-11-04T00:40:57.433910Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": [
+        "Earth",
+        "Air"
+      ],
+      "notable_aspects": [
+        {
+          "aspect": "Sun conjunct Mercury",
+          "orb": "1°",
+          "interpretation": "Heightened communication and insight; clarity of thought."
+        },
+        {
+          "aspect": "Moon trine Pluto",
+          "orb": "2°",
+          "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+        },
+        {
+          "aspect": "Venus sextile Mars",
+          "orb": "3°",
+          "interpretation": "Creative harmony between desire and action."
+        }
+      ],
+      "lunar_phase": "Full Moon"
+    },
+    "themes": [
+      "communication",
+      "emotional depth",
+      "creative action"
+    ]
+  },
+  "spread_summary": {
+    "layout": [
+      "Past: The Hermit",
+      "Present: The Lovers",
+      "Future: Ten of Stones"
+    ],
+    "card_elements_count": {
+      "Fire": 0,
+      "Earth": 1,
+      "Air": 0,
+      "Water": 0
+    },
+    "majors_count": 2
+  },
+  "resonance": {
+    "matches": [
+      {
+        "type": "astrology",
+        "detail": "Sun conjunct Mercury",
+        "why": "This aspect supports clear communication and decision-making in your job."
+      },
+      {
+        "type": "tarot",
+        "detail": "The Lovers reversed",
+        "why": "Indicates potential misalignment in current job relationships or choices."
+      }
+    ],
+    "tensions": [
+      {
+        "type": "astrology",
+        "detail": "Full Moon energy",
+        "why": "This may bring emotional truths to the surface, affecting job dynamics."
+      },
+      {
+        "type": "tarot",
+        "detail": "The Lovers reversed",
+        "why": "Suggests possible conflicts or misunderstandings in your work environment."
+      }
+    ],
+    "element_balance": {
+      "astro": "Earth, Air",
+      "tarot": "Fire:0; Earth:1; Air:0; Water:0",
+      "comment": "A strong Earth presence in both astrology and tarot suggests stability, but the Spirit elements indicate a need for introspection and alignment."
+    }
+  },
+  "interpretation": {
+    "theme": "Navigating Job Dynamics with Insight and Stability",
+    "positions": [
+      {
+        "card": "The Hermit",
+        "position": "Past",
+        "element": "Spirit",
+        "insight": "Your past experiences have led you to seek inner guidance and reflection, which is crucial for your current job situation."
+      },
+      {
+        "card": "The Lovers",
+        "position": "Present",
+        "element": "Spirit",
+        "insight": "Currently, you may be facing conflicts or misalignments in your job relationships, indicating a need for reevaluation."
+      },
+      {
+        "card": "Ten of Stones",
+        "position": "Future",
+        "element": "Earth",
+        "insight": "In the future, stability and potential wealth are indicated, suggesting that resolving current issues will lead to a solid foundation."
+      }
+    ],
+    "timing": [
+      "next 30 days"
+    ],
+    "action_items": [
+      "Engage in open communication with colleagues to address any misunderstandings.",
+      "Reflect on your values and how they align with your current job to ensure harmony.",
+      "Utilize the Full Moon energy to release any emotional baggage that may be affecting your work."
+    ],
+    "affirmations": [
+      "I embrace clarity and communication in my work relationships.",
+      "I align my actions with my core values for a harmonious work environment.",
+      "I am open to receiving stability and abundance in my career."
+    ]
+  },
+  "confidence": {
+    "overall": 0.85,
+    "notes": "The combination of astrological insights and tarot cards provides a strong foundation for understanding your job dynamics."
+  }
+}

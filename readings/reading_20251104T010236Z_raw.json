@@ -1,0 +1,126 @@
+{
+  "meta": {
+    "question": "will I get home of my own?",
+    "timeframe": "next 30 days",
+    "spread_name": "Home Ownership Inquiry",
+    "timestamp": "2025-11-04T01:02:36.517000Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": [
+        "Earth",
+        "Air"
+      ],
+      "notable_aspects": [
+        {
+          "aspect": "Sun conjunct Mercury",
+          "orb": "1°",
+          "interpretation": "Heightened communication and insight; clarity of thought."
+        },
+        {
+          "aspect": "Moon trine Pluto",
+          "orb": "2°",
+          "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+        },
+        {
+          "aspect": "Venus sextile Mars",
+          "orb": "3°",
+          "interpretation": "Creative harmony between desire and action."
+        }
+      ],
+      "lunar_phase": "Full Moon"
+    },
+    "themes": [
+      "emotional stability",
+      "communication",
+      "relationship dynamics"
+    ]
+  },
+  "spread_summary": {
+    "layout": [
+      "Past: The Hermit",
+      "Present: The Lovers",
+      "Future: Ten of Stones"
+    ],
+    "card_elements_count": {
+      "Fire": 0,
+      "Earth": 1,
+      "Air": 0,
+      "Water": 0
+    },
+    "majors_count": 2
+  },
+  "resonance": {
+    "matches": [
+      {
+        "type": "astrology",
+        "detail": "Full Moon in Taurus",
+        "why": "Emphasizes stability and security, aligning with the desire for a home."
+      },
+      {
+        "type": "tarot",
+        "detail": "Ten of Stones",
+        "why": "Represents wealth and stability, indicating potential for home ownership."
+      }
+    ],
+    "tensions": [
+      {
+        "type": "astrology",
+        "detail": "Moon trine Pluto",
+        "why": "While it offers emotional depth, it may also bring up fears of instability."
+      },
+      {
+        "type": "tarot",
+        "detail": "The Lovers reversed",
+        "why": "Indicates current misalignment in relationships or choices affecting home situation."
+      }
+    ],
+    "element_balance": {
+      "astro": "Earth and Air",
+      "tarot": "Fire:0; Earth:1; Air:0; Water:0",
+      "comment": "Strong Earth presence suggests practicality in achieving home ownership."
+    }
+  },
+  "interpretation": {
+    "theme": "Navigating Choices for Stability",
+    "positions": [
+      {
+        "card": "The Hermit",
+        "position": "Past",
+        "element": "Spirit",
+        "insight": "You have spent time in introspection, seeking inner guidance about your living situation."
+      },
+      {
+        "card": "The Lovers",
+        "position": "Present",
+        "element": "Spirit",
+        "insight": "Currently, there may be conflicts or misalignments in your relationships that are impacting your ability to secure a home."
+      },
+      {
+        "card": "Ten of Stones",
+        "position": "Future",
+        "element": "Earth",
+        "insight": "The future holds potential for stability and wealth, indicating that home ownership is achievable."
+      }
+    ],
+    "timing": [
+      "within the next 30 days"
+    ],
+    "action_items": [
+      "Engage in open communication with those involved in your housing situation to resolve conflicts.",
+      "Focus on practical steps to improve your financial stability, such as budgeting or seeking additional income.",
+      "Reflect on your values and what you truly want in a home to align your choices with your goals."
+    ],
+    "affirmations": [
+      "I am open to finding a stable and loving home.",
+      "I communicate clearly and effectively to create harmony in my living situation."
+    ]
+  },
+  "confidence": {
+    "overall": 0.85,
+    "notes": "The combination of tarot and astrological insights strongly supports the potential for home ownership."
+  }
+}

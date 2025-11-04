@@ -1,0 +1,126 @@
+{
+  "meta": {
+    "question": "Will I get my own place?",
+    "timeframe": "next 30 days",
+    "spread_name": "Astro-Tarot Reading",
+    "timestamp": "2025-11-04T01:14:03.980181Z"
+  },
+  "astro_summary": {
+    "core": {
+      "sun": "Libra 29° H7",
+      "moon": "Taurus 12° H2",
+      "asc": "Capricorn 15°",
+      "dominant_elements": [
+        "Earth",
+        "Air"
+      ],
+      "notable_aspects": [
+        {
+          "aspect": "Sun conjunct Mercury",
+          "orb": "1°",
+          "interpretation": "Heightened communication and insight; clarity of thought."
+        },
+        {
+          "aspect": "Moon trine Pluto",
+          "orb": "2°",
+          "interpretation": "Emotional renewal, depth of feeling, subconscious empowerment."
+        },
+        {
+          "aspect": "Venus sextile Mars",
+          "orb": "3°",
+          "interpretation": "Creative harmony between desire and action."
+        }
+      ],
+      "lunar_phase": "Full Moon"
+    },
+    "themes": [
+      "Emotional renewal",
+      "Clarity in relationships",
+      "Stability and legacy"
+    ]
+  },
+  "spread_summary": {
+    "layout": [
+      "Past: The Hermit",
+      "Present: The Lovers",
+      "Future: Ten of Stones"
+    ],
+    "card_elements_count": {
+      "Fire": 0,
+      "Earth": 1,
+      "Air": 0,
+      "Water": 0
+    },
+    "majors_count": 2
+  },
+  "resonance": {
+    "matches": [
+      {
+        "type": "Astrology",
+        "detail": "Full Moon in Taurus",
+        "why": "Highlights the need for stability and emotional grounding, aligning with the Ten of Stones."
+      },
+      {
+        "type": "Tarot",
+        "detail": "The Lovers reversed",
+        "why": "Indicates current conflicts or misalignments in relationships that may affect your housing situation."
+      }
+    ],
+    "tensions": [
+      {
+        "type": "Astrology",
+        "detail": "Sun in Libra",
+        "why": "Focus on relationships may distract from practical steps needed to secure a place."
+      },
+      {
+        "type": "Tarot",
+        "detail": "The Hermit",
+        "why": "Past introspection may lead to feelings of isolation that could hinder your progress."
+      }
+    ],
+    "element_balance": {
+      "astro": "Earth and Air",
+      "tarot": "Fire:0; Earth:1; Air:0; Water:0",
+      "comment": "A strong emphasis on Earth suggests a focus on practical matters related to stability and home."
+    }
+  },
+  "interpretation": {
+    "theme": "Navigating emotional and practical challenges towards securing your own place.",
+    "positions": [
+      {
+        "card": "The Hermit",
+        "position": "Past",
+        "element": "Spirit",
+        "insight": "Your past introspection has led to a deeper understanding of what you truly want, but it may have also caused feelings of isolation."
+      },
+      {
+        "card": "The Lovers",
+        "position": "Present",
+        "element": "Spirit",
+        "insight": "Currently, you may be facing conflicts or misalignments in your relationships that could impact your ability to find a place."
+      },
+      {
+        "card": "Ten of Stones",
+        "position": "Future",
+        "element": "Earth",
+        "insight": "In the near future, there is potential for stability and security, indicating that you may indeed secure your own place."
+      }
+    ],
+    "timing": [
+      "Within the next 30 days"
+    ],
+    "action_items": [
+      "Communicate openly with those around you to resolve any conflicts that may be affecting your housing situation.",
+      "Focus on practical steps towards securing a place, leveraging your insights from past experiences.",
+      "Utilize the Full Moon energy to release any emotional baggage that may be holding you back."
+    ],
+    "affirmations": [
+      "I am open to receiving my own space and creating a stable environment.",
+      "I release any fears of isolation and embrace the support around me."
+    ]
+  },
+  "confidence": {
+    "overall": 0.85,
+    "notes": "The combination of tarot and astrological insights strongly supports the potential for securing your own place."
+  }
+}
