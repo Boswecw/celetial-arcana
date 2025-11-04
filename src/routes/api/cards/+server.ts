@@ -1,39 +1,94 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from '@sveltejs/kit';
-import { readdir } from 'fs/promises';
-import { join } from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
 /**
  * GET /api/cards
- * Returns a list of all card image filenames from the static/cards directory
- * Automatically discovers new cards as they're added
+ * Returns a list of all card image filenames
+ * Static list for Netlify compatibility (78 cards total)
  */
+
+const CARD_FILES = [
+  'Ace_of_Flames.webp',
+  'Ace_of_Stones.webp',
+  'Ace_of_Tide.webp',
+  'Ace_of_Winds.webp',
+  'Death.webp',
+  'Eight_of_Flames.webp',
+  'Eight_of_Stones.webp',
+  'Eight_of_Tides.webp',
+  'Eight_of_Winds.webp',
+  'Five_of_Flames.webp',
+  'Five_of_Stones.webp',
+  'Five_of_Tides.webp',
+  'Five_of_Winds.webp',
+  'Four_of_Flames.webp',
+  'Four_of_Stones.webp',
+  'Four_of_Tides.webp',
+  'Four_of_Winds.webp',
+  'Judgement.webp',
+  'Justice.webp',
+  'King_of_Flames.webp',
+  'King_of_Stones.webp',
+  'King_of_Tides.webp',
+  'King_of_Winds.webp',
+  'Knight_of_Flames.webp',
+  'Knight_of_Stones.webp',
+  'Knight_of_Tides.webp',
+  'Knight_of_Winds.webp',
+  'Nine_of_Flames.webp',
+  'Nine_of_Stones.webp',
+  'Nine_of_Tides.webp',
+  'Nine_of_Winds.webp',
+  'Page_of_Flames.webp',
+  'Page_of_Stones.webp',
+  'Page_of_Tides.webp',
+  'Page_of_Winds.webp',
+  'Queen_of_Flames.webp',
+  'Queen_of_Stones.webp',
+  'Queen_of_Tides.webp',
+  'Queen_of_Winds.webp',
+  'Seven_of_Flames.webp',
+  'Seven_of_Stones.webp',
+  'Seven_of_Tides.webp',
+  'Seven_of_Winds.webp',
+  'Six_of_Flames.webp',
+  'Six_of_Stones.webp',
+  'Six_of_Tides.webp',
+  'Six_of_Winds.webp',
+  'Strength.webp',
+  'Temperance.webp',
+  'Ten_of_Flames.webp',
+  'Ten_of_Stones.webp',
+  'Ten_of_Tides.webp',
+  'Ten_of_Winds.webp',
+  'The_Chariot.webp',
+  'The_Devil.webp',
+  'The_Emperor.webp',
+  'The_Empress.webp',
+  'The_Fool.webp',
+  'The_Hanged_Man.webp',
+  'The_Hermit.webp',
+  'The_Hierophant.webp',
+  'The_High_Priestess.webp',
+  'The_Lovers.webp',
+  'The_Magician.webp',
+  'The_Moon.webp',
+  'The_Star.webp',
+  'The_Sun.webp',
+  'The_Tower.webp',
+  'The_World.webp',
+  'Three_of_Flames.webp',
+  'Three_of_Stones.webp',
+  'Three_of_Tides.webp',
+  'Three_of_Winds.webp',
+  'Two_of_Flames.webp',
+  'Two_of_Stones.webp',
+  'Two_of_Tides.webp',
+  'Two_of_Winds.webp',
+  'Wheel_of_Fortune.webp'
+];
+
 export const GET: RequestHandler = async () => {
-  try {
-    // Get the absolute path to the static/cards directory
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = dirname(__filename);
-    // Navigate from src/routes/api/cards to project root, then to static/cards
-    const cardsDir = join(__dirname, '..', '..', '..', '..', 'static', 'cards');
-
-    console.log('Reading cards from:', cardsDir);
-
-    // Read all files from the cards directory
-    const files = await readdir(cardsDir);
-
-    // Filter for webp files and sort alphabetically
-    const cardFiles = files
-      .filter((file) => file.endsWith('.webp'))
-      .sort();
-
-    console.log('Found cards:', cardFiles.length);
-
-    return json(cardFiles);
-  } catch (error) {
-    console.error('Error reading cards directory:', error);
-    return json([], { status: 500 });
-  }
+  return json(CARD_FILES);
 };
 
