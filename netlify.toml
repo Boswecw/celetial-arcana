@@ -1,6 +1,8 @@
 [build]
   command = "bun run build"
   publish = ".svelte-kit/netlify"
+  # Base directory for the build
+  base = ""
 
 [build.environment]
   NODE_VERSION = "20"
@@ -8,3 +10,7 @@
 [functions]
   node_bundler = "esbuild"
   external_node_modules = ["sharp"]
+
+# Force framework detection
+[dev]
+  framework = "#custom"
