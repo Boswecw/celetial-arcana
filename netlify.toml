@@ -6,6 +6,8 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  # Exclude non-sensitive config values from secrets scanning
+  SECRETS_SCAN_OMIT_KEYS = "ASTRO_TAROT_MODEL,TAROT_KB_PATH,CONSTELLATION_KB_PATH,PROJECT_ROOT,ASTRO_TAROT_STOPS,ENABLE_RESPONSE_CACHE"
 
 [functions]
   node_bundler = "esbuild"
