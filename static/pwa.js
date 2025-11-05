@@ -105,6 +105,11 @@ class PWAManager {
 
     document.body.appendChild(installButton);
     this.setupInstallButton();
+
+    // Make sure the button becomes visible after creation
+    requestAnimationFrame(() => {
+      installButton.classList.add('pwa-install-visible');
+    });
   }
 
   setupInstallButton() {
