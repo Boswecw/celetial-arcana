@@ -1,30 +1,24 @@
-const CACHE_NAME = 'celestia-arcana-v1.0.2';
-const STATIC_CACHE = 'celestia-arcana-static-v1.0.2';
+const CACHE_VERSION = 'v1.0.3';
+const STATIC_CACHE = `celestia-arcana-static-${CACHE_VERSION}`;
+const RUNTIME_CACHE = `celestia-arcana-runtime-${CACHE_VERSION}`;
 
 // Assets to cache for offline functionality
-const CACHE_ASSETS = [
+const PRECACHE_URLS = [
   '/',
-  '/deck',
-  '/alignment',
-  '/reading',
   '/manifest.json',
   '/pwa.js',
   '/pwa-styles.css',
-  '/Celestia_Arcana_banner.png'
+  '/Celestia_Arcana_banner.avif'
 ];
 
 // Install event - cache static assets
 self.addEventListener('install', (event) => {
-  console.log('Service Worker: Installing...');
-
   event.waitUntil(
     caches.open(STATIC_CACHE)
       .then((cache) => {
-        console.log('Service Worker: Caching static assets');
-        return cache.addAll(CACHE_ASSETS);
+        return cache.addAll(PRECACHE_URLS);
       })
       .then(() => {
-        console.log('Service Worker: Static assets cached');
         return self.skipWaiting();
       })
       .catch((error) => {
@@ -35,15 +29,12 @@ self.addEventListener('install', (event) => {
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('Service Worker: Activating...');
-
   event.waitUntil(
     caches.keys()
       .then((cacheNames) => {
         return Promise.all(
           cacheNames.map((cacheName) => {
-            if (cacheName !== STATIC_CACHE && cacheName !== CACHE_NAME) {
-              console.log('Service Worker: Clearing old cache', cacheName);
+            if (cacheName !== STATIC_CACHE && cacheName !== RUNTIME_CACHE) {
               return caches.delete(cacheName);
             }
           })
@@ -58,8 +49,57 @@ self.addEventListener('activate', (event) => {
 
 // Fetch event - serve from cache, fallback to network
 self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') {
+    return;
+  }
+
   // Skip cross-origin requests
   if (!event.request.url.startsWith(self.location.origin)) {
+    return;
+  }
+
+  const requestURL = new URL(event.request.url);
+
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const responseClone = response.clone();
+          caches.open(STATIC_CACHE).then((cache) => {
+            cache.put(event.request, responseClone);
+          });
+          return response;
+        })
+        .catch(async () => {
+          const cachedResponse = await caches.match(event.request);
+          if (cachedResponse) {
+            return cachedResponse;
+          }
+          return caches.match('/');
+        })
+    );
+    return;
+  }
+
+  if (PRECACHE_URLS.includes(requestURL.pathname)) {
+    event.respondWith(
+      caches.match(event.request).then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+
+        return fetch(event.request)
+          .then((response) => {
+            if (!response || response.status !== 200 || response.type !== 'basic') {
+              return response;
+            }
+
+            const responseClone = response.clone();
+            caches.open(STATIC_CACHE).then((cache) => cache.put(event.request, responseClone));
+            return response;
+          });
+      })
+    );
     return;
   }
 
@@ -68,7 +108,6 @@ self.addEventListener('fetch', (event) => {
       .then((cachedResponse) => {
         // Return cached version if available
         if (cachedResponse) {
-          console.log('Service Worker: Serving from cache', event.request.url);
           return cachedResponse;
         }
 
@@ -78,7 +117,7 @@ self.addEventListener('fetch', (event) => {
         return fetch(fetchRequest)
           .then((response) => {
             // Check if valid response
-            if (!response || response.status !== 200 || response.type !== 'basic') {
+            if (!response || response.status !== 200 || response.type === 'opaque') {
               return response;
             }
 
@@ -86,19 +125,21 @@ self.addEventListener('fetch', (event) => {
             const responseToCache = response.clone();
 
             // Cache dynamic content
-            caches.open(CACHE_NAME)
+            caches.open(RUNTIME_CACHE)
               .then((cache) => {
                 cache.put(event.request, responseToCache);
               });
 
             return response;
           })
-          .catch((error) => {
-            console.log('Service Worker: Fetch failed, serving offline page', error);
-
+          .catch(() => {
             // Return offline page for navigation requests
             if (event.request.mode === 'navigate') {
               return caches.match('/');
+            }
+
+            if (event.request.destination === 'image') {
+              return caches.match('/Celestia_Arcana_banner.avif');
             }
 
             // Return placeholder for other requests
@@ -122,7 +163,7 @@ self.addEventListener('sync', (event) => {
 async function syncBirthChartData() {
   try {
     // Retrieve stored birth chart requests
-    const cache = await caches.open(CACHE_NAME);
+    const cache = await caches.open(RUNTIME_CACHE);
     const requests = await cache.keys();
 
     // Process any pending chart calculations

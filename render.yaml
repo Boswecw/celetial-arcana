@@ -10,12 +10,16 @@ services:
 
     # Build Configuration
     buildCommand: |
-      # Install Node dependencies
-      npm install
-      # Install Python dependencies
-      pip install -r requirements.txt
+      # Install Bun for faster JS builds
+      curl -fsSL https://bun.sh/install | bash
+      export BUN_INSTALL="$HOME/.bun"
+      export PATH="$BUN_INSTALL/bin:$PATH"
+      # Install JS dependencies with Bun
+      bun install --frozen-lockfile
+      # Optional: install Python deps if scripts rely on them
+      if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       # Build SvelteKit application
-      npm run build
+      bun run build
 
     # Start Command
     startCommand: node build/index.js
