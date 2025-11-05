@@ -4,7 +4,6 @@ import { analyzeReading } from "$lib/rulesEngine";
 import { buildReadingContext } from "$lib/rag";
 import { buildSafeResponse } from "$lib/guardrails";
 import { aiTrainer } from "$lib/aiTrainer";
-import type { EphemerisData } from "$lib/ephemeris";
 
 const Schema = z.object({
   question: z.string().optional(),
@@ -28,7 +27,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
     // Analyze reading with rules engine
     const analysis = analyzeReading(
-      body.ephemeris || ({} as EphemerisData),
+      body.ephemeris ?? null,
       body.draw.map((d) => ({
         name: d.card.name,
         reversed: d.reversed,

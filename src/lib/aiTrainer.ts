@@ -6,7 +6,7 @@
 export interface ReadingFeedback {
   readingId: string;
   rating: number; // 1-5
-  feedback: string;
+  feedback?: string;
   timestamp: number;
   cards: string[];
   themes: string[];
@@ -263,4 +263,3 @@ These themes resonate strongly with users. Weave them throughout the reading.`;
 
 // Export singleton instance
 export const aiTrainer = new AITrainer();
-

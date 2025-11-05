@@ -1,8 +1,7 @@
 import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from '@sveltejs/kit';
-import { spawn } from 'child_process';
+import { spawn, execSync } from 'child_process';
 import { join } from 'path';
-import { execSync } from 'child_process';
 
 // Detect if running in serverless environment
 function isServerlessEnvironment(): boolean {
@@ -204,20 +203,20 @@ function executePythonScript(payload: AstroTarotRequest): Promise<PythonOutput> 
     let stdout = '';
     let stderr = '';
 
-    pythonProcess.stdout?.on('data', (data) => {
+    pythonProcess.stdout?.on('data', (data: Buffer) => {
       stdout += data.toString();
     });
 
-    pythonProcess.stderr?.on('data', (data) => {
+    pythonProcess.stderr?.on('data', (data: Buffer) => {
       stderr += data.toString();
       console.error('[Python stderr]', data.toString());
     });
 
-    pythonProcess.on('error', (err) => {
+    pythonProcess.on('error', (err: Error) => {
       reject(new Error(`Failed to spawn Python process: ${err.message}`));
     });
 
-    pythonProcess.on('close', (code) => {
+    pythonProcess.on('close', (code: number | null) => {
       if (code !== 0) {
         reject(new Error(`Python script exited with code ${code}: ${stderr}`));
         return;

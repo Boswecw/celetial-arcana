@@ -2,9 +2,9 @@ import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from '@sveltejs/kit';
 
 interface CombinedReadingRequest {
-  question: string;
-  traditionalReading: string;
-  astroTarotSynthesis: {
+  question?: string;
+  traditionalReading?: string;
+  astroTarotSynthesis?: {
     interpretation?: {
       theme?: string;
       action_items?: string[];
@@ -26,7 +26,7 @@ interface CombinedReadingRequest {
       tensions?: Array<{ type: string; detail: string }>;
     };
   };
-  cards: Array<{
+  cards?: Array<{
     name: string;
     position: string;
     reversed: boolean;
@@ -34,7 +34,19 @@ interface CombinedReadingRequest {
   userZodiac?: string;
 }
 
-async function generateCombinedReading(payload: CombinedReadingRequest): Promise<string> {
+type NormalizedCombinedReadingRequest = {
+  question: string;
+  traditionalReading: string;
+  astroTarotSynthesis: NonNullable<CombinedReadingRequest['astroTarotSynthesis']>;
+  cards: Array<{
+    name: string;
+    position: string;
+    reversed: boolean;
+  }>;
+  userZodiac?: string;
+};
+
+async function generateCombinedReading(payload: NormalizedCombinedReadingRequest): Promise<string> {
   const apiKey = process.env.OPENAI_API_KEY;
 
   if (!apiKey) {
@@ -138,7 +150,7 @@ Make these actions specific to their question: "${payload.question}"`;
   }
 }
 
-function generateSimpleCombined(payload: CombinedReadingRequest): string {
+function generateSimpleCombined(payload: NormalizedCombinedReadingRequest): string {
   const cardNames = payload.cards.map((c) => c.name).join(", ");
   const astroThemes = payload.astroTarotSynthesis.astro_summary?.themes?.join(", ") || "cosmic influences";
 
@@ -149,13 +161,30 @@ export const POST: RequestHandler = async ({ request }) => {
   try {
     const payload = (await request.json()) as CombinedReadingRequest;
 
-    // Validate required fields
-    if (!payload.question || !payload.traditionalReading || !payload.astroTarotSynthesis) {
-      return error(400, "Missing required fields: question, traditionalReading, astroTarotSynthesis");
-    }
+    const question = payload.question?.trim() || "What guidance does the universe have for me?";
+    const traditionalReading =
+      payload.traditionalReading?.trim() ||
+      "The tarot invites you to reflect on your journey and take mindful, heart-led action.";
+    const astroTarotSynthesis: NonNullable<CombinedReadingRequest['astroTarotSynthesis']> = payload.astroTarotSynthesis ?? {
+      interpretation: {},
+      astro_summary: {},
+    };
+    const cards = payload.cards && payload.cards.length > 0
+      ? payload.cards
+      : [
+          { name: "The Fool", position: "General Guidance", reversed: false },
+        ];
+
+    const normalizedPayload: NormalizedCombinedReadingRequest = {
+      question,
+      traditionalReading,
+      astroTarotSynthesis,
+      cards,
+      userZodiac: payload.userZodiac,
+    };
 
     // Generate combined reading
-    const combinedReading = await generateCombinedReading(payload);
+    const combinedReading = await generateCombinedReading(normalizedPayload);
 
     return json({ reading: combinedReading });
   } catch (err) {

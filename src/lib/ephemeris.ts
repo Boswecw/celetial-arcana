@@ -99,7 +99,10 @@ export function getChart(
   longitude: number
 ): EphemerisData {
   // Parse date (YYYY-MM-DD)
-  const [year, month, day] = date.split('-').map(Number);
+  const [yearRaw, monthRaw, dayRaw] = date.split('-').map(Number);
+  const safeYear = Number.isFinite(yearRaw) ? yearRaw : new Date().getUTCFullYear();
+  const safeMonth = Number.isFinite(monthRaw) ? monthRaw : 1;
+  const safeDay = Number.isFinite(dayRaw) ? dayRaw : 1;
 
   // Parse time (HH:MM:SS)
   const [hour, minute, second] = time.split(':').map(Number);
@@ -108,10 +111,15 @@ export function getChart(
   const observer = new Astronomy.Observer(latitude, longitude, 0);
 
   // Create date/time
-  const astroDate = new Astronomy.AstroTime(year, month, day, hour, minute, second);
+  const safeHour = Number.isFinite(hour) ? hour : 0;
+  const safeMinute = Number.isFinite(minute) ? minute : 0;
+  const safeSecond = Number.isFinite(second) ? second : 0;
+  const astroDate = new Astronomy.AstroTime(
+    new Date(Date.UTC(safeYear, safeMonth - 1, safeDay, safeHour, safeMinute, safeSecond))
+  );
 
   // Calculate planetary positions
-  const planets = calculatePlanets(astroDate, observer);
+  const planets = calculatePlanets(astroDate);
 
   // Calculate houses (Placidus system)
   const { houses, ascendant, midheaven } = calculateHouses(astroDate, observer);
@@ -147,17 +155,15 @@ export function getChart(
   };
 }
 
-function calculatePlanets(date: Astronomy.AstroTime, observer: Astronomy.Observer): EphemerisData['planets'] {
-  const planets: any = {};
+type PlanetKey = keyof EphemerisData['planets'];
 
-  for (const [name, body] of Object.entries(PLANET_BODIES)) {
+function calculatePlanets(date: Astronomy.AstroTime): EphemerisData['planets'] {
+  const planets = {} as EphemerisData['planets'];
+
+  for (const [name, body] of Object.entries(PLANET_BODIES) as Array<[PlanetKey, Astronomy.Body]>) {
     try {
-      const equ = Astronomy.Equator(body, date, observer, true, true);
-      const hor = Astronomy.Horizon(date, observer, equ.ra, equ.dec);
-
-      // Get ecliptic longitude
-      const ecl = Astronomy.Ecliptic(equ);
-      planets[name] = (ecl.lon + 360) % 360;
+      const longitude = Astronomy.EclipticLongitude(body, date);
+      planets[name] = normalizeLongitude(longitude);
     } catch (e) {
       // Fallback for any calculation errors
       planets[name] = Math.random() * 360;
@@ -272,7 +278,16 @@ function calculateDominantElements(
     Water: 0,
   };
 
-  const considered = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn'];
+  const considered: Array<keyof EphemerisData['planets']> = [
+    'sun',
+    'moon',
+    'mercury',
+    'venus',
+    'mars',
+    'jupiter',
+    'saturn',
+  ];
+
   for (const name of considered) {
     const longitude = planets[name];
     if (typeof longitude === 'number') {

@@ -4,6 +4,8 @@ export type Card = {
   upright: string;
   reversed: string;
   image?: string;
+  element?: string;
+  suit?: string;
 };
 
 export type Draw = {
@@ -59,4 +61,3 @@ export function drawSpread(
   }
   return picks;
 }
-

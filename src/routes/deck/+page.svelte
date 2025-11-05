@@ -51,12 +51,12 @@
     'Winds': '🌪️',
   };
 
-  onMount(async () => {
+  onMount(() => {
     // Load knowledge data
-    await loadKnowledgeData();
-
-    // Load all cards from static directory
-    await loadAllCards();
+    (async () => {
+      await loadKnowledgeData();
+      await loadAllCards();
+    })();
 
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && showModal) {

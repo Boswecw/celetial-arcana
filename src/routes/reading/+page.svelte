@@ -3,6 +3,7 @@
   import { celestiaArcanaCards } from '$lib/decks/celestia-arcana';
   import ReadingFeedback from '$lib/components/ReadingFeedback.svelte';
   import ReadingExplainer from '$lib/components/ReadingExplainer.svelte';
+  import type { CardInterpretation } from '$lib/rulesEngine';
 
   type ShuffleCard = {
     id: number;
@@ -29,7 +30,7 @@
   let locationError = '';
   let isShuffling = false;
   let isDealing = false;
-  let deckElement: HTMLDivElement;
+  let deckElement: HTMLDivElement | null = null;
   let dealtCards: any[] = [];
   let readingId = '';
   let drawnCards: any[] = [];
@@ -440,7 +441,7 @@
       drawnCards = newDrawnCards;
       shuffleResults = newDrawnCards.map((d, i) => ({
         id: `${d.card.id}-${i}`,
-        image: d.card.image,
+        image: d.card.image ?? '',
         name: d.card.name,
       }));
 
@@ -881,7 +882,7 @@
 
                       <!-- Card Meaning -->
                       {#if reading.analysis && reading.analysis.cards}
-                        {@const cardMeaning = reading.analysis.cards.find((c) => c.name === dealtCard.card.name)}
+                        {@const cardMeaning = (reading.analysis.cards as CardInterpretation[]).find((c) => c.name === dealtCard.card.name)}
                         {#if cardMeaning}
                           <div class="mt-4 p-4 rounded-lg" style="background-color: rgba(123, 97, 255, 0.1); border-left: 4px solid #7B61FF;">
                             <p class="text-sm leading-relaxed" style="color: #EDEBFF;">
@@ -1108,7 +1109,6 @@
                 themes={reading.analysis?.themes || []}
                 astroTarotThemes={reading.astroTarot?.astro_summary?.themes || []}
                 {userZodiac}
-                {question}
                 onFeedbackSubmitted={() => {
                   // Optional: Show success message or refresh
                 }}

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import InfoTooltip from '$lib/components/InfoTooltip.svelte';
+  import type { EphemerisData } from '$lib/ephemeris';
 
   let date = new Date().toISOString().split('T')[0];
   let time = '12:00';
@@ -9,7 +10,8 @@
   let locationLoading = false;
   let locationError = '';
   let loading = false;
-  let chartData: any = null;
+  let chartData: EphemerisData | null = null;
+  let planetEntries: Array<[string, number]> = [];
   let error = '';
 
   const planetEmojis: Record<string, string> = {
@@ -101,7 +103,7 @@
       }
 
       const data = await ephemerisRes.json();
-      chartData = data;
+      chartData = data as EphemerisData;
       console.log('Chart data received:', chartData);
     } catch (err) {
       if (err instanceof Error && err.name === 'AbortError') {
@@ -115,6 +117,8 @@
       loading = false;
     }
   }
+
+  $: planetEntries = chartData ? (Object.entries(chartData.planets) as Array<[string, number]>) : [];
 </script>
 
 <div class="min-h-screen p-6" style="background: linear-gradient(135deg, #0B0724 0%, #17133A 100%);">
@@ -270,7 +274,7 @@
               <InfoTooltip text="These show where each planet was located in the zodiac at your birth time. Each planet represents different aspects of your personality and life." />
             </div>
             <div class="grid grid-cols-2 gap-4">
-              {#each Object.entries(chartData.planets) as [planet, longitude]}
+              {#each planetEntries as [planet, longitude]}
                 <div class="p-4 rounded-lg" style="background-color: rgba(123, 97, 255, 0.1); border-left: 4px solid #7B61FF;">
                   <div class="flex items-center justify-between mb-2">
                     <span class="text-2xl">{planetEmojis[planet] || '●'}</span>

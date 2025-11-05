@@ -75,13 +75,14 @@ const HOUSE_MEANINGS: Record<number, string> = {
 };
 
 export function analyzeReading(
-  ephemeris: EphemerisData,
+  ephemeris: Partial<EphemerisData> | null | undefined,
   drawnCards: Array<{ name: string; reversed: boolean; position: string }>
 ): ReadingAnalysis {
+  const safeEphemeris: Partial<EphemerisData> = ephemeris ?? {};
   const cardInterpretations = analyzeCards(drawnCards);
-  const aspectInterpretations = analyzeAspects(ephemeris.aspects);
-  const houseInterpretations = analyzeHouses(ephemeris);
-  const weights = calculateWeights(ephemeris, cardInterpretations, aspectInterpretations);
+  const aspectInterpretations = analyzeAspects(safeEphemeris.aspects);
+  const houseInterpretations = analyzeHouses(safeEphemeris);
+  const weights = calculateWeights(safeEphemeris, cardInterpretations, aspectInterpretations);
   const themes = extractThemes(cardInterpretations, aspectInterpretations, houseInterpretations);
   const interpretations = generateInterpretations(
     cardInterpretations,
@@ -121,7 +122,11 @@ function analyzeCards(drawnCards: Array<{ name: string; reversed: boolean; posit
   });
 }
 
-function analyzeAspects(aspects: Aspect[]): AspectInterpretation[] {
+function analyzeAspects(aspects: Aspect[] | undefined): AspectInterpretation[] {
+  if (!aspects || aspects.length === 0) {
+    return [];
+  }
+
   return aspects.slice(0, 5).map((aspect) => {
     const key = `${aspect.planet1}_${aspect.planet2}`;
     const meaning =
@@ -141,8 +146,20 @@ function analyzeAspects(aspects: Aspect[]): AspectInterpretation[] {
   });
 }
 
-function analyzeHouses(ephemeris: EphemerisData): HouseInterpretation[] {
+function analyzeHouses(ephemeris: Partial<EphemerisData> | null | undefined): HouseInterpretation[] {
   const interpretations: HouseInterpretation[] = [];
+
+  if (ephemeris?.houses && ephemeris.houses.length > 0) {
+    ephemeris.houses.forEach((_, index) => {
+      const houseNumber = index + 1;
+      interpretations.push({
+        house: houseNumber,
+        meaning: HOUSE_MEANINGS[houseNumber] ?? 'Life domains and personal growth',
+        weight: 0.5,
+      });
+    });
+    return interpretations;
+  }
 
   for (let i = 1; i <= 12; i++) {
     interpretations.push({
@@ -156,19 +173,25 @@ function analyzeHouses(ephemeris: EphemerisData): HouseInterpretation[] {
 }
 
 function calculateWeights(
-  ephemeris: EphemerisData,
+  ephemeris: Partial<EphemerisData> | null | undefined,
   cards: CardInterpretation[],
   aspects: AspectInterpretation[]
 ): ReadingAnalysis['weights'] {
   const planetary: Record<string, number> = {};
-  const planets = Object.keys(ephemeris.planets);
+  let planets = ephemeris?.planets ? Object.keys(ephemeris.planets) : [];
+
+  if (planets.length === 0) {
+    planets = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn'];
+  }
 
   planets.forEach((planet) => {
     planetary[planet] = 0.5 + Math.random() * 0.5;
   });
 
-  const aspectalWeight = aspects.reduce((sum, a) => sum + a.weight, 0) / Math.max(1, aspects.length);
-  const cardinalWeight = cards.reduce((sum, c) => sum + c.weight, 0) / Math.max(1, cards.length);
+  const aspectalWeight =
+    aspects.length > 0 ? aspects.reduce((sum, a) => sum + a.weight, 0) / aspects.length : 0.5;
+  const cardinalWeight =
+    cards.length > 0 ? cards.reduce((sum, c) => sum + c.weight, 0) / cards.length : 0.5;
 
   return {
     planetary,
@@ -220,4 +243,3 @@ function generateInterpretations(
 
   return interpretations;
 }
-

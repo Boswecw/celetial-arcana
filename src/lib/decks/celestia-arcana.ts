@@ -26,7 +26,7 @@ export const celestiaArcanaCards: Card[] = [
     name: 'The High Priestess',
     upright: 'Intuition, sacred knowledge, divine feminine, the subconscious, mystery',
     reversed: 'Secrets, disconnection from intuition, superficiality, hidden agendas',
-    image: '/cards/The_High_Priestes.webp',
+    image: '/cards/The_High_Priestess.webp',
   },
   {
     id: 'ca-3',
@@ -562,4 +562,3 @@ export const celestiaArcanaCards: Card[] = [
     image: '/cards/King_of_Winds.webp',
   },
 ];
-

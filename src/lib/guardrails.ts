@@ -157,7 +157,12 @@ export function buildSafeResponse(
 } {
   const guardrails = applyGuardrails(reading, userQuestion);
 
-  const response = {
+  const response: {
+    reading: string;
+    disclaimer: string;
+    warnings: string[];
+    resources?: string;
+  } = {
     reading: guardrails.sanitized,
     disclaimer: guardrails.disclaimer,
     warnings: guardrails.warnings,
@@ -169,4 +174,3 @@ export function buildSafeResponse(
 
   return response;
 }
-
