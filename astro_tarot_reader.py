@@ -38,7 +38,14 @@ OUTPUT STRICT SCHEMA (do not add new keys):
 """
 
 from __future__ import annotations
-import os, sys, json, datetime, re, argparse, pathlib, time, requests, hashlib
+import os, sys, json, datetime, re, argparse, pathlib, time, hashlib
+
+# Ensure vendored packages (installed via --target python_packages) are importable
+_PACKAGE_DIR = pathlib.Path(__file__).resolve().parent / "python_packages"
+if _PACKAGE_DIR.exists():
+    sys.path.insert(0, str(_PACKAGE_DIR))
+
+import requests
 from typing import List, Dict, Any, Optional
 from requests.exceptions import ReadTimeout, ConnectTimeout, Timeout, RequestException
 from functools import lru_cache
