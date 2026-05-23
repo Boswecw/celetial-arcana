@@ -1,32 +1,32 @@
-import type { RequestHandler } from "@sveltejs/kit";
-import { json, error } from "@sveltejs/kit";
-import { loadDotEnv } from "$lib/env";
+import type { RequestHandler } from '@sveltejs/kit';
+import { json, error } from '@sveltejs/kit';
+import { loadDotEnv } from '$lib/env';
 import {
-  delimitUserQuestion,
-  sanitizeUserQuestion,
-  UNTRUSTED_INPUT_INSTRUCTION,
-} from "$lib/promptSafety";
+	delimitUserQuestion,
+	sanitizeUserQuestion,
+	UNTRUSTED_INPUT_INSTRUCTION
+} from '$lib/promptSafety';
 
 loadDotEnv();
 
 interface ExplanationRequest {
-  reading: any;
-  userMessage: string;
+	reading: any;
+	userMessage: string;
 }
 
 export const POST: RequestHandler = async ({ request }) => {
-  try {
-    const body = (await request.json()) as ExplanationRequest;
+	try {
+		const body = (await request.json()) as ExplanationRequest;
 
-    if (!body.reading || !body.userMessage) {
-      return error(400, "Missing reading or userMessage");
-    }
+		if (!body.reading || !body.userMessage) {
+			return error(400, 'Missing reading or userMessage');
+		}
 
-    // Build context from the reading
-    const readingContext = buildReadingContext(body.reading);
+		// Build context from the reading
+		const readingContext = buildReadingContext(body.reading);
 
-    const apiKey = process.env.OPENAI_API_KEY;
-    const systemPrompt = `You are Celestia, a mystical tarot and astrology guide. You explain readings in a warm, conversational way.
+		const apiKey = process.env.OPENAI_API_KEY;
+		const systemPrompt = `You are Celestia, a mystical tarot and astrology guide. You explain readings in a warm, conversational way.
 
 ${UNTRUSTED_INPUT_INSTRUCTION}
 
@@ -45,152 +45,152 @@ INSTRUCTIONS:
 - Never make predictions; focus on reflection, agency, and guidance.
 - Read-only: do not ask for feedback or suggest changes.`;
 
-    const safeQuestion = sanitizeUserQuestion(body.userMessage);
-    const userPrompt = `Question:\n${delimitUserQuestion(safeQuestion)}`;
+		const safeQuestion = sanitizeUserQuestion(body.userMessage);
+		const userPrompt = `Question:\n${delimitUserQuestion(safeQuestion)}`;
 
-    let explanation = "";
+		let explanation = '';
 
-    if (apiKey) {
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "gpt-4o-mini",
-          max_tokens: 600,
-          temperature: 0.65,
-          messages: [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: userPrompt },
-          ],
-        }),
-      });
+		if (apiKey) {
+			const response = await fetch('https://api.openai.com/v1/chat/completions', {
+				method: 'POST',
+				headers: {
+					Authorization: `Bearer ${apiKey}`,
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					model: 'gpt-4o-mini',
+					max_tokens: 600,
+					temperature: 0.65,
+					messages: [
+						{ role: 'system', content: systemPrompt },
+						{ role: 'user', content: userPrompt }
+					]
+				})
+			});
 
-      if (!response.ok) {
-        const errorData = await response.text();
-        console.error("[OpenAI error]", errorData);
-        return error(500, "Failed to generate explanation");
-      }
+			if (!response.ok) {
+				const errorData = await response.text();
+				console.error('[OpenAI error]', errorData);
+				return error(500, 'Failed to generate explanation');
+			}
 
-      const data = await response.json();
-      explanation = data.choices?.[0]?.message?.content?.trim() || "";
-    } else {
-      explanation = buildFallbackExplanation(readingContext, body.userMessage);
-    }
+			const data = await response.json();
+			explanation = data.choices?.[0]?.message?.content?.trim() || '';
+		} else {
+			explanation = buildFallbackExplanation(readingContext, body.userMessage);
+		}
 
-    return json({
-      success: true,
-      explanation,
-    });
-  } catch (err) {
-    console.error("[reading-explanation error]", err);
-    return error(500, "Explanation failed");
-  }
+		return json({
+			success: true,
+			explanation
+		});
+	} catch (err) {
+		console.error('[reading-explanation error]', err);
+		return error(500, 'Explanation failed');
+	}
 };
 
 function buildReadingContext(reading: any): string {
-  let context = "";
+	let context = '';
 
-  if (reading.meta) {
-    context += `Question: ${reading.meta.question}\n`;
-    context += `Timeframe: ${reading.meta.timeframe}\n\n`;
-  }
+	if (reading.meta) {
+		context += `Question: ${reading.meta.question}\n`;
+		context += `Timeframe: ${reading.meta.timeframe}\n\n`;
+	}
 
-  if (reading.astroTarot) {
-    const astro = reading.astroTarot;
+	if (reading.astroTarot) {
+		const astro = reading.astroTarot;
 
-    if (astro.astro_summary?.core) {
-      const core = astro.astro_summary.core;
-      context += `ASTROLOGICAL CONTEXT:\n`;
-      if (core.sun) context += `- Sun: ${core.sun}\n`;
-      if (core.moon) context += `- Moon: ${core.moon}\n`;
-      if (core.asc) context += `- Ascendant: ${core.asc}\n`;
-      if (core.lunar_phase) context += `- Lunar Phase: ${core.lunar_phase}\n`;
-      context += "\n";
-    }
+		if (astro.astro_summary?.core) {
+			const core = astro.astro_summary.core;
+			context += `ASTROLOGICAL CONTEXT:\n`;
+			if (core.sun) context += `- Sun: ${core.sun}\n`;
+			if (core.moon) context += `- Moon: ${core.moon}\n`;
+			if (core.asc) context += `- Ascendant: ${core.asc}\n`;
+			if (core.lunar_phase) context += `- Lunar Phase: ${core.lunar_phase}\n`;
+			context += '\n';
+		}
 
-    if (astro.astro_summary?.themes) {
-      context += `Astrological Themes: ${astro.astro_summary.themes.join(", ")}\n\n`;
-    }
+		if (astro.astro_summary?.themes) {
+			context += `Astrological Themes: ${astro.astro_summary.themes.join(', ')}\n\n`;
+		}
 
-    if (astro.spread_summary?.layout) {
-      context += `TAROT SPREAD (with positions and meanings):\n`;
-      astro.spread_summary.layout.forEach((item: string) => {
-        context += `- ${item}\n`;
-      });
-      context += "\n";
-    }
+		if (astro.spread_summary?.layout) {
+			context += `TAROT SPREAD (with positions and meanings):\n`;
+			astro.spread_summary.layout.forEach((item: string) => {
+				context += `- ${item}\n`;
+			});
+			context += '\n';
+		}
 
-    // Add detailed card interpretations if available
-    if (astro.interpretation?.positions && astro.interpretation.positions.length > 0) {
-      context += `DETAILED CARD INTERPRETATIONS:\n`;
-      astro.interpretation.positions.forEach((pos: any) => {
-        if (pos.card) {
-          context += `\n${pos.card}:\n`;
-          if (pos.meaning) context += `  Meaning: ${pos.meaning}\n`;
-          if (pos.connection) context += `  Connection to question: ${pos.connection}\n`;
-        }
-      });
-      context += "\n";
-    }
+		// Add detailed card interpretations if available
+		if (astro.interpretation?.positions && astro.interpretation.positions.length > 0) {
+			context += `DETAILED CARD INTERPRETATIONS:\n`;
+			astro.interpretation.positions.forEach((pos: any) => {
+				if (pos.card) {
+					context += `\n${pos.card}:\n`;
+					if (pos.meaning) context += `  Meaning: ${pos.meaning}\n`;
+					if (pos.connection) context += `  Connection to question: ${pos.connection}\n`;
+				}
+			});
+			context += '\n';
+		}
 
-    if (astro.interpretation?.theme) {
-      context += `READING THEME: ${astro.interpretation.theme}\n\n`;
-    }
+		if (astro.interpretation?.theme) {
+			context += `READING THEME: ${astro.interpretation.theme}\n\n`;
+		}
 
-    if (astro.resonance?.matches && astro.resonance.matches.length > 0) {
-      context += `KEY HARMONIES:\n`;
-      astro.resonance.matches.forEach((match: any) => {
-        context += `- ${match.detail}\n`;
-      });
-      context += "\n";
-    }
+		if (astro.resonance?.matches && astro.resonance.matches.length > 0) {
+			context += `KEY HARMONIES:\n`;
+			astro.resonance.matches.forEach((match: any) => {
+				context += `- ${match.detail}\n`;
+			});
+			context += '\n';
+		}
 
-    if (astro.resonance?.tensions && astro.resonance.tensions.length > 0) {
-      context += `AREAS OF GROWTH:\n`;
-      astro.resonance.tensions.forEach((tension: any) => {
-        context += `- ${tension.detail}\n`;
-      });
-      context += "\n";
-    }
+		if (astro.resonance?.tensions && astro.resonance.tensions.length > 0) {
+			context += `AREAS OF GROWTH:\n`;
+			astro.resonance.tensions.forEach((tension: any) => {
+				context += `- ${tension.detail}\n`;
+			});
+			context += '\n';
+		}
 
-    if (astro.interpretation?.action_items && astro.interpretation.action_items.length > 0) {
-      context += `SUGGESTED ACTIONS:\n`;
-      astro.interpretation.action_items.forEach((action: string) => {
-        context += `- ${action}\n`;
-      });
-      context += "\n";
-    }
+		if (astro.interpretation?.action_items && astro.interpretation.action_items.length > 0) {
+			context += `SUGGESTED ACTIONS:\n`;
+			astro.interpretation.action_items.forEach((action: string) => {
+				context += `- ${action}\n`;
+			});
+			context += '\n';
+		}
 
-    if (astro.interpretation?.affirmations && astro.interpretation.affirmations.length > 0) {
-      context += `AFFIRMATIONS:\n`;
-      astro.interpretation.affirmations.forEach((aff: string) => {
-        context += `- ${aff}\n`;
-      });
-    }
-  }
+		if (astro.interpretation?.affirmations && astro.interpretation.affirmations.length > 0) {
+			context += `AFFIRMATIONS:\n`;
+			astro.interpretation.affirmations.forEach((aff: string) => {
+				context += `- ${aff}\n`;
+			});
+		}
+	}
 
-  if (reading.reading) {
-    context += `TRADITIONAL TAROT OVERVIEW:\n${reading.reading}\n\n`;
-  }
+	if (reading.reading) {
+		context += `TRADITIONAL TAROT OVERVIEW:\n${reading.reading}\n\n`;
+	}
 
-  if (reading.combinedReading) {
-    context += `COMBINED INSIGHT:\n${reading.combinedReading}\n\n`;
-  }
+	if (reading.combinedReading) {
+		context += `COMBINED INSIGHT:\n${reading.combinedReading}\n\n`;
+	}
 
-  if (reading.analysis?.cards?.length) {
-    context += `RULES ENGINE CARD NOTES:\n`;
-    reading.analysis.cards.forEach((card: any) => {
-      context += `- ${card.position}: ${card.name}${card.reversed ? " (reversed)" : ""} → ${card.meaning}\n`;
-    });
-    context += "\n";
-  }
+	if (reading.analysis?.cards?.length) {
+		context += `RULES ENGINE CARD NOTES:\n`;
+		reading.analysis.cards.forEach((card: any) => {
+			context += `- ${card.position}: ${card.name}${card.reversed ? ' (reversed)' : ''} → ${card.meaning}\n`;
+		});
+		context += '\n';
+	}
 
-  return context;
+	return context;
 }
 
 function buildFallbackExplanation(context: string, question: string): string {
-  return `Here is what the reading is emphasizing regarding "${question}":\n\n${context}\nThis is a condensed summary because no live AI service is connected. Focus on the repeating themes and action items above, and let me know if you'd like to dive into a specific card or astro influence.`;
+	return `Here is what the reading is emphasizing regarding "${question}":\n\n${context}\nThis is a condensed summary because no live AI service is connected. Focus on the repeating themes and action items above, and let me know if you'd like to dive into a specific card or astro influence.`;
 }

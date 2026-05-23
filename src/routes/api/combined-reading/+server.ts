@@ -2,84 +2,88 @@ import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from '@sveltejs/kit';
 import { loadDotEnv } from '$lib/env';
 import {
-  delimitUserQuestion,
-  sanitizeUserQuestion,
-  UNTRUSTED_INPUT_INSTRUCTION,
+	delimitUserQuestion,
+	sanitizeUserQuestion,
+	UNTRUSTED_INPUT_INSTRUCTION
 } from '$lib/promptSafety';
 
 loadDotEnv();
 
 interface CombinedReadingRequest {
-  question?: string;
-  traditionalReading?: string;
-  astroTarotSynthesis?: {
-    interpretation?: {
-      theme?: string;
-      action_items?: string[];
-      affirmations?: string[];
-    };
-    astro_summary?: {
-      themes?: string[];
-      core?: {
-        sun?: string;
-        moon?: string;
-        asc?: string;
-        dominant_elements?: string[];
-        notable_aspects?: Array<{ aspect: string; interpretation: string }>;
-        lunar_phase?: string;
-      };
-    };
-    resonance?: {
-      matches?: Array<{ type: string; detail: string }>;
-      tensions?: Array<{ type: string; detail: string }>;
-    };
-  };
-  cards?: Array<{
-    name: string;
-    position: string;
-    reversed: boolean;
-  }>;
-  userZodiac?: string;
+	question?: string;
+	traditionalReading?: string;
+	astroTarotSynthesis?: {
+		interpretation?: {
+			theme?: string;
+			action_items?: string[];
+			affirmations?: string[];
+		};
+		astro_summary?: {
+			themes?: string[];
+			core?: {
+				sun?: string;
+				moon?: string;
+				asc?: string;
+				dominant_elements?: string[];
+				notable_aspects?: Array<{ aspect: string; interpretation: string }>;
+				lunar_phase?: string;
+			};
+		};
+		resonance?: {
+			matches?: Array<{ type: string; detail: string }>;
+			tensions?: Array<{ type: string; detail: string }>;
+		};
+	};
+	cards?: Array<{
+		name: string;
+		position: string;
+		reversed: boolean;
+	}>;
+	userZodiac?: string;
 }
 
 type NormalizedCombinedReadingRequest = {
-  question: string;
-  traditionalReading: string;
-  astroTarotSynthesis: NonNullable<CombinedReadingRequest['astroTarotSynthesis']>;
-  cards: Array<{
-    name: string;
-    position: string;
-    reversed: boolean;
-  }>;
-  userZodiac?: string;
+	question: string;
+	traditionalReading: string;
+	astroTarotSynthesis: NonNullable<CombinedReadingRequest['astroTarotSynthesis']>;
+	cards: Array<{
+		name: string;
+		position: string;
+		reversed: boolean;
+	}>;
+	userZodiac?: string;
 };
 
 async function generateCombinedReading(payload: NormalizedCombinedReadingRequest): Promise<string> {
-  const apiKey = process.env.OPENAI_API_KEY;
+	const apiKey = process.env.OPENAI_API_KEY;
 
-  if (!apiKey) {
-    // Fallback to simple combination
-    return generateSimpleCombined(payload);
-  }
+	if (!apiKey) {
+		// Fallback to simple combination
+		return generateSimpleCombined(payload);
+	}
 
-  try {
-    const cardList = payload.cards
-      .map((c) => `${c.position}: ${c.name}${c.reversed ? " (reversed)" : ""}`)
-      .join("\n");
+	try {
+		const cardList = payload.cards
+			.map((c) => `${c.position}: ${c.name}${c.reversed ? ' (reversed)' : ''}`)
+			.join('\n');
 
-    const astroThemes = payload.astroTarotSynthesis.astro_summary?.themes?.join(", ") || "cosmic influences";
-    const actionItems = payload.astroTarotSynthesis.interpretation?.action_items?.join(", ") || "reflection";
+		const astroThemes =
+			payload.astroTarotSynthesis.astro_summary?.themes?.join(', ') || 'cosmic influences';
+		const actionItems =
+			payload.astroTarotSynthesis.interpretation?.action_items?.join(', ') || 'reflection';
 
-    // Extract detailed birth chart information
-    const birthChart = payload.astroTarotSynthesis.astro_summary?.core || {};
-    const sunSign = birthChart.sun || "unknown";
-    const moonSign = birthChart.moon || "unknown";
-    const ascendant = birthChart.asc || "unknown";
-    const lunarPhase = birthChart.lunar_phase || "unknown";
-    const notableAspects = birthChart.notable_aspects?.map((a: any) => `${a.aspect}: ${a.interpretation}`).join("; ") || "none";
-    const dominantElements = birthChart.dominant_elements?.join(", ") || "balanced";
+		// Extract detailed birth chart information
+		const birthChart = payload.astroTarotSynthesis.astro_summary?.core || {};
+		const sunSign = birthChart.sun || 'unknown';
+		const moonSign = birthChart.moon || 'unknown';
+		const ascendant = birthChart.asc || 'unknown';
+		const lunarPhase = birthChart.lunar_phase || 'unknown';
+		const notableAspects =
+			birthChart.notable_aspects?.map((a: any) => `${a.aspect}: ${a.interpretation}`).join('; ') ||
+			'none';
+		const dominantElements = birthChart.dominant_elements?.join(', ') || 'balanced';
 
-    const systemPrompt = `You are Celestia, a mystical tarot and astrology guide. Always speak with confident compassion and never state that you lack access, cannot do something, or that you are an AI language model. Stay focused on the querent's situation—no logic puzzles, hypotheticals, or off-topic analysis.
+		const systemPrompt = `You are Celestia, a mystical tarot and astrology guide. Always speak with confident compassion and never state that you lack access, cannot do something, or that you are an AI language model. Stay focused on the querent's situation—no logic puzzles, hypotheticals, or off-topic analysis.
 
 ${UNTRUSTED_INPUT_INSTRUCTION}
 
@@ -98,8 +102,8 @@ Write 2-3 detailed, flowing paragraphs that create a comprehensive interpretatio
 
 IMPORTANT: Generate 2-3 specific, actionable next steps that directly relate to their question. These should be concrete actions they can take, not generic advice.`;
 
-    const safeQuestion = sanitizeUserQuestion(payload.question);
-    const userMessage = `Question:
+		const safeQuestion = sanitizeUserQuestion(payload.question);
+		const userMessage = `Question:
 ${delimitUserQuestion(safeQuestion)}
 
 BIRTH CHART PROFILE:
@@ -119,7 +123,7 @@ ${payload.traditionalReading}
 Astrological Themes: ${astroThemes}
 Suggested Actions: ${actionItems}
 
-Affirmations: ${payload.astroTarotSynthesis.interpretation?.affirmations?.join(", ") || "Trust in your journey"}
+Affirmations: ${payload.astroTarotSynthesis.interpretation?.affirmations?.join(', ') || 'Trust in your journey'}
 
 Please create a detailed, comprehensive reading that deeply combines the card meanings with the astrological context. IMPORTANTLY, weave in their birth chart information (Sun, Moon, Ascendant, aspects) to make this deeply personal and specific to their unique astrological makeup.
 
@@ -132,75 +136,76 @@ At the end, provide 2-3 specific, actionable next steps that directly address th
 
 Make these actions specific to the question above (in the delimited block).`;
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        max_tokens: 1024,
-        temperature: 0.7,
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userMessage },
-        ],
-      }),
-    });
+		const response = await fetch('https://api.openai.com/v1/chat/completions', {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${apiKey}`,
+				'content-type': 'application/json'
+			},
+			body: JSON.stringify({
+				model: 'gpt-4o-mini',
+				max_tokens: 1024,
+				temperature: 0.7,
+				messages: [
+					{ role: 'system', content: systemPrompt },
+					{ role: 'user', content: userMessage }
+				]
+			})
+		});
 
-    if (!response.ok) {
-      console.error("OpenAI API error:", await response.text());
-      return generateSimpleCombined(payload);
-    }
+		if (!response.ok) {
+			console.error('OpenAI API error:', await response.text());
+			return generateSimpleCombined(payload);
+		}
 
-    const data = await response.json();
-    return data.choices[0].message.content;
-  } catch (error) {
-    console.error("Error calling OpenAI API:", error);
-    return generateSimpleCombined(payload);
-  }
+		const data = await response.json();
+		return data.choices[0].message.content;
+	} catch (error) {
+		console.error('Error calling OpenAI API:', error);
+		return generateSimpleCombined(payload);
+	}
 }
 
 function generateSimpleCombined(payload: NormalizedCombinedReadingRequest): string {
-  const cardNames = payload.cards.map((c) => c.name).join(", ");
-  const astroThemes = payload.astroTarotSynthesis.astro_summary?.themes?.join(", ") || "cosmic influences";
+	const cardNames = payload.cards.map((c) => c.name).join(', ');
+	const astroThemes =
+		payload.astroTarotSynthesis.astro_summary?.themes?.join(', ') || 'cosmic influences';
 
-  return `Regarding your question "${payload.question}": The cards ${cardNames} combined with current ${astroThemes} suggest a reading that invites reflection and action. Trust the guidance that emerges from this synthesis of tarot wisdom and astrological insight.`;
+	return `Regarding your question "${payload.question}": The cards ${cardNames} combined with current ${astroThemes} suggest a reading that invites reflection and action. Trust the guidance that emerges from this synthesis of tarot wisdom and astrological insight.`;
 }
 
 export const POST: RequestHandler = async ({ request }) => {
-  try {
-    const payload = (await request.json()) as CombinedReadingRequest;
+	try {
+		const payload = (await request.json()) as CombinedReadingRequest;
 
-    const question = payload.question?.trim() || "What guidance does the universe have for me?";
-    const traditionalReading =
-      payload.traditionalReading?.trim() ||
-      "The tarot invites you to reflect on your journey and take mindful, heart-led action.";
-    const astroTarotSynthesis: NonNullable<CombinedReadingRequest['astroTarotSynthesis']> = payload.astroTarotSynthesis ?? {
-      interpretation: {},
-      astro_summary: {},
-    };
-    const cards = payload.cards && payload.cards.length > 0
-      ? payload.cards
-      : [
-          { name: "The Fool", position: "General Guidance", reversed: false },
-        ];
+		const question = payload.question?.trim() || 'What guidance does the universe have for me?';
+		const traditionalReading =
+			payload.traditionalReading?.trim() ||
+			'The tarot invites you to reflect on your journey and take mindful, heart-led action.';
+		const astroTarotSynthesis: NonNullable<CombinedReadingRequest['astroTarotSynthesis']> =
+			payload.astroTarotSynthesis ?? {
+				interpretation: {},
+				astro_summary: {}
+			};
+		const cards =
+			payload.cards && payload.cards.length > 0
+				? payload.cards
+				: [{ name: 'The Fool', position: 'General Guidance', reversed: false }];
 
-    const normalizedPayload: NormalizedCombinedReadingRequest = {
-      question,
-      traditionalReading,
-      astroTarotSynthesis,
-      cards,
-      userZodiac: payload.userZodiac,
-    };
+		const normalizedPayload: NormalizedCombinedReadingRequest = {
+			question,
+			traditionalReading,
+			astroTarotSynthesis,
+			cards,
+			userZodiac: payload.userZodiac
+		};
 
-    // Generate combined reading
-    const combinedReading = await generateCombinedReading(normalizedPayload);
+		// Generate combined reading
+		const combinedReading = await generateCombinedReading(normalizedPayload);
 
-    return json({ reading: combinedReading });
-  } catch (err) {
-    console.error("[combined-reading API error]", err);
-    return error(500, "Combined reading generation failed");
-  }
+		return json({ reading: combinedReading });
+	} catch (err) {
+		console.error('[combined-reading API error]', err);
+		return error(500, 'Combined reading generation failed');
+	}
 };

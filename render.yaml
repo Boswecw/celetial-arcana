@@ -5,8 +5,8 @@ services:
   - type: web
     name: celestia-arcana
     runtime: node
-    plan: starter  # Free tier available
-    region: oregon  # Change to your preferred region
+    plan: starter # Free tier available
+    region: oregon # Change to your preferred region
 
     # Build Configuration
     buildCommand: |
@@ -30,11 +30,11 @@ services:
       - key: PYTHON_VERSION
         value: 3.11
       - key: PORT
-        value: 10000  # Render default port
+        value: 10000 # Render default port
       - key: HOST
         value: 0.0.0.0
       - key: OPENAI_API_KEY
-        sync: false  # Set manually in Render dashboard
+        sync: false # Set manually in Render dashboard
       - key: ASTRO_TAROT_MODEL
         value: gpt-4o-mini
       - key: ENABLE_RESPONSE_CACHE

@@ -1,11 +1,12 @@
 <div align="center">
   <img src="static/Celestia_Arcana_banner.avif" alt="Celestia Arcana" width="600">
 
-  # Celestia Arcana ✨
+# Celestia Arcana ✨
 
-  An immersive SvelteKit experience that blends tarot, astrology, and AI into flowing cosmic readings. Featuring full-deck animations, intelligent narration, and astrological synthesis powered by OpenAI.
+An immersive SvelteKit experience that blends tarot, astrology, and AI into flowing cosmic readings. Featuring full-deck animations, intelligent narration, and astrological synthesis powered by OpenAI.
 
-  **[Live Demo](https://your-demo-url.com)** · **[Report Bug](https://github.com/yourusername/celestia-arcana/issues)** · **[Request Feature](https://github.com/yourusername/celestia-arcana/issues)**
+**[Live Demo](https://your-demo-url.com)** · **[Report Bug](https://github.com/yourusername/celestia-arcana/issues)** · **[Request Feature](https://github.com/yourusername/celestia-arcana/issues)**
+
 </div>
 
 ---
@@ -94,6 +95,7 @@ bun run test:python
 ```
 
 This will verify:
+
 - ✅ Python is installed and detected
 - ✅ Required Python packages (openai, requests) are installed
 - ✅ OpenAI API key is configured
@@ -247,12 +249,12 @@ This project includes extensive performance optimizations:
 
 ### Performance Metrics
 
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| Bundle Size | ~800KB | ~250KB | **-69%** |
-| Initial Load | 40MB | 500KB | **-99%** |
-| Time to Interactive | 4-6s | 1.5-2s | **-67%** |
-| Reading Generation | 4-6s | 2-4s | **-40%** |
+| Metric              | Before | After  | Improvement |
+| ------------------- | ------ | ------ | ----------- |
+| Bundle Size         | ~800KB | ~250KB | **-69%**    |
+| Initial Load        | 40MB   | 500KB  | **-99%**    |
+| Time to Interactive | 4-6s   | 1.5-2s | **-67%**    |
+| Reading Generation  | 4-6s   | 2-4s   | **-40%**    |
 
 ---
 
@@ -350,15 +352,15 @@ CMD ["bun", "run", "build/index.js"]
 
 ## 📝 API Routes
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/cards` | GET | Retrieve all tarot cards |
-| `/api/reading` | POST | Generate traditional tarot reading |
-| `/api/astro-tarot` | POST | Generate astrological synthesis |
-| `/api/combined-reading` | POST | Merge traditional + astro readings |
-| `/api/ephemeris` | GET | Calculate celestial positions |
-| `/api/reading-explanation` | POST | AI-powered reading Q&A |
-| `/api/feedback` | POST | Submit reading feedback |
+| Endpoint                   | Method | Description                        |
+| -------------------------- | ------ | ---------------------------------- |
+| `/api/cards`               | GET    | Retrieve all tarot cards           |
+| `/api/reading`             | POST   | Generate traditional tarot reading |
+| `/api/astro-tarot`         | POST   | Generate astrological synthesis    |
+| `/api/combined-reading`    | POST   | Merge traditional + astro readings |
+| `/api/ephemeris`           | GET    | Calculate celestial positions      |
+| `/api/reading-explanation` | POST   | AI-powered reading Q&A             |
+| `/api/feedback`            | POST   | Submit reading feedback            |
 
 ---
 
@@ -386,10 +388,12 @@ Contributions are welcome! Please follow these steps:
 This project is licensed under the **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License (CC BY-NC-SA 4.0)**.
 
 You are free to:
+
 - **Share** - Copy and redistribute the material
 - **Adapt** - Remix, transform, and build upon the material
 
 Under the following terms:
+
 - **Attribution** - You must give appropriate credit
 - **NonCommercial** - You may not use the material for commercial purposes
 - **ShareAlike** - If you remix or transform the material, you must distribute your contributions under the same license
@@ -422,6 +426,7 @@ See [LICENSE](LICENSE) for more information.
 If you get `spawn python3 ENOENT` or `Python not found` error:
 
 **Option 1: Install Python**
+
 ```bash
 # Check if Python is installed
 python3 --version
@@ -440,6 +445,7 @@ brew install python3
 **Option 2: Set Python Path Manually**
 
 If Python is installed but not detected, add to your `.env` file:
+
 ```env
 PYTHON_PATH=/usr/bin/python3
 # or wherever your Python is located
@@ -523,7 +529,7 @@ If you get this error when deployed to Netlify/Vercel:
 
 **Built with ✨ by Boswell Digital Solutions LLC**
 
-*May your readings be luminous* 🔮
+_May your readings be luminous_ 🔮
 
 [⬆ Back to Top](#celestia-arcana-)
 
