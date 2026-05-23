@@ -1,8 +1,61 @@
 import { precacheAndRoute } from 'workbox-precaching';
 
-const CACHE_VERSION = 'v1.0.4';
+const CACHE_VERSION = 'v1.0.5';
 const STATIC_CACHE = `celestia-arcana-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `celestia-arcana-runtime-${CACHE_VERSION}`;
+
+// Runtime cache bounds. The previous implementation cached every successful
+// GET indefinitely, which let memory and storage grow without bound and let
+// stale assets persist long after a deploy. These limits let the browser
+// evict the oldest / oldest-expired entries first.
+const RUNTIME_CACHE_MAX_ENTRIES = 60;
+const RUNTIME_CACHE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+
+async function trimRuntimeCache() {
+  try {
+    const cache = await caches.open(RUNTIME_CACHE);
+    const requests = await cache.keys();
+    const now = Date.now();
+
+    // Evict expired entries (uses the Date response header we set below).
+    for (const request of requests) {
+      const cached = await cache.match(request);
+      const dateHeader = cached?.headers.get('x-cached-at');
+      if (dateHeader && now - Number(dateHeader) > RUNTIME_CACHE_MAX_AGE_MS) {
+        await cache.delete(request);
+      }
+    }
+
+    // Trim to max entries (FIFO — keys() returns insertion order).
+    const remaining = await cache.keys();
+    if (remaining.length > RUNTIME_CACHE_MAX_ENTRIES) {
+      const overflow = remaining.length - RUNTIME_CACHE_MAX_ENTRIES;
+      for (let i = 0; i < overflow; i++) {
+        await cache.delete(remaining[i]);
+      }
+    }
+  } catch (err) {
+    console.error('Service Worker: trim failed', err);
+  }
+}
+
+async function putRuntimeCached(request, response) {
+  try {
+    const cache = await caches.open(RUNTIME_CACHE);
+    // Tag with insertion time so trimRuntimeCache can expire by age.
+    const headers = new Headers(response.headers);
+    headers.set('x-cached-at', String(Date.now()));
+    const tagged = new Response(await response.clone().blob(), {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+    });
+    await cache.put(request, tagged);
+    await trimRuntimeCache();
+  } catch (err) {
+    console.error('Service Worker: runtime cache put failed', err);
+  }
+}
 
 // Workbox precaches everything in the build manifest (see vite.config.ts
 // globPatterns). We only manually cache the offline fallback page, which is a
@@ -120,11 +173,9 @@ self.addEventListener('fetch', (event) => {
               return response;
             }
 
-            const responseToCache = response.clone();
-            caches.open(RUNTIME_CACHE)
-              .then((cache) => {
-                cache.put(event.request, responseToCache);
-              });
+            // Fire-and-forget the cache write so the user-visible response
+            // path is not blocked by the trim sweep.
+            putRuntimeCached(event.request, response.clone());
 
             return response;
           })
