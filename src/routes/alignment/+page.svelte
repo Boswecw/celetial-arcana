@@ -2,6 +2,12 @@
   import { onMount } from 'svelte';
   import InfoTooltip from '$lib/components/InfoTooltip.svelte';
   import type { EphemerisData } from '$lib/ephemeris';
+  import {
+    degreeWithinSign,
+    signForLongitude,
+    zodiacEmoji as getZodiacEmoji,
+    zodiacSignsByLongitude as zodiacSigns,
+  } from '$lib/zodiac';
 
   let date = new Date().toISOString().split('T')[0];
   let time = '12:00';
@@ -27,21 +33,6 @@
     pluto: '♇',
   };
 
-  const zodiacSigns = [
-    'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-    'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
-  ];
-
-  const zodiacEmojisMap: Record<string, string> = {
-    'Aries': '♈', 'Taurus': '♉', 'Gemini': '♊', 'Cancer': '♋',
-    'Leo': '♌', 'Virgo': '♍', 'Libra': '♎', 'Scorpio': '♏',
-    'Sagittarius': '♐', 'Capricorn': '♑', 'Aquarius': '♒', 'Pisces': '♓'
-  };
-
-  function getZodiacEmoji(sign: string): string {
-    return zodiacEmojisMap[sign] || '♈';
-  }
-
   // Request geolocation on component mount
   onMount(() => {
     if ('geolocation' in navigator) {
@@ -62,14 +53,8 @@
     }
   });
 
-  function getZodiacSign(longitude: number): string {
-    const sign = Math.floor(longitude / 30);
-    return zodiacSigns[sign % 12];
-  }
-
-  function getZodiacDegree(longitude: number): number {
-    return Math.floor(longitude % 30);
-  }
+  const getZodiacSign = signForLongitude;
+  const getZodiacDegree = degreeWithinSign;
 
   async function calculateChart() {
     loading = true;

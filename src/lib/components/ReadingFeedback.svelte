@@ -13,10 +13,12 @@ no description yet
   let feedback = '';
   let submitted = false;
   let loading = false;
+  let errorMessage = '';
 
   async function submitFeedback() {
+    errorMessage = '';
     if (rating === 0) {
-      alert('Please select a rating');
+      errorMessage = 'Please select a star rating before submitting.';
       return;
     }
 
@@ -44,10 +46,12 @@ no description yet
           rating = 0;
           feedback = '';
         }, 3000);
+      } else {
+        errorMessage = 'Submission failed. Please try again in a moment.';
       }
     } catch (error) {
       console.error('Error submitting feedback:', error);
-      alert('Failed to submit feedback');
+      errorMessage = 'Network error. Please try again in a moment.';
     } finally {
       loading = false;
     }
@@ -108,6 +112,16 @@ no description yet
           rows="3"
         ></textarea>
       </div>
+
+      {#if errorMessage}
+        <p
+          class="text-sm"
+          role="alert"
+          style="color: #FF6B6B;"
+        >
+          {errorMessage}
+        </p>
+      {/if}
 
       <!-- Submit Button -->
       <button

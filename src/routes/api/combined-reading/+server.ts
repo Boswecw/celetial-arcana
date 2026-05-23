@@ -1,6 +1,11 @@
 import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from '@sveltejs/kit';
 import { loadDotEnv } from '$lib/env';
+import {
+  delimitUserQuestion,
+  sanitizeUserQuestion,
+  UNTRUSTED_INPUT_INSTRUCTION,
+} from '$lib/promptSafety';
 
 loadDotEnv();
 
@@ -76,6 +81,8 @@ async function generateCombinedReading(payload: NormalizedCombinedReadingRequest
 
     const systemPrompt = `You are Celestia, a mystical tarot and astrology guide. Always speak with confident compassion and never state that you lack access, cannot do something, or that you are an AI language model. Stay focused on the querent's situation—no logic puzzles, hypotheticals, or off-topic analysis.
 
+${UNTRUSTED_INPUT_INSTRUCTION}
+
 Your role is to create a detailed, insightful interpretation that deeply combines traditional tarot wisdom with astrological insights.
 
 The reading should:
@@ -91,7 +98,9 @@ Write 2-3 detailed, flowing paragraphs that create a comprehensive interpretatio
 
 IMPORTANT: Generate 2-3 specific, actionable next steps that directly relate to their question. These should be concrete actions they can take, not generic advice.`;
 
-    const userMessage = `Question: "${payload.question}"
+    const safeQuestion = sanitizeUserQuestion(payload.question);
+    const userMessage = `Question:
+${delimitUserQuestion(safeQuestion)}
 
 BIRTH CHART PROFILE:
 - Sun Sign: ${sunSign}
@@ -121,7 +130,7 @@ At the end, provide 2-3 specific, actionable next steps that directly address th
 - If asking about relationships: "Have an honest conversation", "Plan a meaningful date", "Reflect on your boundaries"
 - If asking about creative projects: "Set a deadline for your first draft", "Share your work with a trusted friend", "Research your market"
 
-Make these actions specific to their question: "${payload.question}"`;
+Make these actions specific to the question above (in the delimited block).`;
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",

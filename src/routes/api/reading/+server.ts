@@ -5,6 +5,11 @@ import { analyzeReading } from "$lib/rulesEngine";
 import { buildReadingContext } from "$lib/rag";
 import { buildSafeResponse } from "$lib/guardrails";
 import { aiTrainer } from "$lib/aiTrainer";
+import {
+  delimitUserQuestion,
+  sanitizeUserQuestion,
+  UNTRUSTED_INPUT_INSTRUCTION,
+} from "$lib/promptSafety";
 
 loadDotEnv();
 
@@ -98,10 +103,14 @@ async function generateReading(
 
     const systemPrompt = `${optimizedPrompt}
 
+${UNTRUSTED_INPUT_INSTRUCTION}
+
 ${ragContext}`;
 
+    const safeQuestion = sanitizeUserQuestion(body.question) || "General reading";
     const userMessage = `
-Question: ${body.question || "General reading"}
+Question:
+${delimitUserQuestion(safeQuestion)}
 
 Cards drawn:
 ${body.draw.map((d: any) => `- ${d.position}: ${d.card.name}${d.reversed ? " (reversed)" : ""}`).join("\n")}

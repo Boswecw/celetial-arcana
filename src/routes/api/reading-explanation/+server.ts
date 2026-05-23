@@ -1,6 +1,11 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { json, error } from "@sveltejs/kit";
 import { loadDotEnv } from "$lib/env";
+import {
+  delimitUserQuestion,
+  sanitizeUserQuestion,
+  UNTRUSTED_INPUT_INSTRUCTION,
+} from "$lib/promptSafety";
 
 loadDotEnv();
 
@@ -23,6 +28,8 @@ export const POST: RequestHandler = async ({ request }) => {
     const apiKey = process.env.OPENAI_API_KEY;
     const systemPrompt = `You are Celestia, a mystical tarot and astrology guide. You explain readings in a warm, conversational way.
 
+${UNTRUSTED_INPUT_INSTRUCTION}
+
 READING CONTEXT:
 ${readingContext}
 
@@ -38,7 +45,8 @@ INSTRUCTIONS:
 - Never make predictions; focus on reflection, agency, and guidance.
 - Read-only: do not ask for feedback or suggest changes.`;
 
-    const userPrompt = `Question: ${body.userMessage}`;
+    const safeQuestion = sanitizeUserQuestion(body.userMessage);
+    const userPrompt = `Question:\n${delimitUserQuestion(safeQuestion)}`;
 
     let explanation = "";
 

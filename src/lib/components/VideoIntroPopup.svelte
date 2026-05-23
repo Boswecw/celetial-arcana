@@ -1,11 +1,22 @@
 <script lang="ts">
-  import { onDestroy, onMount } from 'svelte';
+  import { onDestroy, onMount, tick } from 'svelte';
 
   export let open = false;
   export let src = '/reading-animation.mp4';
   export let onClose: () => void = () => {};
 
   let videoElement: HTMLVideoElement | undefined;
+  let dialogElement: HTMLDivElement | undefined;
+  let closeButton: HTMLButtonElement | undefined;
+  let previouslyFocused: HTMLElement | null = null;
+
+  const FOCUSABLE_SELECTOR =
+    'a[href], button:not([disabled]), textarea, input, select, video[controls], [tabindex]:not([tabindex="-1"])';
+
+  function focusableElements(): HTMLElement[] {
+    if (!dialogElement) return [];
+    return Array.from(dialogElement.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR));
+  }
 
   $: if (typeof document !== 'undefined') {
     if (open) {
@@ -16,22 +27,51 @@
         videoElement.volume = 1;
         videoElement.play().catch((err) => console.error('Video autoplay blocked:', err));
       }
+      previouslyFocused = (document.activeElement as HTMLElement) ?? null;
+      // Defer focus until the dialog has actually rendered.
+      tick().then(() => {
+        closeButton?.focus();
+      });
     } else {
       document.body.classList.remove('video-popup-open');
       if (videoElement) {
         videoElement.pause();
         videoElement.currentTime = 0;
       }
+      previouslyFocused?.focus?.();
+      previouslyFocused = null;
     }
   }
 
-  function handleEscape(e: KeyboardEvent) {
-    if (e.key === 'Escape' && open) onClose();
+  function handleKeydown(e: KeyboardEvent) {
+    if (!open) return;
+    if (e.key === 'Escape') {
+      onClose();
+      return;
+    }
+    if (e.key !== 'Tab') return;
+    // Simple focus trap: cycle Tab / Shift+Tab through the dialog's
+    // focusable elements so keyboard users can't escape into the backdrop.
+    const focusables = focusableElements();
+    if (focusables.length === 0) {
+      e.preventDefault();
+      return;
+    }
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    const active = document.activeElement as HTMLElement | null;
+    if (e.shiftKey && active === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && active === last) {
+      e.preventDefault();
+      first.focus();
+    }
   }
 
   onMount(() => {
-    window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
+    window.addEventListener('keydown', handleKeydown);
+    return () => window.removeEventListener('keydown', handleKeydown);
   });
 
   onDestroy(() => {
@@ -43,13 +83,15 @@
 
 {#if open}
   <div
+    bind:this={dialogElement}
     class="fixed inset-0 z-[9999] flex items-center justify-center overflow-y-auto"
     style="background-color: rgba(0, 0, 0, 0.95); pointer-events: auto; display: flex; top: 0; left: 0; right: 0; bottom: 0; padding: 2rem;"
     on:click={onClose}
     on:keydown={(e) => e.key === 'Escape' && onClose()}
     role="dialog"
     aria-modal="true"
-    tabindex="0"
+    aria-label="Reading intro video"
+    tabindex="-1"
   >
     <div
       class="relative w-full max-w-4xl mx-auto my-auto"
@@ -58,6 +100,7 @@
       style="pointer-events: auto; display: flex; flex-direction: column; align-items: center;"
     >
       <button
+        bind:this={closeButton}
         on:click={onClose}
         class="absolute -top-12 right-0 text-white text-3xl font-bold hover:text-gray-300 transition-colors"
         aria-label="Close video"

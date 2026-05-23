@@ -7,6 +7,7 @@
  */
 
 import { deriveSunSign, formatAscendant, type ZodiacEntry } from './zodiac';
+import { sanitizeUserQuestion } from './promptSafety';
 
 export interface DrawnCard {
   card: {
@@ -51,7 +52,10 @@ function sunSignFromBirth(birth: BirthDetails): ZodiacEntry | null {
 }
 
 export async function fetchCelestialReading(args: FetchReadingArgs): Promise<ReadingResult> {
-  const { question, spreadPositions, drawnCards, birth, model } = args;
+  const { spreadPositions, drawnCards, birth, model } = args;
+  // Cap + clean the user's question up front so every downstream prompt sees
+  // the same sanitized text.
+  const question = sanitizeUserQuestion(args.question);
   const derivedSun = sunSignFromBirth(birth);
   const fallbackSun = derivedSun ? `${derivedSun.name} 0°` : 'Pisces 0°';
   const fallbackElement = derivedSun ? [derivedSun.element] : [];

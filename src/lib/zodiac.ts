@@ -29,6 +29,57 @@ export const zodiacData: readonly ZodiacEntry[] = [
 
 export const zodiacSigns: readonly string[] = zodiacData.map((z) => z.name);
 
+// Astronomical order, starting at 0° Aries. Use this for ecliptic-longitude
+// based lookups (Aries 0°, Taurus 30°, …). `zodiacData` above is ordered by
+// calendar date ranges starting in December and is NOT interchangeable.
+export const zodiacSignsByLongitude: readonly string[] = [
+  'Aries',
+  'Taurus',
+  'Gemini',
+  'Cancer',
+  'Leo',
+  'Virgo',
+  'Libra',
+  'Scorpio',
+  'Sagittarius',
+  'Capricorn',
+  'Aquarius',
+  'Pisces',
+];
+
+const ZODIAC_EMOJIS: Record<string, string> = {
+  Aries: '♈',
+  Taurus: '♉',
+  Gemini: '♊',
+  Cancer: '♋',
+  Leo: '♌',
+  Virgo: '♍',
+  Libra: '♎',
+  Scorpio: '♏',
+  Sagittarius: '♐',
+  Capricorn: '♑',
+  Aquarius: '♒',
+  Pisces: '♓',
+};
+
+export function zodiacEmoji(sign: string): string {
+  return ZODIAC_EMOJIS[sign] || '♈';
+}
+
+function normalizeLongitude(value: number): number {
+  const normalized = value % 360;
+  return normalized < 0 ? normalized + 360 : normalized;
+}
+
+export function signForLongitude(longitude: number): string {
+  const normalized = normalizeLongitude(longitude);
+  return zodiacSignsByLongitude[Math.floor(normalized / 30) % 12];
+}
+
+export function degreeWithinSign(longitude: number): number {
+  return Math.floor(normalizeLongitude(longitude) % 30);
+}
+
 function isWithinRange(
   month: number,
   day: number,
@@ -67,12 +118,12 @@ export function formatAscendant(value: number | undefined): string {
   if (typeof value !== 'number' || Number.isNaN(value)) {
     return 'Capricorn 12°';
   }
-  const normalized = ((value % 360) + 360) % 360;
-  const index = Math.floor(normalized / 30) % 12;
+  const normalized = normalizeLongitude(value);
+  const sign = zodiacSignsByLongitude[Math.floor(normalized / 30) % 12];
   const within = normalized % 30;
   const degrees = Math.floor(within);
   const minutes = Math.floor((within - degrees) * 60);
-  return `${zodiacSigns[index]} ${degrees}°${String(minutes).padStart(2, '0')}`;
+  return `${sign} ${degrees}°${String(minutes).padStart(2, '0')}`;
 }
 
 /**

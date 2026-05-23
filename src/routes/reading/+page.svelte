@@ -265,7 +265,8 @@
     // Check browser support
     if (!('speechSynthesis' in window)) {
       console.error('Speech synthesis not supported');
-      alert('Speech synthesis not supported in your browser');
+      scheduleToast('Voice narration is not supported in this browser.');
+      isSpeaking = false;
       return;
     }
 
