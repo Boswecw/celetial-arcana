@@ -230,13 +230,27 @@ function executePythonScript(payload: AstroTarotRequest): Promise<PythonOutput> 
       }
 
       try {
-        // Extract JSON from stdout (script may have debug output)
-        const jsonMatch = stdout.match(/\{[\s\S]*\}/);
-        if (!jsonMatch) {
+        // Prefer the sentinel-delimited block emitted by the Python script.
+        // The fallback regex is kept so an in-flight deploy with an older
+        // worker can still parse output from the newer script (and vice
+        // versa), but should be removed once the rollout settles.
+        const sentinelStart = stdout.indexOf('<<<JSON_BEGIN>>>');
+        const sentinelEnd = stdout.indexOf('<<<JSON_END>>>');
+        let jsonText: string | null = null;
+        if (sentinelStart !== -1 && sentinelEnd > sentinelStart) {
+          jsonText = stdout
+            .slice(sentinelStart + '<<<JSON_BEGIN>>>'.length, sentinelEnd)
+            .trim();
+        } else {
+          const jsonMatch = stdout.match(/\{[\s\S]*\}/);
+          if (jsonMatch) jsonText = jsonMatch[0];
+        }
+
+        if (!jsonText) {
           throw new Error('No JSON output found from Python script');
         }
 
-        const result = JSON.parse(jsonMatch[0]) as PythonOutput;
+        const result = JSON.parse(jsonText) as PythonOutput;
         resolvePromise(result);
       } catch (parseErr) {
         console.error('[astro-tarot] Failed to parse output:', parseErr);

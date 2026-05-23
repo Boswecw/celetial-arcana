@@ -1088,11 +1088,16 @@ def main():
             json.dump(reading_fixed, f, indent=2, ensure_ascii=False)
         print(f"Saved inclusive fixed reading to: {fixed_path}", file=sys.stderr)
 
-        # Print final (fixed) reading to stdout
-        print(json.dumps(reading_fixed, indent=2, ensure_ascii=False))
+        final = reading_fixed
     else:
-        # Print raw reading to stdout
-        print(json.dumps(reading, indent=2, ensure_ascii=False))
+        final = reading
+
+    # Emit JSON between sentinel markers so the Node caller can extract
+    # exactly the payload without a greedy regex that would also match
+    # stray { ... } in other prints.
+    sys.stdout.write("<<<JSON_BEGIN>>>\n")
+    sys.stdout.write(json.dumps(final, indent=2, ensure_ascii=False))
+    sys.stdout.write("\n<<<JSON_END>>>\n")
 
 if __name__ == "__main__":
     main()

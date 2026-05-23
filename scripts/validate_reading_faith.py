@@ -412,7 +412,10 @@ def main():
 
     # Meta defaults & timestamp sanity
     meta = fixed.setdefault("meta", {})
-    meta.setdefault("timestamp", datetime.datetime.utcnow().isoformat()+"Z")
+    meta.setdefault(
+        "timestamp",
+        datetime.datetime.now(datetime.timezone.utc).isoformat().replace("+00:00", "Z"),
+    )
     if not isinstance(meta.get("spread_name", None), (str, type(None))):
         meta["spread_name"] = str(meta["spread_name"])
 
@@ -423,11 +426,12 @@ def main():
         issues.append(f"majors_count mismatch: found {majors_calc} from layout; corrected in output.")
         fixed.setdefault("spread_summary", {})["majors_count"] = majors_calc
 
-    # 2) element count check (report only)
+    # 2) element count check — correct in-place when positions yield real counts.
     elem_calc = count_elements_from_positions(fixed.get("interpretation", {}).get("positions", []))
     cec = fixed.get("spread_summary", {}).get("card_elements_count", {})
-    if elem_calc and cec and elem_calc != cec:
-        issues.append(f"card_elements_count mismatch: calculated {elem_calc}; left original unchanged.")
+    if elem_calc and any(elem_calc.values()) and elem_calc != cec:
+        issues.append(f"card_elements_count corrected from {cec} to {elem_calc} (derived from positions).")
+        fixed.setdefault("spread_summary", {})["card_elements_count"] = elem_calc
 
     # 3) Faith-aware (non-dogmatic + inclusive)
     interp = fixed.get("interpretation", {})

@@ -83,11 +83,10 @@ export function analyzeReading(
   const aspectInterpretations = analyzeAspects(safeEphemeris.aspects);
   const houseInterpretations = analyzeHouses(safeEphemeris);
   const weights = calculateWeights(safeEphemeris, cardInterpretations, aspectInterpretations);
-  const themes = extractThemes(cardInterpretations, aspectInterpretations, houseInterpretations);
+  const themes = extractThemes(cardInterpretations, aspectInterpretations);
   const interpretations = generateInterpretations(
     cardInterpretations,
     aspectInterpretations,
-    houseInterpretations,
     themes
   );
 
@@ -215,24 +214,66 @@ function calculateWeights(
   };
 }
 
+// Each Major Arcana card maps to one or more reading themes. Substring
+// matching keeps the table simple and covers custom-suit name variants
+// ("The Fool", "Lovers", etc.) so spreads from any deck produce themes.
+const MAJOR_THEMES: Array<{ match: RegExp; themes: string[] }> = [
+  { match: /\bFool\b/i, themes: ['new beginnings', 'leap of faith'] },
+  { match: /\bMagician\b/i, themes: ['new beginnings', 'manifestation'] },
+  { match: /\bHigh Priestess\b/i, themes: ['intuition', 'inner knowing'] },
+  { match: /\bEmpress\b/i, themes: ['abundance', 'nurture'] },
+  { match: /\bEmperor\b/i, themes: ['structure', 'authority'] },
+  { match: /\bHierophant\b/i, themes: ['tradition', 'guidance'] },
+  { match: /\bLovers\b/i, themes: ['relationships', 'choice'] },
+  { match: /\bChariot\b/i, themes: ['determination', 'momentum'] },
+  { match: /\bStrength\b/i, themes: ['courage', 'inner strength'] },
+  { match: /\bHermit\b/i, themes: ['introspection', 'solitude'] },
+  { match: /Wheel of Fortune/i, themes: ['change', 'cycles'] },
+  { match: /\bJustice\b/i, themes: ['fairness', 'accountability'] },
+  { match: /Hanged Man/i, themes: ['surrender', 'new perspective'] },
+  { match: /\bDeath\b/i, themes: ['transformation', 'endings'] },
+  { match: /\bTemperance\b/i, themes: ['balance', 'integration'] },
+  { match: /\bDevil\b/i, themes: ['attachment', 'shadow work'] },
+  { match: /\bTower\b/i, themes: ['transformation', 'upheaval'] },
+  { match: /\bStar\b/i, themes: ['hope', 'renewal'] },
+  { match: /\bMoon\b/i, themes: ['dreams', 'the unconscious'] },
+  { match: /\bSun\b/i, themes: ['joy', 'clarity'] },
+  { match: /\bJudgement\b/i, themes: ['reckoning', 'awakening'] },
+  { match: /\bWorld\b/i, themes: ['completion', 'wholeness'] },
+];
+
+// Suit -> elemental theme. Covers the standard names + Celestia Arcana's
+// custom suit aliases.
+const SUIT_THEMES: Array<{ match: RegExp; theme: string }> = [
+  { match: /\b(Wands|Flames|Rods|Staves)\b/i, theme: 'creative drive' },
+  { match: /\b(Cups|Tides|Chalices)\b/i, theme: 'emotional currents' },
+  { match: /\b(Swords|Winds|Blades)\b/i, theme: 'mental clarity' },
+  { match: /\b(Pentacles|Stones|Coins|Discs)\b/i, theme: 'material matters' },
+];
+
 function extractThemes(
   cards: CardInterpretation[],
-  aspects: AspectInterpretation[],
-  houses: HouseInterpretation[]
+  aspects: AspectInterpretation[]
 ): string[] {
   const themes: Set<string> = new Set();
 
-  // Extract themes from card names
   cards.forEach((card) => {
-    if (card.name.includes('Love') || card.name.includes('Lovers')) themes.add('relationships');
-    if (card.name.includes('Tower') || card.name.includes('Death')) themes.add('transformation');
-    if (card.name.includes('Fool') || card.name.includes('Magician')) themes.add('new beginnings');
+    for (const entry of MAJOR_THEMES) {
+      if (entry.match.test(card.name)) {
+        entry.themes.forEach((t) => themes.add(t));
+      }
+    }
+    for (const entry of SUIT_THEMES) {
+      if (entry.match.test(card.name)) themes.add(entry.theme);
+    }
+    if (card.reversed) themes.add('reflection');
   });
 
-  // Extract themes from aspects
   aspects.forEach((aspect) => {
     if (aspect.type === 'opposition') themes.add('polarity');
     if (aspect.type === 'conjunction') themes.add('integration');
+    if (aspect.type === 'square') themes.add('creative tension');
+    if (aspect.type === 'trine') themes.add('flow');
   });
 
   return Array.from(themes);
@@ -241,7 +282,6 @@ function extractThemes(
 function generateInterpretations(
   cards: CardInterpretation[],
   aspects: AspectInterpretation[],
-  houses: HouseInterpretation[],
   themes: string[]
 ): string[] {
   const interpretations: string[] = [];

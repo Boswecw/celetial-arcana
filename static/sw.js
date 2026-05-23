@@ -4,31 +4,20 @@ const CACHE_VERSION = 'v1.0.4';
 const STATIC_CACHE = `celestia-arcana-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `celestia-arcana-runtime-${CACHE_VERSION}`;
 
+// Workbox precaches everything in the build manifest (see vite.config.ts
+// globPatterns). We only manually cache the offline fallback page, which is a
+// static file Workbox would still cover but we want guaranteed-present even
+// if the manifest is empty during a partial build.
 precacheAndRoute(self.__WB_MANIFEST || []);
 
-// Assets to cache for offline functionality
-const PRECACHE_URLS = [
-  '/',
-  '/manifest.json',
-  '/pwa.js',
-  '/pwa-styles.css',
-  '/Celestia_Arcana_banner.avif',
-  '/offline.html',
-  '/favicon.ico',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png'
-];
+const OFFLINE_URL = '/offline.html';
+const PRECACHE_URLS = [OFFLINE_URL];
 
-// Install event - cache static assets
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(STATIC_CACHE)
-      .then((cache) => {
-        return cache.addAll(PRECACHE_URLS);
-      })
-      .then(() => {
-        return self.skipWaiting();
-      })
+      .then((cache) => cache.addAll(PRECACHE_URLS))
+      .then(() => self.skipWaiting())
       .catch((error) => {
         console.error('Service Worker: Caching failed', error);
       })
