@@ -3,17 +3,13 @@
   import { celestiaArcanaCards } from '$lib/decks/celestia-arcana';
   import ReadingFeedback from '$lib/components/ReadingFeedback.svelte';
   import ReadingExplainer from '$lib/components/ReadingExplainer.svelte';
+  import ShuffleOverlay, { buildShuffleCards, type ShuffleCard } from '$lib/components/ShuffleOverlay.svelte';
+  import VideoIntroPopup from '$lib/components/VideoIntroPopup.svelte';
+  import AstroTarotPanel from '$lib/components/AstroTarotPanel.svelte';
   import type { CardInterpretation } from '$lib/rulesEngine';
-
-  type ShuffleCard = {
-    id: number;
-    image: string;
-    radius: number;
-    duration: number;
-    start: number;
-    direction: 'normal' | 'reverse';
-    delay: number;
-  };
+  import { fateSeed } from '$lib/tarot';
+  import { daysInMonth, deriveSunSign } from '$lib/zodiac';
+  import { fetchCelestialReading } from '$lib/readingClient';
 
   let birthMonth = '';
   let birthDay = '';
@@ -35,8 +31,6 @@
   let readingId = '';
   let drawnCards: any[] = [];
   let showVideoPopup = true;
-  let videoSrc = '/reading-animation.mp4';
-  let videoElement: HTMLVideoElement;
   const astroTarotModel = import.meta.env.VITE_ASTRO_TAROT_MODEL || 'gpt-4o-mini';
   let userZodiac = '';
   let showTraditionalReading = true;
@@ -44,27 +38,6 @@
   let toastTimeout: number | null = null;
   let toastMessage = '';
   let cardsContainerElement: HTMLDivElement;
-
-  $: if (typeof document !== 'undefined') {
-    if (showVideoPopup) {
-      document.body.classList.add('video-popup-open');
-      if (videoElement) {
-        videoElement.currentTime = 0;
-        videoElement.muted = false;
-        videoElement.volume = 1;
-        const playPromise = videoElement.play();
-        if (playPromise && typeof playPromise.catch === 'function') {
-          playPromise.catch((err) => console.error('Video autoplay blocked:', err));
-        }
-      }
-    } else {
-      document.body.classList.remove('video-popup-open');
-      if (videoElement) {
-        videoElement.pause();
-        videoElement.currentTime = 0;
-      }
-    }
-  }
 
   let showShuffleOverlay = false;
   let shuffleCards: ShuffleCard[] = [];
@@ -76,24 +49,9 @@
   let availableVoices: SpeechSynthesisVoice[] = [];
   let narratedReadingId: string | null = null;
 
-  // Calculate max days in selected month
+  // Cap the day input to the chosen month/year (leap-year-aware).
   $: {
-    const month = parseInt(birthMonth) || 0;
-    const year = parseInt(birthYear) || 2024;
-
-    if (month === 2) {
-      // February - check for leap year
-      const isLeapYear = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
-      maxDaysInMonth = isLeapYear ? 29 : 28;
-    } else if ([4, 6, 9, 11].includes(month)) {
-      // April, June, September, November
-      maxDaysInMonth = 30;
-    } else {
-      // All other months
-      maxDaysInMonth = 31;
-    }
-
-    // Ensure day doesn't exceed max days
+    maxDaysInMonth = daysInMonth(parseInt(birthMonth, 10) || 0, parseInt(birthYear, 10) || 2024);
     if (birthDay && parseInt(birthDay) > maxDaysInMonth) {
       birthDay = String(maxDaysInMonth);
     }
@@ -146,16 +104,6 @@
   }
 
   onMount(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && showVideoPopup) {
-        showVideoPopup = false;
-      }
-    };
-    window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
-  });
-
-  onMount(() => {
     if (typeof window === 'undefined') {
       return;
     }
@@ -202,63 +150,6 @@
     'horseshoe': { name: 'Horseshoe', positions: ['Position 1', 'Position 2', 'Position 3', 'Position 4', 'Position 5', 'Position 6', 'Position 7'] },
   };
 
-  const zodiacData = [
-    { name: 'Capricorn', start: { month: 12, day: 22 }, end: { month: 1, day: 19 }, element: 'Earth' },
-    { name: 'Aquarius', start: { month: 1, day: 20 }, end: { month: 2, day: 18 }, element: 'Air' },
-    { name: 'Pisces', start: { month: 2, day: 19 }, end: { month: 3, day: 20 }, element: 'Water' },
-    { name: 'Aries', start: { month: 3, day: 21 }, end: { month: 4, day: 19 }, element: 'Fire' },
-    { name: 'Taurus', start: { month: 4, day: 20 }, end: { month: 5, day: 20 }, element: 'Earth' },
-    { name: 'Gemini', start: { month: 5, day: 21 }, end: { month: 6, day: 20 }, element: 'Air' },
-    { name: 'Cancer', start: { month: 6, day: 21 }, end: { month: 7, day: 22 }, element: 'Water' },
-    { name: 'Leo', start: { month: 7, day: 23 }, end: { month: 8, day: 22 }, element: 'Fire' },
-    { name: 'Virgo', start: { month: 8, day: 23 }, end: { month: 9, day: 22 }, element: 'Earth' },
-    { name: 'Libra', start: { month: 9, day: 23 }, end: { month: 10, day: 22 }, element: 'Air' },
-    { name: 'Scorpio', start: { month: 10, day: 23 }, end: { month: 11, day: 21 }, element: 'Water' },
-    { name: 'Sagittarius', start: { month: 11, day: 22 }, end: { month: 12, day: 21 }, element: 'Fire' }
-  ];
-
-  const zodiacSigns = zodiacData.map((z) => z.name);
-
-  function formatAscendant(value: number | undefined) {
-    if (typeof value !== 'number' || Number.isNaN(value)) {
-      return 'Capricorn 12°';
-    }
-    const normalized = ((value % 360) + 360) % 360;
-    const index = Math.floor(normalized / 30) % 12;
-    const degrees = Math.floor(normalized % 30);
-    const minutes = Math.round((normalized % 1) * 60);
-    return `${zodiacSigns[index]} ${degrees}°${String(minutes).padStart(2, '0')}`;
-  }
-
-  function isWithinRange(month: number, day: number, start: { month: number; day: number }, end: { month: number; day: number }) {
-    if (start.month === end.month && start.day === end.day) {
-      return month === start.month && day === start.day;
-    }
-
-    if (start.month < end.month || (start.month === end.month && start.day <= end.day)) {
-      if (month < start.month || month > end.month) return false;
-      if (month === start.month && day < start.day) return false;
-      if (month === end.month && day > end.day) return false;
-      return true;
-    }
-
-    // Range wraps across year end
-    if (month > start.month || month < end.month) return true;
-    if (month === start.month && day >= start.day) return true;
-    if (month === end.month && day <= end.day) return true;
-    return false;
-  }
-
-  function deriveSunSign(month: number | null, day: number | null) {
-    if (!month || !day) return null;
-    for (const entry of zodiacData) {
-      if (isWithinRange(month, day, entry.start, entry.end)) {
-        return entry;
-      }
-    }
-    return null;
-  }
-
   // Request geolocation on component mount
   onMount(() => {
     if ('geolocation' in navigator) {
@@ -279,53 +170,49 @@
     }
   });
 
-  function drawCards(count: number) {
+  function drawCards(count: number, rng: () => number = Math.random) {
     const drawn = [];
     const used = new Set<number>();
 
     for (let i = 0; i < count; i++) {
       let idx;
       do {
-        idx = Math.floor(Math.random() * celestiaArcanaCards.length);
+        idx = Math.floor(rng() * celestiaArcanaCards.length);
       } while (used.has(idx));
       used.add(idx);
 
       drawn.push({
         card: celestiaArcanaCards[idx],
-        reversed: Math.random() > 0.5,
+        reversed: rng() > 0.5,
       });
     }
 
     return drawn;
   }
 
-  function createSwirlCard(card: any, index: number): ShuffleCard {
-    const cardsPerRing = 13;
-    const ring = Math.floor(index / cardsPerRing);
-    const ringOffset = index % cardsPerRing;
-    const baseRadius = 160 + ring * 110;
-    const radius = baseRadius + Math.random() * 60;
-    const duration = 12 + ring * 3 + Math.random() * 4;
-    const start = (360 / celestiaArcanaCards.length) * index + Math.random() * 15;
-    const delay = -(Math.random() * duration);
+  // Build a deterministic RNG from the user's coordinates + birth instant.
+  // Falls back to Math.random when inputs are missing so first-time visitors
+  // still see a draw.
+  function buildReadingRng(): () => number {
+    const month = parseInt(birthMonth, 10);
+    const day = parseInt(birthDay, 10);
+    const year = parseInt(birthYear, 10);
+    if (!month || !day || !year) return Math.random;
 
-    return {
-      id: Date.now() + Math.random() + index,
-      image: card.image,
-      radius,
-      duration,
-      start,
-      direction: ring % 2 === 0 ? 'normal' : 'reverse',
-      delay,
-    };
+    const [hh = 12, mm = 0] = time.split(':').map(Number);
+    const ts = Date.UTC(year, month - 1, day, hh || 0, mm || 0);
+    if (!Number.isFinite(ts)) return Math.random;
+
+    // Use a session salt so the same birth chart still gets a different draw
+    // each click, while keeping the draw reproducible within a single reading.
+    const sessionSalt = Date.now() / 1000;
+    return fateSeed([month * 30, day * 12, year * 0.001], ts + sessionSalt, latitude, longitude);
   }
 
   function startShuffleOverlay() {
     shuffleResults = [];
     showShuffleOverlay = true;
-    // Only use 20 cards for animation (performance optimization)
-    const selectedCards = celestiaArcanaCards.slice(0, 20);
-    shuffleCards = selectedCards.map((card, index) => createSwirlCard(card, index));
+    shuffleCards = buildShuffleCards();
   }
 
   function stopShuffleOverlay() {
@@ -418,10 +305,12 @@
 
   function getReadingText(): string {
     if (!reading) return '';
-    if (showTraditionalReading) {
-      return [reading.reading, reading.combinedReading].filter(Boolean).join(' ');
-    }
-    return reading.combinedReading || '';
+    // Prefer the combined synthesis; only fall back to the traditional reading
+    // when no combined narrative is available. Concatenating both produces a
+    // double-length narration that re-reads disclaimers and section labels.
+    if (reading.combinedReading) return reading.combinedReading;
+    if (showTraditionalReading && reading.reading) return reading.reading;
+    return '';
   }
 
   async function submitReading() {
@@ -437,7 +326,8 @@
 
     try {
       const spread = spreads[spreadType as keyof typeof spreads];
-      const newDrawnCards = drawCards(spread.positions.length);
+      const rng = buildReadingRng();
+      const newDrawnCards = drawCards(spread.positions.length, rng);
       drawnCards = newDrawnCards;
       shuffleResults = newDrawnCards.map((d, i) => ({
         id: `${d.card.id}-${i}`,
@@ -451,135 +341,15 @@
       // Deal animation
       await dealCards(newDrawnCards, spread.positions);
 
-      const birthMonthNum = parseInt(birthMonth, 10) || null;
-      const birthDayNum = parseInt(birthDay, 10) || null;
-      const derivedSun = deriveSunSign(birthMonthNum, birthDayNum);
-      const fallbackSun = derivedSun ? `${derivedSun.name} 0°` : 'Pisces 0°';
-      const fallbackElement = derivedSun ? [derivedSun.element] : [];
-
-      // Format date from individual inputs (YYYY-MM-DD)
-      const formattedDate = `${birthYear}-${String(birthMonth).padStart(2, '0')}-${String(birthDay).padStart(2, '0')}`;
-
-      // OPTIMIZATION: Start ephemeris and traditional reading in parallel
-      const ephemerisPromise = fetch(
-        `/api/ephemeris?date=${formattedDate}&time=${time.replace(':', '%3A')}&lat=${latitude}&lon=${longitude}`
-      ).then(res => res.json());
-
-      // Prepare spread data early (doesn't depend on ephemeris)
-      const spreadData = newDrawnCards.map((d, i) => ({
-        position: spread.positions[i],
-        card: d.card.name,
-        orientation: d.reversed ? 'reversed' : 'upright',
-        element: d.card.element || '',
-      }));
-
-      // Start traditional reading early (doesn't depend on ephemeris initially)
-      const traditionalReadingPromise = fetch('/api/reading', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          question,
-          draw: newDrawnCards.map((d, i) => ({
-            position: spread.positions[i],
-            reversed: d.reversed,
-            card: d.card,
-          })),
-          ephemeris: null, // Will be updated later if needed
-        }),
+      const result = await fetchCelestialReading({
+        question,
+        spreadPositions: spread.positions,
+        drawnCards: newDrawnCards,
+        birth: { birthMonth, birthDay, birthYear, time, latitude, longitude },
+        model: astroTarotModel,
       });
-
-      // Wait for ephemeris to prepare astro data
-      const ephemeris = await ephemerisPromise;
-
-      // Prepare astro data for Python script
-      const astroData = {
-        sun: ephemeris.sun || ephemeris.planet_details?.sun?.sign || fallbackSun,
-        moon: ephemeris.moon || ephemeris.planet_details?.moon?.sign || 'Taurus 5°',
-        asc: ephemeris.asc || formatAscendant(ephemeris.ascendant),
-        dominant_elements: ephemeris.dominant_elements || fallbackElement,
-        notable_aspects: ephemeris.notable_aspects || [],
-        lunar_phase: ephemeris.lunar_phase || 'Waxing Crescent',
-      };
-      userZodiac = astroData.sun?.split(' ')[0] || derivedSun?.name || '';
-
-      // Call Python Astro-Tarot synthesis API (now with ephemeris data)
-      const astroTarotRes = await fetch('/api/astro-tarot', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          question: question || 'What guidance does the universe have for me?',
-          timeframe: 'next 30 days',
-          astro: astroData,
-          spread: spreadData,
-          model: astroTarotModel,
-          temperature: 0.2,
-          num_predict: 1500,
-        }),
-      });
-
-      if (!astroTarotRes.ok) {
-        const errorData = await astroTarotRes.json();
-        throw new Error(errorData.message || 'Failed to generate Astro-Tarot reading');
-      }
-
-      const astroTarotReading = await astroTarotRes.json();
-      if (derivedSun) {
-        const expectedSun = derivedSun.name.toLowerCase();
-        const currentSun = astroTarotReading?.astro_summary?.core?.sun || '';
-        const hasExpectedSun = currentSun.toLowerCase().startsWith(expectedSun);
-
-        if (!hasExpectedSun) {
-          const remainder = currentSun.includes(' ')
-            ? currentSun.slice(currentSun.indexOf(' ') + 1)
-            : '0°';
-          const updatedCore = {
-            ...(astroTarotReading?.astro_summary?.core ?? {}),
-            sun: `${derivedSun.name} ${remainder}`.trim(),
-          };
-
-          if (!updatedCore.dominant_elements || updatedCore.dominant_elements.length === 0) {
-            updatedCore.dominant_elements = [derivedSun.element];
-          }
-
-          const astroSummary = {
-            ...(astroTarotReading?.astro_summary ?? {}),
-            core: updatedCore,
-          };
-
-          astroTarotReading.astro_summary = astroSummary;
-        }
-      }
-
-      // Wait for traditional reading to complete (started earlier)
-      const readingRes = await traditionalReadingPromise;
-      const traditionalReading = await readingRes.json();
-
-      // Generate combined reading (cards + horoscope synthesis)
-      // This now happens in parallel with traditional reading processing
-      const combinedRes = await fetch('/api/combined-reading', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          question: question || 'What guidance does the universe have for me?',
-          traditionalReading: traditionalReading.reading,
-          astroTarotSynthesis: astroTarotReading,
-          cards: newDrawnCards.map((d, i) => ({
-            name: d.card.name,
-            position: spread.positions[i],
-            reversed: d.reversed,
-          })),
-        }),
-      });
-
-      const combinedReadingData = await combinedRes.json();
-
-      // Merge readings
-      reading = {
-        ...traditionalReading,
-        astroTarot: astroTarotReading,
-        combinedReading: combinedReadingData.reading,
-      };
-
+      reading = result.reading;
+      userZodiac = result.userZodiac;
       readingId = `reading-${Date.now()}`;
     } catch (err) {
       error = `Error: ${err}`;
@@ -592,9 +362,6 @@
   onDestroy(() => {
     if (toastTimeout) {
       clearTimeout(toastTimeout);
-    }
-    if (typeof document !== 'undefined') {
-      document.body.classList.remove('video-popup-open');
     }
   });
 </script>
@@ -1002,102 +769,8 @@
               </div>
             {/if}
 
-            <!-- Astro-Tarot Reading (Primary) -->
-            {#if reading.astroTarot}
-              <div class="p-8 rounded-xl mb-8" style="background: linear-gradient(135deg, rgba(123, 97, 255, 0.15), rgba(255, 78, 219, 0.1)); border: 2px solid #7B61FF; box-shadow: 0 10px 30px rgba(123, 97, 255, 0.2);">
-                <h3 class="text-3xl font-bold mb-6 flex items-center gap-2" style="color: #FF4EDB;">
-                  <span>🌙</span>
-                  Astro-Tarot Synthesis
-                </h3>
-
-                <!-- Theme -->
-                {#if reading.astroTarot.interpretation?.theme}
-                  <div class="mb-6 p-4 rounded-lg" style="background-color: rgba(198, 167, 255, 0.1); border-left: 4px solid #C6A7FF;">
-                    <p class="text-lg font-semibold mb-2" style="color: #C6A7FF;">Theme</p>
-                    <p class="text-base" style="color: #EDEBFF;">{reading.astroTarot.interpretation.theme}</p>
-                  </div>
-                {/if}
-
-                <!-- Astro Summary -->
-                {#if reading.astroTarot.astro_summary?.themes}
-                  <div class="mb-6 p-4 rounded-lg" style="background-color: rgba(123, 97, 255, 0.1); border-left: 4px solid #7B61FF;">
-                    <p class="text-lg font-semibold mb-3" style="color: #C6A7FF;">Astrological Themes</p>
-                    <div class="space-y-2">
-                      {#each reading.astroTarot.astro_summary.themes as theme}
-                        <p style="color: #EDEBFF;">• {theme}</p>
-                      {/each}
-                    </div>
-                  </div>
-                {/if}
-
-                <!-- Resonance - Matches -->
-                {#if reading.astroTarot.resonance?.matches && reading.astroTarot.resonance.matches.length > 0}
-                  <div class="mb-6 p-4 rounded-lg" style="background-color: rgba(77, 242, 176, 0.1); border-left: 4px solid #4DF2B0;">
-                    <p class="text-lg font-semibold mb-3" style="color: #4DF2B0;">Harmonies & Matches</p>
-                    <div class="space-y-3">
-                      {#each reading.astroTarot.resonance.matches as match}
-                        <div>
-                          <p class="font-semibold" style="color: #EDEBFF;">{match.type}</p>
-                          <p style="color: #EDEBFF;">{match.detail}</p>
-                          <p class="text-sm italic" style="color: #C6A7FF;">Why: {match.why}</p>
-                        </div>
-                      {/each}
-                    </div>
-                  </div>
-                {/if}
-
-                <!-- Resonance - Tensions -->
-                {#if reading.astroTarot.resonance?.tensions && reading.astroTarot.resonance.tensions.length > 0}
-                  <div class="mb-6 p-4 rounded-lg" style="background-color: rgba(255, 107, 107, 0.1); border-left: 4px solid #FF6B6B;">
-                    <p class="text-lg font-semibold mb-3" style="color: #FF6B6B;">Tensions & Challenges</p>
-                    <div class="space-y-3">
-                      {#each reading.astroTarot.resonance.tensions as tension}
-                        <div>
-                          <p class="font-semibold" style="color: #EDEBFF;">{tension.type}</p>
-                          <p style="color: #EDEBFF;">{tension.detail}</p>
-                          <p class="text-sm italic" style="color: #C6A7FF;">Why: {tension.why}</p>
-                        </div>
-                      {/each}
-                    </div>
-                  </div>
-                {/if}
-
-                <!-- Action Items (Enriched) -->
-                {#if reading.astroTarot.interpretation?.action_items && reading.astroTarot.interpretation.action_items.length > 0}
-                  <div class="mb-6 p-4 rounded-lg" style="background-color: rgba(255, 200, 87, 0.1); border-left: 4px solid #FFC857;">
-                    <p class="text-lg font-semibold mb-3" style="color: #FFC857;">🎯 Action Items</p>
-                    <div class="space-y-2">
-                      {#each reading.astroTarot.interpretation.action_items as action}
-                        <p style="color: #EDEBFF;">✓ {action}</p>
-                      {/each}
-                    </div>
-                  </div>
-                {/if}
-
-                <!-- Affirmations -->
-                {#if reading.astroTarot.interpretation?.affirmations && reading.astroTarot.interpretation.affirmations.length > 0}
-                  <div class="mb-6 p-4 rounded-lg" style="background-color: rgba(198, 167, 255, 0.1); border-left: 4px solid #C6A7FF;">
-                    <p class="text-lg font-semibold mb-3" style="color: #C6A7FF;">💫 Affirmations</p>
-                    <div class="space-y-2">
-                      {#each reading.astroTarot.interpretation.affirmations as affirmation}
-                        <p style="color: #EDEBFF;">✨ {affirmation}</p>
-                      {/each}
-                    </div>
-                  </div>
-                {/if}
-
-                <!-- Confidence -->
-                {#if reading.astroTarot.confidence}
-                  <div class="p-4 rounded-lg" style="background-color: rgba(123, 97, 255, 0.1); border-left: 4px solid #7B61FF;">
-                    <p class="text-lg font-semibold mb-2" style="color: #C6A7FF;">Confidence</p>
-                    <p style="color: #EDEBFF;">Overall: {(reading.astroTarot.confidence.overall * 100).toFixed(0)}%</p>
-                    {#if reading.astroTarot.confidence.notes}
-                      <p class="text-sm mt-2" style="color: #C6A7FF;">{reading.astroTarot.confidence.notes}</p>
-                    {/if}
-                  </div>
-                {/if}
-              </div>
-            {/if}
+            <!-- Astro-Tarot Synthesis Panel -->
+            <AstroTarotPanel astroTarot={reading.astroTarot} />
 
 
 
@@ -1135,88 +808,9 @@
   </div>
 </div>
 
-{#if showShuffleOverlay}
-  <div class="shuffle-overlay">
-    <div class="shuffle-area">
-      {#each shuffleCards as card (card.id)}
-        <div
-          class="shuffling-card"
-          style={`background-image: url('${card.image}'); --radius: ${card.radius}px; --duration: ${card.duration}s; --start: ${card.start}deg; --direction: ${card.direction}; --delay: ${card.delay}s;`}
-        ></div>
-      {/each}
-    </div>
-    <div class="shuffle-caption">
-      <h1>✨ Celestia Arcana ✨</h1>
-      <p>Drawing every card to weave your cosmic story...</p>
-    </div>
-  </div>
-{/if}
+<ShuffleOverlay visible={showShuffleOverlay} cards={shuffleCards} />
 
-<!-- Video Popup (outside main container for proper z-index) -->
-{#if showVideoPopup}
-  <div
-    class="fixed inset-0 z-[9999] flex items-center justify-center overflow-y-auto"
-    style="background-color: rgba(0, 0, 0, 0.95); pointer-events: auto; display: flex; top: 0; left: 0; right: 0; bottom: 0; padding: 2rem;"
-    on:click={() => (showVideoPopup = false)}
-    on:keydown={(e) => e.key === 'Escape' && (showVideoPopup = false)}
-    role="dialog"
-    aria-modal="true"
-    tabindex="0"
-  >
-    <div class="relative w-full max-w-4xl mx-auto my-auto" on:click|stopPropagation role="presentation" style="pointer-events: auto; display: flex; flex-direction: column; align-items: center;">
-      <button
-        on:click={() => (showVideoPopup = false)}
-        class="absolute -top-12 right-0 text-white text-3xl font-bold hover:text-gray-300 transition-colors"
-        aria-label="Close video"
-        type="button"
-        style="pointer-events: auto; z-index: 10000;"
-      >
-        ✕
-      </button>
-
-      <video
-        bind:this={videoElement}
-        src={videoSrc}
-        controls
-        autoplay
-        playsinline
-        preload="none"
-        on:ended={() => {
-          console.log('Video ended');
-          showVideoPopup = false;
-        }}
-        on:play={() => console.log('Video playing')}
-        on:pause={() => console.log('Video paused')}
-        on:error={(e) => {
-          const mediaError = (e.currentTarget as HTMLVideoElement)?.error;
-          console.error('Video error:', mediaError ?? e);
-        }}
-        on:loadedmetadata={() => {
-          console.log('Video metadata loaded, duration:', videoElement?.duration);
-        }}
-        on:loadeddata={() => {
-          if (videoElement) {
-            videoElement.muted = false;
-            videoElement.volume = 1;
-          }
-          const playPromise = videoElement?.play();
-          if (playPromise && typeof playPromise.catch === 'function') {
-            playPromise.catch((err) => console.error('Video play after load failed:', err));
-          }
-        }}
-        style="width: 100%; height: auto; max-height: 80vh; border-radius: 0.5rem; box-shadow: 0 0 50px rgba(123, 97, 255, 0.5); background-color: #000; pointer-events: auto; display: block;"
-      >
-        <track kind="captions" />
-      </video>
-
-      <div class="text-center mt-4 text-white">
-        <p class="text-sm" style="color: #C6A7FF;">
-          Press ESC or click outside to close
-        </p>
-      </div>
-    </div>
-  </div>
-{/if}
+<VideoIntroPopup open={showVideoPopup} onClose={() => (showVideoPopup = false)} />
 
 <style>
   @keyframes fadeInUp {
@@ -1268,96 +862,6 @@
 
   :global(.animate-fade-in) {
     animation: fadeInUp 0.6s ease-out forwards;
-  }
-
-  :global(body.video-popup-open) {
-    overflow: hidden;
-  }
-
-  .shuffle-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 9998;
-    background: radial-gradient(circle at center, rgba(20, 15, 60, 0.95), rgba(5, 3, 20, 0.98));
-    backdrop-filter: blur(8px) saturate(150%);
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-  }
-
-  .shuffle-area {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-  }
-
-  .shuffling-card {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: clamp(60px, 15vw, 150px);
-    aspect-ratio: 3 / 4;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    border-radius: clamp(0.375rem, 1vw, 0.75rem);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
-    pointer-events: none;
-    transform-origin: center;
-    opacity: 0.5;
-    transform: translate(-50%, -50%) rotate(var(--start)) translateX(calc(var(--radius) * var(--radius-scale, 1)));
-    animation: swirlOrbit var(--duration) linear infinite;
-    animation-direction: var(--direction, normal);
-    animation-delay: var(--delay, 0s);
-    animation-fill-mode: both;
-    will-change: transform;
-  }
-
-  /* Mobile adjustments */
-  @media (max-width: 768px) {
-    .shuffling-card {
-      --radius-scale: 0.4;
-      width: clamp(40px, 12vw, 80px);
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
-    }
-
-    .shuffle-caption h1 {
-      font-size: clamp(1.5rem, 8vw, 2.5rem);
-    }
-
-    .shuffle-caption p {
-      font-size: clamp(0.875rem, 3.5vw, 1.25rem);
-      padding: 0 1rem;
-    }
-  }
-
-  /* Small phone screens */
-  @media (max-width: 480px) {
-    .shuffling-card {
-      --radius-scale: 0.3;
-      width: clamp(35px, 10vw, 60px);
-    }
-  }
-
-  .shuffle-caption {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    color: #eae4ff;
-    text-shadow: 0 0 18px rgba(123, 97, 255, 0.65);
-    pointer-events: auto;
-  }
-
-  .shuffle-caption h1 {
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    margin-bottom: 1rem;
-  }
-
-  .shuffle-caption p {
-    font-size: clamp(1rem, 2vw, 1.5rem);
-    color: #d7ceff;
   }
 
   .toggle-switch {
@@ -1453,20 +957,6 @@
     to {
       opacity: 1;
       transform: translateY(0);
-    }
-  }
-
-  @keyframes swirlOrbit {
-    0% {
-      transform: translate(-50%, -50%) rotate(var(--start)) translateX(calc(var(--radius) * var(--radius-scale, 1)));
-      opacity: 0.55;
-    }
-    50% {
-      opacity: 1;
-    }
-    100% {
-      transform: translate(-50%, -50%) rotate(calc(var(--start) + 360deg)) translateX(calc(var(--radius) * var(--radius-scale, 1)));
-      opacity: 0.55;
     }
   }
 

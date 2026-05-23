@@ -1,5 +1,8 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { json, error } from "@sveltejs/kit";
+import { loadDotEnv } from "$lib/env";
+
+loadDotEnv();
 
 interface ExplanationRequest {
   reading: any;
@@ -74,9 +77,8 @@ INSTRUCTIONS:
       explanation,
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.error("[reading-explanation error]", message);
-    return error(500, `Explanation failed: ${message}`);
+    console.error("[reading-explanation error]", err);
+    return error(500, "Explanation failed");
   }
 };
 

@@ -21,13 +21,37 @@
 
   onMount(async () => {
     try {
+      const storedToken = typeof window !== 'undefined'
+        ? window.localStorage.getItem('celestia_admin_token')
+        : null;
+      const adminToken = storedToken || (typeof window !== 'undefined'
+        ? window.prompt('Admin token required to view training stats:')
+        : null);
+      if (!adminToken) {
+        error = 'Admin token required';
+        loading = false;
+        return;
+      }
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem('celestia_admin_token', adminToken);
+      }
+
       // Fetch training stats and recommendations in one call
       const statsRes = await fetch('/api/feedback', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-token': adminToken,
+        },
         body: JSON.stringify({ action: 'get-stats' }),
       });
 
+      if (statsRes.status === 401) {
+        if (typeof window !== 'undefined') {
+          window.localStorage.removeItem('celestia_admin_token');
+        }
+        throw new Error('Unauthorized — invalid admin token');
+      }
       if (!statsRes.ok) throw new Error('Failed to fetch stats');
       const data = await statsRes.json();
 

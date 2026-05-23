@@ -1,5 +1,8 @@
 import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from '@sveltejs/kit';
+import { loadDotEnv } from '$lib/env';
+
+loadDotEnv();
 
 interface CombinedReadingRequest {
   question?: string;
@@ -188,8 +191,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
     return json({ reading: combinedReading });
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.error("[combined-reading API error]", message);
-    return error(500, `Combined reading generation failed: ${message}`);
+    console.error("[combined-reading API error]", err);
+    return error(500, "Combined reading generation failed");
   }
 };

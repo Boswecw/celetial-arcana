@@ -1,21 +1,33 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { z } from "zod";
 import { aiTrainer, type ReadingFeedback } from "$lib/aiTrainer";
+import { loadDotEnv } from "$lib/env";
+
+loadDotEnv();
 
 const FeedbackSchema = z.object({
   readingId: z.string(),
   rating: z.number().min(1).max(5),
-  feedback: z.string().optional(),
-  cards: z.array(z.string()),
-  themes: z.array(z.string()),
-  astroTarotThemes: z.array(z.string()).optional(),
-  userZodiac: z.string().optional(),
+  feedback: z.string().max(2000).optional(),
+  cards: z.array(z.string()).max(20),
+  themes: z.array(z.string()).max(20),
+  astroTarotThemes: z.array(z.string()).max(20).optional(),
+  userZodiac: z.string().max(40).optional(),
 });
 
 const StatsSchema = z.object({
   action: z.enum(["get-stats", "get-recommendations", "export", "import"]),
   data: z.any().optional(),
 });
+
+function isAuthorizedAdmin(request: Request): boolean {
+  const adminToken = process.env.ADMIN_TOKEN;
+  if (!adminToken) {
+    return false;
+  }
+  const provided = request.headers.get("x-admin-token");
+  return !!provided && provided === adminToken;
+}
 
 export const POST: RequestHandler = async ({ request }) => {
   try {
@@ -36,7 +48,6 @@ export const POST: RequestHandler = async ({ request }) => {
         JSON.stringify({
           success: true,
           message: "Feedback recorded successfully",
-          stats: aiTrainer.getStats(),
         }),
         {
           headers: { "content-type": "application/json" },
@@ -46,6 +57,13 @@ export const POST: RequestHandler = async ({ request }) => {
 
     // Handle stats/admin requests
     const statsData = StatsSchema.parse(body);
+
+    if (!isAuthorizedAdmin(request)) {
+      return new Response(
+        JSON.stringify({ error: "Unauthorized" }),
+        { status: 401, headers: { "content-type": "application/json" } }
+      );
+    }
 
     switch (statsData.action) {
       case "get-stats":
@@ -98,14 +116,16 @@ export const POST: RequestHandler = async ({ request }) => {
         throw new Error("Unknown action");
     }
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      return new Response(
+        JSON.stringify({ error: "Invalid request payload" }),
+        { status: 400, headers: { "content-type": "application/json" } }
+      );
+    }
+    console.error("[feedback API error]", error);
     return new Response(
-      JSON.stringify({
-        error: String(error),
-      }),
-      {
-        status: 400,
-        headers: { "content-type": "application/json" },
-      }
+      JSON.stringify({ error: "Request failed" }),
+      { status: 500, headers: { "content-type": "application/json" } }
     );
   }
 };

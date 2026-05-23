@@ -2,6 +2,9 @@ import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from '@sveltejs/kit';
 import { spawn, execSync } from 'child_process';
 import { join } from 'path';
+import { loadDotEnv } from '$lib/env';
+
+loadDotEnv();
 
 // Detect if running in serverless environment
 function isServerlessEnvironment(): boolean {
@@ -189,10 +192,12 @@ function executePythonScript(payload: AstroTarotRequest): Promise<PythonOutput> 
       '--postprocess', // Enable postprocessing with faith-aware validator
     ];
 
-    // Spawn Python process with environment variables
+    // Spawn Python process with environment variables. 3 minutes is plenty
+    // for one OpenAI chat completion + validator pass; longer hangs indicate a
+    // problem and should fail fast rather than tying up a Node worker.
     const pythonProcess = spawn(pythonCmd, args, {
       cwd: projectRoot,
-      timeout: 3600000, // 1 hour timeout
+      timeout: 180000,
       stdio: ['pipe', 'pipe', 'pipe'],
       env: {
         ...process.env,
@@ -218,7 +223,9 @@ function executePythonScript(payload: AstroTarotRequest): Promise<PythonOutput> 
 
     pythonProcess.on('close', (code: number | null) => {
       if (code !== 0) {
-        reject(new Error(`Python script exited with code ${code}: ${stderr}`));
+        // Log full stderr server-side but don't surface it to clients.
+        console.error('[astro-tarot] Python exited code', code, 'stderr:', stderr);
+        reject(new Error(`Python script exited with code ${code}`));
         return;
       }
 
@@ -232,7 +239,8 @@ function executePythonScript(payload: AstroTarotRequest): Promise<PythonOutput> 
         const result = JSON.parse(jsonMatch[0]) as PythonOutput;
         resolvePromise(result);
       } catch (parseErr) {
-        reject(new Error(`Failed to parse Python output: ${parseErr instanceof Error ? parseErr.message : String(parseErr)}`));
+        console.error('[astro-tarot] Failed to parse output:', parseErr);
+        reject(new Error('Failed to parse Python output'));
       }
     });
   });
@@ -256,8 +264,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
     return json(result);
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.error('[astro-tarot API error]', message);
-    return error(500, `Astro-Tarot synthesis failed: ${message}`);
+    console.error('[astro-tarot API error]', err);
+    return error(500, 'Astro-Tarot synthesis failed');
   }
 };

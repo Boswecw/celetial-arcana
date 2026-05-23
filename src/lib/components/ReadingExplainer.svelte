@@ -19,8 +19,9 @@ Conversation interface to explain the reading
     reading?.astroTarot?.interpretation?.positions || reading?.analysis?.cards || [];
 
   function buildOpeningMessage(): string {
-    const question = reading?.meta?.question || "your question";
-    const timeframe = reading?.meta?.timeframe || "the timeframe you selected";
+    const meta = reading?.astroTarot?.meta || reading?.meta || {};
+    const question = meta.question || "your question";
+    const timeframe = meta.timeframe || "the timeframe you selected";
     const cards = getCardPositions()
       .map((pos: any) => `${pos.position || ""}: ${pos.card || pos.name}`.trim())
       .filter(Boolean);
@@ -81,10 +82,13 @@ Conversation interface to explain the reading
     };
   });
 
-  $: if (reading?.meta?.timestamp && reading.meta.timestamp !== lastReadingTimestamp) {
-    lastReadingTimestamp = reading.meta.timestamp;
-    hasInitialized = false;
-    messages = [];
+  $: {
+    const timestamp = reading?.astroTarot?.meta?.timestamp || reading?.meta?.timestamp || null;
+    if (timestamp && timestamp !== lastReadingTimestamp) {
+      lastReadingTimestamp = timestamp;
+      hasInitialized = false;
+      messages = [];
+    }
   }
 
   $: if (reading && !hasInitialized) {
@@ -142,7 +146,7 @@ Conversation interface to explain the reading
     }
   }
 
-  function speakMessage(text: string) {
+  async function speakMessage(text: string) {
     if (isSpeaking) {
       window.speechSynthesis.cancel();
       isSpeaking = false;
@@ -150,106 +154,12 @@ Conversation interface to explain the reading
     }
 
     isSpeaking = true;
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 0.85; // Slightly slower, more deliberate
-    utterance.pitch = 0.65; // Lower pitch for older woman voice
-    utterance.volume = 0.95;
-
     const voices = availableVoices.length > 0
       ? availableVoices
       : window.speechSynthesis.getVoices();
 
-    // Prioritize older woman voice descriptors
-    const olderWomanDescriptors = [
-      'grandma',
-      'grandmother',
-      'elder',
-      'mature',
-      'senior',
-      'old',
-      'aged',
-    ];
-
-    const womanDescriptors = [
-      'female',
-      'woman',
-      'lady',
-      'mom',
-      'mother',
-    ];
-
-    const qualityDescriptors = [
-      'sage',
-      'wise',
-      'story',
-      'narrator',
-      'reader',
-    ];
-
-    const sanitize = (value: string) => value.toLowerCase();
-    const isBritish = (voice: SpeechSynthesisVoice) => {
-      const lang = sanitize(voice.lang || "");
-      const name = sanitize(voice.name || "");
-      return lang.includes("en-gb") || name.includes("brit") || name.includes("uk");
-    };
-
-    // Filter out male voices (including known male voice names)
-    const isMale = (voice: SpeechSynthesisVoice) => {
-      const name = sanitize(voice.name);
-      return name.includes('male') ||
-             name.includes('man') ||
-             name.includes('boy') ||
-             name.includes('david') ||
-             name.includes('mark') ||
-             name.includes('james') ||
-             name.includes('george') ||
-             name.includes('daniel') ||
-             name.includes('michael') ||
-             name.includes('christopher') ||
-             name.includes('guy');
-    };
-
-    const usVoices = voices.filter(
-      (voice) =>
-        !isBritish(voice) &&
-        !isMale(voice) &&
-        sanitize(voice.lang || "").includes("en-us")
-    );
-
-    const allEnglishVoices = voices.filter(
-      (voice) => !isBritish(voice) && !isMale(voice) && sanitize(voice.lang || "").startsWith("en")
-    );
-
-    // All available non-male voices
-    const nonMaleVoices = voices.filter(voice => !isMale(voice));
-
-    // Try to find voices in priority order
-    const selectedVoice =
-      usVoices.find((voice) =>
-        olderWomanDescriptors.some((descriptor) => sanitize(voice.name).includes(descriptor))
-      ) ||
-      usVoices.find((voice) => {
-        const name = sanitize(voice.name);
-        return womanDescriptors.some(d => name.includes(d)) &&
-               qualityDescriptors.some(d => name.includes(d));
-      }) ||
-      usVoices.find((voice) => {
-        const name = sanitize(voice.name);
-        return womanDescriptors.some(d => name.includes(d));
-      }) ||
-      usVoices[0] ||
-      allEnglishVoices.find((voice) => {
-        const name = sanitize(voice.name);
-        return womanDescriptors.some(d => name.includes(d));
-      }) ||
-      allEnglishVoices[0] ||
-      nonMaleVoices[0] ||
-      voices[0];
-
-    if (selectedVoice) {
-      utterance.voice = selectedVoice;
-      console.log('ReadingExplainer - Selected voice:', selectedVoice.name, selectedVoice.lang);
-    }
+    const { createReadingUtterance } = await import('$lib/utils/voiceSelection');
+    const utterance = createReadingUtterance(text, voices);
 
     utterance.onend = () => {
       isSpeaking = false;

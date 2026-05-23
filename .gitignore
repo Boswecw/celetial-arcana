@@ -8,6 +8,9 @@ node_modules
 /.svelte-kit
 /build
 
+# Persistent training data
+.data/
+
 # OS
 .DS_Store
 Thumbs.db
@@ -23,3 +26,7 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 __pycache__/
 *.pyc
+
+# Ephemeral artifacts produced by the Python synthesizer
+last_model_output.txt
+readings/

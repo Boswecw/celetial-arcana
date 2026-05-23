@@ -1,9 +1,12 @@
 import type { RequestHandler } from "@sveltejs/kit";
+import { loadDotEnv } from "$lib/env";
 import { z } from "zod";
 import { analyzeReading } from "$lib/rulesEngine";
 import { buildReadingContext } from "$lib/rag";
 import { buildSafeResponse } from "$lib/guardrails";
 import { aiTrainer } from "$lib/aiTrainer";
+
+loadDotEnv();
 
 const Schema = z.object({
   question: z.string().optional(),
@@ -64,7 +67,8 @@ export const POST: RequestHandler = async ({ request }) => {
       }
     );
   } catch (error) {
-    return new Response(JSON.stringify({ error: String(error) }), {
+    console.error("[reading API error]", error);
+    return new Response(JSON.stringify({ error: "Reading generation failed" }), {
       status: 500,
       headers: { "content-type": "application/json" },
     });

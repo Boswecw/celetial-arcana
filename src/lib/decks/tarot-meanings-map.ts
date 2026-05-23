@@ -12,7 +12,7 @@ export interface TarotMeaning {
 }
 
 // Import the meanings data
-import tarotMeaningsData from '../components/tarot_meanings.json';
+import tarotMeaningsData from './tarot_meanings.json';
 
 // Create a map for quick lookup by card name
 const meaningsByName = new Map<string, TarotMeaning>();

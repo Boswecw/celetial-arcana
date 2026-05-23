@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Offline - Celestia Arcana</title>
+    <meta name="theme-color" content="#7B61FF" />
+    <link rel="icon" href="/favicon.ico" />
+    <style>
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        background: linear-gradient(180deg, #120a36 0%, #2b1c71 100%);
+        color: #f4f4ff;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+      }
+      .offline-shell {
+        max-width: 520px;
+        width: 100%;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 24px;
+        padding: 2rem;
+        background: rgba(14, 9, 36, 0.88);
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
+      }
+      .offline-shell h1 {
+        margin: 0 0 1rem;
+        font-size: clamp(2rem, 4vw, 3rem);
+      }
+      .offline-shell p {
+        margin: 0 0 1.5rem;
+        line-height: 1.8;
+        color: #d8d8ff;
+      }
+      .offline-shell a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.9rem 1.5rem;
+        color: #fff;
+        background: linear-gradient(120deg, #8e6bff, #ff7bff);
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 700;
+      }
+      .offline-shell a:hover {
+        opacity: 0.95;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="offline-shell">
+      <h1>Celestia is offline</h1>
+      <p>Looks like you're not connected to the network. You can still explore saved content and return when the stars come back online.</p>
+      <a href="/">Return to Home</a>
+    </div>
+  </body>
+</html>

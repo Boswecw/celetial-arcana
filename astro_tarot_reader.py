@@ -40,6 +40,30 @@ OUTPUT STRICT SCHEMA (do not add new keys):
 from __future__ import annotations
 import os, sys, json, datetime, re, argparse, pathlib, time, hashlib
 
+# Load .env if present so OPENAI_API_KEY can be read in local dev environments.
+def load_dotenv(path: str = ".env") -> None:
+    env_path = pathlib.Path(path)
+    if not env_path.is_file():
+        return
+
+    try:
+        with env_path.open("r", encoding="utf-8") as fh:
+            for raw_line in fh:
+                line = raw_line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                key, value = line.split("=", 1)
+                key = key.strip()
+                value = value.strip()
+                if len(value) >= 2 and ((value[0] == value[-1] == '"') or (value[0] == value[-1] == "'")):
+                    value = value[1:-1]
+                if key and key not in os.environ:
+                    os.environ[key] = value
+    except Exception as e:
+        print(f"Unable to load .env file {env_path}: {e}", file=sys.stderr)
+
+load_dotenv()
+
 # Ensure vendored packages (installed via --target python_packages) are importable
 _PACKAGE_DIR = pathlib.Path(__file__).resolve().parent / "python_packages"
 if _PACKAGE_DIR.exists():
@@ -115,10 +139,13 @@ def get_cache_stats() -> Dict[str, Any]:
 # -----------------------------------------------------------------------------
 # HTTP (long timeout + retry + connection pooling)
 # -----------------------------------------------------------------------------
-def _post_with_retry(url, payload, headers=None, timeout=(60, 3600), retries=3, backoff=2.0):
+def _post_with_retry(url, payload, headers=None, timeout=(15, 120), retries=3, backoff=2.0):
     """
-    Robust HTTP POST with generous timeouts, exponential backoff, and connection pooling.
-    timeout -> (connect_timeout, read_timeout)
+    Robust HTTP POST with bounded timeouts, exponential backoff, and connection pooling.
+    timeout -> (connect_timeout, read_timeout). The previous 1-hour read timeout
+    let dead OpenAI connections hold a Python process indefinitely; 120s is more
+    than enough for a single chat completion and the retry loop covers transient
+    failures.
     """
     session = get_http_session()
     attempt = 0
@@ -465,7 +492,7 @@ def call_chatgpt(system: str, user: str, model: str, temp: float, num: int) -> s
         ]
     }
 
-    r = _post_with_retry(OPENAI_API_URL, payload, headers=headers, timeout=(60, 3600))
+    r = _post_with_retry(OPENAI_API_URL, payload, headers=headers, timeout=(15, 120))
     try:
         r.raise_for_status()
     except Exception as e:
@@ -486,11 +513,6 @@ def call_chatgpt(system: str, user: str, model: str, temp: float, num: int) -> s
         _RESPONSE_CACHE[cache_key] = response
 
     return response
-
-# Alias for backward compatibility
-def call_ollama(system: str, user: str, model: str, temp: float, num: int) -> str:
-    """Backward compatibility wrapper - calls ChatGPT instead."""
-    return call_chatgpt(system, user, model, temp, num)
 
 def _extract_balanced_json(text: str) -> Optional[str]:
     t = text.strip()
@@ -553,28 +575,6 @@ def parse_model_json(raw: str) -> Dict[str, Any]:
     except json.JSONDecodeError as e:
         snippet = repaired[max(0, e.pos-160):e.pos+160]
         raise ValueError(f"JSON parse failed at {e.pos}: {e.msg}\n--- snippet ---\n{snippet}")
-
-def repair_to_json(raw_text: str, model: str, temperature: float = 0.1, max_retries: int = 2) -> str:
-    """Repair malformed JSON by calling ChatGPT with retry logic."""
-    fixer_system = (
-        "You are a JSON repair tool. Input may be malformed JSON. "
-        "Return only a single valid JSON object that matches schema; no markdown or comments."
-    )
-    fixer_user = f"Repair this into strict JSON (single object). Preserve fields.\n\nRAW:\n{raw_text}"
-
-    for attempt in range(max_retries + 1):
-        try:
-            response = call_chatgpt(fixer_system, fixer_user, model, temperature, 1500)
-            if response:
-                print(f"[repair] Success on attempt {attempt + 1}", file=sys.stderr)
-                return response
-        except Exception as e:
-            print(f"[repair] Error on attempt {attempt + 1}: {e}", file=sys.stderr)
-            if attempt == max_retries:
-                raise
-            time.sleep(1.0)
-
-    return ""
 
 # -----------------------------------------------------------------------------
 # Element guess fallback (used if KB missing)
@@ -844,14 +844,19 @@ def _coerce_to_schema(d: Dict[str, Any], spread: List[Dict[str, Any]]) -> Dict[s
             added = True
             break  # add only one to keep it concise
 
-    # confidence
+    # confidence — coerce every input into a 0..1 scale.
     conf_in = d.get("confidence", {})
     nums = []
-    for k in ("career confidence","personal confidence","overall"):
+    for k in ("career confidence", "personal confidence", "overall"):
         v = conf_in.get(k)
-        if isinstance(v, (int,float)):
-            nums.append(float(v) if (k == "overall" and v <= 1.0) else float(v)/10.0 if v > 1.0 else float(v))
-    overall = (sum(nums)/len(nums)) if nums else 0.7
+        if not isinstance(v, (int, float)):
+            continue
+        score = float(v)
+        if score > 1.0:
+            # Assume a 0..10 input scale.
+            score = score / 10.0
+        nums.append(max(0.0, min(1.0, score)))
+    overall = (sum(nums) / len(nums)) if nums else 0.7
     out["confidence"]["overall"] = round(float(overall), 2)
     out["confidence"]["notes"] = conf_in.get("notes") or "Normalized from provided fields; missing values synthesized."
 
@@ -907,7 +912,7 @@ INSTRUCTIONS:
 Return exactly one JSON matching the schema above.
 """.strip()
 
-    raw = call_ollama(SYSTEM_PROMPT, user_prompt, model, temp, num)
+    raw = call_chatgpt(SYSTEM_PROMPT, user_prompt, model, temp, num)
 
     # Debug logs
     try:

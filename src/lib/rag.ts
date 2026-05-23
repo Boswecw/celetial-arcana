@@ -1,5 +1,4 @@
-import { riderWaiteDeck } from './decks';
-import { getAllMeanings, getMeaning } from './decks/tarot-meanings-map';
+import { getAllMeanings } from './decks/tarot-meanings-map';
 
 export interface RAGDocument {
   id: string;
@@ -49,7 +48,12 @@ const HOUSE_LORE: Record<number, string> = {
  * Build RAG documents from deck, spreads, and astrological lore
  * Uses enriched meanings from tarot_meanings.json
  */
+let cachedDocuments: RAGDocument[] | null = null;
+let cachedSearchIndex: Array<{ doc: RAGDocument; tokens: Set<string> }> | null = null;
+
 export function buildRAGDocuments(): RAGDocument[] {
+  if (cachedDocuments) return cachedDocuments;
+
   const documents: RAGDocument[] = [];
 
   // Add card documents using enriched meanings from tarot_meanings.json
@@ -93,26 +97,31 @@ export function buildRAGDocuments(): RAGDocument[] {
     });
   });
 
+  cachedDocuments = documents;
   return documents;
+}
+
+function getSearchIndex() {
+  if (cachedSearchIndex) return cachedSearchIndex;
+  cachedSearchIndex = buildRAGDocuments().map((doc) => ({
+    doc,
+    tokens: new Set(`${doc.title} ${doc.content}`.toLowerCase().split(/\s+/)),
+  }));
+  return cachedSearchIndex;
 }
 
 /**
  * Simple keyword-based retrieval (in production, use vector embeddings)
  */
 export function retrieveRelevantDocuments(query: string, topK: number = 5): RAGResult {
-  const documents = buildRAGDocuments();
-  const queryTerms = query.toLowerCase().split(/\s+/);
+  const index = getSearchIndex();
+  const queryTerms = query.toLowerCase().split(/\s+/).filter(Boolean);
 
-  const scored = documents.map((doc) => {
-    const docText = `${doc.title} ${doc.content}`.toLowerCase();
+  const scored = index.map(({ doc, tokens }) => {
     let score = 0;
-
     queryTerms.forEach((term) => {
-      if (docText.includes(term)) {
-        score += 1;
-      }
+      if (tokens.has(term)) score += 1;
     });
-
     return { doc, score };
   });
 

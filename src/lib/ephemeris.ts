@@ -161,41 +161,46 @@ function calculatePlanets(date: Astronomy.AstroTime): EphemerisData['planets'] {
   const planets = {} as EphemerisData['planets'];
 
   for (const [name, body] of Object.entries(PLANET_BODIES) as Array<[PlanetKey, Astronomy.Body]>) {
-    try {
-      const longitude = Astronomy.EclipticLongitude(body, date);
-      planets[name] = normalizeLongitude(longitude);
-    } catch (e) {
-      // Fallback for any calculation errors
-      planets[name] = Math.random() * 360;
-    }
+    const longitude = Astronomy.EclipticLongitude(body, date);
+    planets[name] = normalizeLongitude(longitude);
   }
 
   return planets;
 }
 
+// Mean obliquity of the ecliptic in degrees (J2000, sufficient for the
+// approximations used here).
+const OBLIQUITY_DEG = 23.4392911;
+
 function calculateHouses(date: Astronomy.AstroTime, observer: Astronomy.Observer): { houses: number[]; ascendant: number; midheaven: number } {
-  try {
-    // Calculate sidereal time
-    const gast = Astronomy.SiderealTime(date);
+  // GMST in degrees, then LST at observer longitude.
+  const gast = Astronomy.SiderealTime(date);
+  const lst = (gast * 15 + observer.longitude + 360) % 360;
 
-    // Approximate ascendant and midheaven
-    // In a full implementation, use proper house calculation
-    const ascendant = (gast * 15 + observer.longitude + 360) % 360;
-    const midheaven = (gast * 15 + 90 + 360) % 360;
+  const ramcRad = (lst * Math.PI) / 180;
+  const obliquityRad = (OBLIQUITY_DEG * Math.PI) / 180;
+  const latRad = (observer.latitude * Math.PI) / 180;
 
-    const houses = [];
-    for (let i = 0; i < 12; i++) {
-      houses.push((ascendant + (i * 30)) % 360);
-    }
+  // Midheaven: ecliptic longitude where the meridian crosses the ecliptic.
+  let midheaven =
+    (Math.atan2(Math.sin(ramcRad), Math.cos(ramcRad) * Math.cos(obliquityRad)) * 180) /
+    Math.PI;
+  midheaven = normalizeLongitude(midheaven);
 
-    return { houses, ascendant, midheaven };
-  } catch (e) {
-    // Fallback
-    const ascendant = Math.random() * 360;
-    const midheaven = (ascendant + 90) % 360;
-    const houses = Array.from({ length: 12 }, (_, i) => (ascendant + (i * 30)) % 360);
-    return { houses, ascendant, midheaven };
+  // Ascendant: ecliptic longitude of the rising eastern horizon.
+  const ascNumerator = -Math.cos(ramcRad);
+  const ascDenominator =
+    Math.sin(obliquityRad) * Math.tan(latRad) + Math.cos(obliquityRad) * Math.sin(ramcRad);
+  let ascendant = (Math.atan2(ascNumerator, ascDenominator) * 180) / Math.PI;
+  ascendant = normalizeLongitude(ascendant);
+
+  // Whole-sign / equal-house cusps anchored to the ascendant.
+  const houses: number[] = [];
+  for (let i = 0; i < 12; i++) {
+    houses.push((ascendant + i * 30) % 360);
   }
+
+  return { houses, ascendant, midheaven };
 }
 
 function calculateAspects(planets: EphemerisData['planets']): Aspect[] {
@@ -239,9 +244,9 @@ function getSignIndex(longitude: number): number {
 }
 
 function formatDegrees(longitude: number): string {
-  const normalized = normalizeLongitude(longitude);
-  const degrees = Math.floor(normalized % 30);
-  const minutes = Math.round((normalized % 1) * 60);
+  const withinSign = normalizeLongitude(longitude) % 30;
+  const degrees = Math.floor(withinSign);
+  const minutes = Math.floor((withinSign - degrees) * 60);
   return `${degrees}°${minutes.toString().padStart(2, '0')}`;
 }
 

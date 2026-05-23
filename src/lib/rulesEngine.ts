@@ -1,6 +1,6 @@
 import type { EphemerisData, Aspect } from './ephemeris';
-import { riderWaiteDeck } from './decks';
-import { getMeaning, getFullMeaning } from './decks/tarot-meanings-map';
+import { celestiaArcanaCards } from './decks/celestia-arcana';
+import { getMeaning } from './decks/tarot-meanings-map';
 
 export interface ReadingAnalysis {
   cards: CardInterpretation[];
@@ -103,12 +103,11 @@ export function analyzeReading(
 
 function analyzeCards(drawnCards: Array<{ name: string; reversed: boolean; position: string }>): CardInterpretation[] {
   return drawnCards.map((card) => {
-    // Try to get enriched meaning from tarot_meanings.json first
+    // Try the enriched JSON meanings first; fall back to the in-deck strings.
     let meaning = getMeaning(card.name, card.reversed);
 
-    // Fall back to deck meanings if not found
     if (!meaning) {
-      const deckCard = riderWaiteDeck.find((c) => c.name === card.name);
+      const deckCard = celestiaArcanaCards.find((c) => c.name === card.name);
       meaning = card.reversed ? deckCard?.reversed || '' : deckCard?.upright || '';
     }
 
@@ -172,6 +171,22 @@ function analyzeHouses(ephemeris: Partial<EphemerisData> | null | undefined): Ho
   return interpretations;
 }
 
+// Per-planet salience weights. Inner / luminary bodies are weighted higher
+// than the slow outer planets because they're more relevant to short-term
+// reflective questions. Adjust as the rules engine grows.
+const PLANET_SALIENCE: Record<string, number> = {
+  sun: 1.0,
+  moon: 1.0,
+  mercury: 0.85,
+  venus: 0.85,
+  mars: 0.85,
+  jupiter: 0.7,
+  saturn: 0.7,
+  uranus: 0.5,
+  neptune: 0.5,
+  pluto: 0.5,
+};
+
 function calculateWeights(
   ephemeris: Partial<EphemerisData> | null | undefined,
   cards: CardInterpretation[],
@@ -185,7 +200,7 @@ function calculateWeights(
   }
 
   planets.forEach((planet) => {
-    planetary[planet] = 0.5 + Math.random() * 0.5;
+    planetary[planet] = PLANET_SALIENCE[planet] ?? 0.5;
   });
 
   const aspectalWeight =

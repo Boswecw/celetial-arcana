@@ -3,6 +3,9 @@
  * Learns from readings and user feedback to improve future readings
  */
 
+import fs from "node:fs";
+import path from "node:path";
+
 export interface ReadingFeedback {
   readingId: string;
   rating: number; // 1-5
@@ -14,13 +17,21 @@ export interface ReadingFeedback {
   userZodiac?: string;
 }
 
+export interface RatingAggregate {
+  sum: number;
+  count: number;
+}
+
 export interface TrainingData {
   successfulPatterns: Map<string, number>; // Pattern -> success count
   failedPatterns: Map<string, number>; // Pattern -> failure count
-  cardCombinations: Map<string, number>; // Card combo -> effectiveness
-  themeWeights: Map<string, number>; // Theme -> average rating
+  cardCombinations: Map<string, RatingAggregate>; // Card combo -> running mean of ratings
+  themeWeights: Map<string, RatingAggregate>; // Theme -> running mean of ratings
   userPreferences: Map<string, any>; // User-specific preferences
 }
+
+const DEFAULT_STORE_PATH = path.join(process.cwd(), ".data", "ai-trainer.json");
+const STORE_PATH = process.env.AI_TRAINER_STORE_PATH || DEFAULT_STORE_PATH;
 
 class AITrainer {
   private trainingData: TrainingData = {
@@ -32,6 +43,39 @@ class AITrainer {
   };
 
   private feedbackHistory: ReadingFeedback[] = [];
+  private dirty = false;
+  private persistTimer: NodeJS.Timeout | null = null;
+
+  constructor() {
+    this.loadFromDisk();
+  }
+
+  private loadFromDisk(): void {
+    try {
+      if (!fs.existsSync(STORE_PATH)) return;
+      const raw = fs.readFileSync(STORE_PATH, "utf-8");
+      const parsed = JSON.parse(raw);
+      this.importTrainingData(parsed);
+    } catch (err) {
+      console.error("[aiTrainer] Failed to load training data:", err);
+    }
+  }
+
+  private schedulePersist(): void {
+    this.dirty = true;
+    if (this.persistTimer) return;
+    this.persistTimer = setTimeout(() => {
+      this.persistTimer = null;
+      if (!this.dirty) return;
+      this.dirty = false;
+      try {
+        fs.mkdirSync(path.dirname(STORE_PATH), { recursive: true });
+        fs.writeFileSync(STORE_PATH, JSON.stringify(this.exportTrainingData()));
+      } catch (err) {
+        console.error("[aiTrainer] Failed to persist training data:", err);
+      }
+    }, 1000);
+  }
 
   /**
    * Record feedback on a reading
@@ -55,33 +99,19 @@ class AITrainer {
       );
     }
 
-    // Update card combination effectiveness
-    const cardCombo = feedback.cards.sort().join('+');
-    const currentScore = this.trainingData.cardCombinations.get(cardCombo) || 0;
-    this.trainingData.cardCombinations.set(
-      cardCombo,
-      (currentScore + feedback.rating) / 2
-    );
+    // Update card combination effectiveness (true running mean)
+    const cardCombo = feedback.cards.slice().sort().join('+');
+    accumulate(this.trainingData.cardCombinations, cardCombo, feedback.rating);
 
     // Update theme weights (traditional themes)
     feedback.themes.forEach((theme) => {
-      const currentWeight = this.trainingData.themeWeights.get(theme) || 0;
-      this.trainingData.themeWeights.set(
-        theme,
-        (currentWeight + feedback.rating) / 2
-      );
+      accumulate(this.trainingData.themeWeights, theme, feedback.rating);
     });
 
     // Update astro-tarot theme weights
-    if (feedback.astroTarotThemes) {
-      feedback.astroTarotThemes.forEach((theme) => {
-        const currentWeight = this.trainingData.themeWeights.get(`astro:${theme}`) || 0;
-        this.trainingData.themeWeights.set(
-          `astro:${theme}`,
-          (currentWeight + feedback.rating) / 2
-        );
-      });
-    }
+    feedback.astroTarotThemes?.forEach((theme) => {
+      accumulate(this.trainingData.themeWeights, `astro:${theme}`, feedback.rating);
+    });
 
     // Store user preferences
     if (feedback.userZodiac) {
@@ -93,6 +123,8 @@ class AITrainer {
       userPrefs.preferredThemes.push(...feedback.themes);
       this.trainingData.userPreferences.set(feedback.userZodiac, userPrefs);
     }
+
+    this.schedulePersist();
   }
 
   /**
@@ -129,10 +161,10 @@ class AITrainer {
 
     // Add card-specific guidance based on successful patterns
     if (cards && cards.length > 0) {
-      const cardCombo = cards.sort().join("+");
-      const effectiveness = this.trainingData.cardCombinations.get(cardCombo);
+      const cardCombo = cards.slice().sort().join("+");
+      const effectiveness = meanOf(this.trainingData.cardCombinations.get(cardCombo));
 
-      if (effectiveness && effectiveness > 3.5) {
+      if (effectiveness > 3.5) {
         enhancedPrompt += `\n\nThis card combination has been highly effective in past readings.
 Focus on the dynamic interplay between these cards and their collective message.`;
       }
@@ -141,11 +173,8 @@ Focus on the dynamic interplay between these cards and their collective message.
     // Add theme-specific guidance
     if (themes && themes.length > 0) {
       const topThemes = themes
-        .sort((a, b) => {
-          const weightA = this.trainingData.themeWeights.get(a) || 0;
-          const weightB = this.trainingData.themeWeights.get(b) || 0;
-          return weightB - weightA;
-        })
+        .slice()
+        .sort((a, b) => meanOf(this.trainingData.themeWeights.get(b)) - meanOf(this.trainingData.themeWeights.get(a)))
         .slice(0, 2);
 
       if (topThemes.length > 0) {
@@ -176,7 +205,7 @@ These themes resonate strongly with users. Weave them throughout the reading.`;
 
     // Find high-performing themes
     const topThemes = Array.from(this.trainingData.themeWeights.entries())
-      .sort((a, b) => b[1] - a[1])
+      .sort((a, b) => meanOf(b[1]) - meanOf(a[1]))
       .slice(0, 3);
 
     if (topThemes.length > 0) {
@@ -187,7 +216,7 @@ These themes resonate strongly with users. Weave them throughout the reading.`;
 
     // Find effective card combinations
     const topCombos = Array.from(this.trainingData.cardCombinations.entries())
-      .filter((c) => c[1] >= 4)
+      .filter((c) => meanOf(c[1]) >= 4)
       .slice(0, 3);
 
     if (topCombos.length > 0) {
@@ -243,22 +272,49 @@ These themes resonate strongly with users. Weave them throughout the reading.`;
    */
   importTrainingData(data: any): void {
     this.trainingData.successfulPatterns = new Map(
-      Object.entries(data.successfulPatterns || {})
+      Object.entries((data.successfulPatterns || {}) as Record<string, number>)
     );
     this.trainingData.failedPatterns = new Map(
-      Object.entries(data.failedPatterns || {})
+      Object.entries((data.failedPatterns || {}) as Record<string, number>)
     );
     this.trainingData.cardCombinations = new Map(
-      Object.entries(data.cardCombinations || {})
+      Object.entries((data.cardCombinations || {}) as Record<string, RatingAggregate | number>).map(
+        ([k, v]) => [k, normalizeAggregate(v)]
+      )
     );
     this.trainingData.themeWeights = new Map(
-      Object.entries(data.themeWeights || {})
+      Object.entries((data.themeWeights || {}) as Record<string, RatingAggregate | number>).map(
+        ([k, v]) => [k, normalizeAggregate(v)]
+      )
     );
     this.trainingData.userPreferences = new Map(
       Object.entries(data.userPreferences || {})
     );
     this.feedbackHistory = data.feedbackHistory || [];
   }
+}
+
+function accumulate(map: Map<string, RatingAggregate>, key: string, value: number) {
+  const existing = map.get(key);
+  if (existing) {
+    existing.sum += value;
+    existing.count += 1;
+  } else {
+    map.set(key, { sum: value, count: 1 });
+  }
+}
+
+function meanOf(agg: RatingAggregate | undefined): number {
+  if (!agg || agg.count === 0) return 0;
+  return agg.sum / agg.count;
+}
+
+// Backwards-compat shim for legacy persisted data that stored a raw average.
+function normalizeAggregate(value: RatingAggregate | number): RatingAggregate {
+  if (typeof value === "number") {
+    return { sum: value, count: 1 };
+  }
+  return { sum: Number(value.sum) || 0, count: Number(value.count) || 0 };
 }
 
 // Export singleton instance

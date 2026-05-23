@@ -94,7 +94,7 @@
         View Your Chart
       </a>
       <a
-        href="/dashboard"
+        href="/admin/training"
         class="cta-secondary"
       >
         AI Dashboard

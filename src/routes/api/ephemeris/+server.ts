@@ -15,13 +15,21 @@ export const GET: RequestHandler = async ({ url }) => {
       });
     }
 
+    if (!Number.isFinite(lat) || !Number.isFinite(lon) || Math.abs(lat) > 90 || Math.abs(lon) > 180) {
+      return new Response(JSON.stringify({ error: "lat/lon must be valid coordinates" }), {
+        status: 400,
+        headers: { "content-type": "application/json" },
+      });
+    }
+
     const chart = getChart(date, time, lat, lon);
 
     return new Response(JSON.stringify(chart), {
       headers: { "content-type": "application/json" },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: String(error) }), {
+    console.error("[ephemeris API error]", error);
+    return new Response(JSON.stringify({ error: "Chart calculation failed" }), {
       status: 500,
       headers: { "content-type": "application/json" },
     });
