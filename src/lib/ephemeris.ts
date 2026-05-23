@@ -157,11 +157,28 @@ export function getChart(
 
 type PlanetKey = keyof EphemerisData['planets'];
 
+// Astronomy.EclipticLongitude returns heliocentric longitude and throws for
+// the Sun and Moon. Astrology needs geocentric longitudes — the position of
+// each body as seen from Earth — so we derive them via the body-specific
+// helpers below. The Sun is the origin of the heliocentric frame, so it has
+// its own SunPosition helper; the Moon has GeoMoon; everything else goes
+// through GeoVector. All three return positions we then convert to ecliptic.
+function geocentricEclipticLongitude(body: Astronomy.Body, date: Astronomy.AstroTime): number {
+	if (body === Astronomy.Body.Sun) {
+		return Astronomy.SunPosition(date).elon;
+	}
+	const vector =
+		body === Astronomy.Body.Moon
+			? Astronomy.GeoMoon(date)
+			: Astronomy.GeoVector(body, date, true);
+	return Astronomy.Ecliptic(vector).elon;
+}
+
 function calculatePlanets(date: Astronomy.AstroTime): EphemerisData['planets'] {
 	const planets = {} as EphemerisData['planets'];
 
 	for (const [name, body] of Object.entries(PLANET_BODIES) as Array<[PlanetKey, Astronomy.Body]>) {
-		const longitude = Astronomy.EclipticLongitude(body, date);
+		const longitude = geocentricEclipticLongitude(body, date);
 		planets[name] = normalizeLongitude(longitude);
 	}
 
