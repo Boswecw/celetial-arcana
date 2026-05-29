@@ -130,7 +130,7 @@
 						{stats.averageRating.toFixed(2)}/5
 					</p>
 					<div class="mt-3 flex gap-1">
-						{#each [1, 2, 3, 4, 5] as star}
+						{#each [1, 2, 3, 4, 5] as star (star)}
 							<span style="opacity: {star <= Math.round(stats.averageRating) ? 1 : 0.3};">⭐</span>
 						{/each}
 					</div>
@@ -187,7 +187,7 @@
 						💡 AI Improvement Recommendations
 					</h2>
 					<div class="space-y-4">
-						{#each recommendations.recommendations as rec}
+						{#each recommendations.recommendations as rec, i (i)}
 							<div
 								class="p-4 rounded-lg"
 								style="background-color: rgba(123, 97, 255, 0.1); border-left: 4px solid #7B61FF;"

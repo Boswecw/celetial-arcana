@@ -198,7 +198,7 @@ Conversation interface to explain the reading
 			<p style="color: #B3A9C7; text-align: center;">Ask me anything about your reading...</p>
 		{/if}
 
-		{#each messages as message}
+		{#each messages as message, i (i)}
 			<div class="mb-4">
 				<div
 					class="text-sm font-semibold mb-2"
@@ -226,7 +226,7 @@ Conversation interface to explain the reading
 
 	{#if suggestionChips.length > 0}
 		<div class="flex flex-wrap gap-2 mb-4">
-			{#each suggestionChips as suggestion}
+			{#each suggestionChips as suggestion (suggestion)}
 				<button
 					type="button"
 					class="px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200"

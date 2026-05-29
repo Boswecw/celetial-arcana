@@ -299,7 +299,7 @@
 							/>
 						</div>
 						<div class="grid grid-cols-2 gap-4">
-							{#each planetEntries as [planet, longitude]}
+							{#each planetEntries as [planet, longitude] (planet)}
 								<div
 									class="p-4 rounded-lg"
 									style="background-color: rgba(123, 97, 255, 0.1); border-left: 4px solid #7B61FF;"
@@ -369,7 +369,7 @@
 								/>
 							</div>
 							<div class="space-y-3">
-								{#each chartData.aspects as aspect}
+								{#each chartData.aspects as aspect, i (i)}
 									<div
 										class="p-4 rounded-lg"
 										style="background-color: rgba(123, 97, 255, 0.1); border-left: 4px solid #7B61FF;"
@@ -482,7 +482,7 @@
 										♈ The Zodiac Signs
 									</h4>
 									<div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
-										{#each zodiacSigns as sign}
+										{#each zodiacSigns as sign (sign)}
 											<div
 												class="p-2 rounded-lg text-center"
 												style="background-color: rgba(255, 78, 219, 0.1);"

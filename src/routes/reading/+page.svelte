@@ -37,6 +37,10 @@
 	const astroTarotModel = import.meta.env.VITE_ASTRO_TAROT_MODEL || 'gpt-4o-mini';
 	let userZodiac = '';
 	let showTraditionalReading = true;
+	// Default OFF: browser autoplay policies block speech-synthesis without a
+	// user gesture, so the previous always-on behavior failed silently on most
+	// modern browsers. Persist the user's choice so opting in is one-shot.
+	let autoNarrate = false;
 	let showToast = false;
 	let toastTimeout: number | null = null;
 	let toastMessage = '';
@@ -80,6 +84,7 @@
 	}
 
 	$: if (
+		autoNarrate &&
 		reading &&
 		readingId &&
 		!loading &&
@@ -87,20 +92,27 @@
 		((showTraditionalReading && (reading.reading || reading.combinedReading)) ||
 			(!showTraditionalReading && reading.combinedReading))
 	) {
-		console.log('Auto-narration triggered!', {
-			readingId,
-			narratedReadingId,
-			showTraditionalReading,
-			hasReading: !!reading.reading,
-			hasCombinedReading: !!reading.combinedReading
-		});
 		narratedReadingId = readingId;
 		const textToSpeak = getReadingText();
-		console.log('Text to speak length:', textToSpeak.length);
 		if (textToSpeak) {
 			speakReading(textToSpeak, { autoplay: true });
-		} else {
-			console.warn('No text to speak!');
+		}
+	}
+
+	onMount(() => {
+		if (typeof window === 'undefined') return;
+		try {
+			autoNarrate = window.localStorage.getItem('celestia_auto_narrate') === '1';
+		} catch {
+			// localStorage can throw in private-mode / sandboxed contexts; safe to ignore.
+		}
+	});
+
+	function persistAutoNarrate(enabled: boolean) {
+		try {
+			window.localStorage.setItem('celestia_auto_narrate', enabled ? '1' : '0');
+		} catch {
+			// see above
 		}
 	}
 
@@ -435,22 +447,44 @@
 		<div class="grid grid-cols-1 lg:grid-cols-3 gap-12 overflow-hidden">
 			<!-- Input Form -->
 			<div class="lg:col-span-1 space-y-4">
-				<div class="toggle-banner inline-flex items-center gap-3" style="z-index: 10;">
-					<label class="toggle-switch">
-						<input
-							type="checkbox"
-							bind:checked={showTraditionalReading}
-							on:change={() =>
-								scheduleToast(
-									showTraditionalReading
-										? 'Traditional tarot insight enabled — you will see and hear the full narrative.'
-										: 'Traditional tarot insight hidden — focus stays on astro synthesis.'
-								)}
-							aria-label="Toggle traditional tarot reading"
-						/>
-						<span class="slider"></span>
-					</label>
-					<span class="text-sm font-semibold" style="color: #C6A7FF;">Traditional Reading</span>
+				<div class="flex flex-wrap items-center gap-3">
+					<div class="toggle-banner inline-flex items-center gap-3" style="z-index: 10;">
+						<label class="toggle-switch">
+							<input
+								type="checkbox"
+								bind:checked={showTraditionalReading}
+								on:change={() =>
+									scheduleToast(
+										showTraditionalReading
+											? 'Traditional tarot insight enabled — you will see and hear the full narrative.'
+											: 'Traditional tarot insight hidden — focus stays on astro synthesis.'
+									)}
+								aria-label="Toggle traditional tarot reading"
+							/>
+							<span class="slider"></span>
+						</label>
+						<span class="text-sm font-semibold" style="color: #C6A7FF;">Traditional Reading</span>
+					</div>
+
+					<div class="toggle-banner inline-flex items-center gap-3" style="z-index: 10;">
+						<label class="toggle-switch">
+							<input
+								type="checkbox"
+								bind:checked={autoNarrate}
+								on:change={() => {
+									persistAutoNarrate(autoNarrate);
+									scheduleToast(
+										autoNarrate
+											? 'Auto-narration on — readings will speak themselves when ready.'
+											: 'Auto-narration off — tap Listen on each reading when you want voice.'
+									);
+								}}
+								aria-label="Toggle auto-narration of new readings"
+							/>
+							<span class="slider"></span>
+						</label>
+						<span class="text-sm font-semibold" style="color: #C6A7FF;">Auto-narrate</span>
+					</div>
 				</div>
 
 				<div
@@ -645,7 +679,7 @@
 								class="w-full p-4 rounded-lg bg-opacity-50 border-2 focus:outline-none text-lg"
 								style="background-color: rgba(123, 97, 255, 0.1); border-color: #7B61FF; color: #EDEBFF;"
 							>
-								{#each Object.entries(spreads) as [key, spread]}
+								{#each Object.entries(spreads) as [key, spread] (key)}
 									<option value={key}>{spread.name}</option>
 								{/each}
 							</select>
@@ -802,7 +836,7 @@
 								Your Cards
 							</h3>
 							<div class="grid grid-cols-3 gap-4 max-w-4xl mx-auto">
-								{#each drawnCards as card, index}
+								{#each drawnCards as card, index (index)}
 									<div
 										class="flex flex-col items-center"
 										on:mouseenter={() => showCardHoverToast(card, index)}

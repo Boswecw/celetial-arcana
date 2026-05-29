@@ -15,6 +15,7 @@ const MAX_QUESTION_CHARS = 600;
 
 // Match ASCII control characters U+0000-U+001F and U+007F.
 // Constructed via RegExp string form so the source stays plain ASCII.
+// eslint-disable-next-line no-control-regex -- stripping control chars is the intent
 const CONTROL_CHARS = new RegExp('[\\u0000-\\u001F\\u007F]', 'g');
 const CODE_FENCE = /```+/g;
 const WHITESPACE = /\s+/g;

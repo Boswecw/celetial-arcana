@@ -71,7 +71,7 @@ no description yet
 			<div>
 				<p class="text-lg font-semibold mb-4" style="color: #EDEBFF;">Rate this reading:</p>
 				<div class="flex gap-4 justify-center">
-					{#each [1, 2, 3, 4, 5] as star}
+					{#each [1, 2, 3, 4, 5] as star (star)}
 						<button
 							on:click={() => (rating = star)}
 							class="text-4xl transition-transform hover:scale-110"

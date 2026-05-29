@@ -49,7 +49,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		const ragContext = buildReadingContext(cardNames, aspectTypes, analysis.themes);
 
 		// Generate reading with LLM (using ChatGPT if available)
-		let reading = await generateReading(body, analysis, ragContext);
+		const reading = await generateReading(body, analysis, ragContext);
 
 		// Apply guardrails
 		const safeResponse = buildSafeResponse(reading, body.question);

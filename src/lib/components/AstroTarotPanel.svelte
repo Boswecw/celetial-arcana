@@ -28,7 +28,7 @@
 			>
 				<p class="text-lg font-semibold mb-3" style="color: #C6A7FF;">Astrological Themes</p>
 				<div class="space-y-2">
-					{#each astroTarot.astro_summary.themes as theme}
+					{#each astroTarot.astro_summary.themes as theme, i (i)}
 						<p style="color: #EDEBFF;">• {theme}</p>
 					{/each}
 				</div>
@@ -42,7 +42,7 @@
 			>
 				<p class="text-lg font-semibold mb-3" style="color: #4DF2B0;">Harmonies & Matches</p>
 				<div class="space-y-3">
-					{#each astroTarot.resonance.matches as match}
+					{#each astroTarot.resonance.matches as match, i (i)}
 						<div>
 							<p class="font-semibold" style="color: #EDEBFF;">{match.type}</p>
 							<p style="color: #EDEBFF;">{match.detail}</p>
@@ -60,7 +60,7 @@
 			>
 				<p class="text-lg font-semibold mb-3" style="color: #FF6B6B;">Tensions & Challenges</p>
 				<div class="space-y-3">
-					{#each astroTarot.resonance.tensions as tension}
+					{#each astroTarot.resonance.tensions as tension, i (i)}
 						<div>
 							<p class="font-semibold" style="color: #EDEBFF;">{tension.type}</p>
 							<p style="color: #EDEBFF;">{tension.detail}</p>
@@ -78,7 +78,7 @@
 			>
 				<p class="text-lg font-semibold mb-3" style="color: #FFC857;">🎯 Action Items</p>
 				<div class="space-y-2">
-					{#each astroTarot.interpretation.action_items as action}
+					{#each astroTarot.interpretation.action_items as action, i (i)}
 						<p style="color: #EDEBFF;">✓ {action}</p>
 					{/each}
 				</div>
@@ -92,7 +92,7 @@
 			>
 				<p class="text-lg font-semibold mb-3" style="color: #C6A7FF;">💫 Affirmations</p>
 				<div class="space-y-2">
-					{#each astroTarot.interpretation.affirmations as affirmation}
+					{#each astroTarot.interpretation.affirmations as affirmation, i (i)}
 						<p style="color: #EDEBFF;">✨ {affirmation}</p>
 					{/each}
 				</div>

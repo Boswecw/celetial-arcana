@@ -6,8 +6,9 @@
 	export let x = 0;
 	export let y = 0;
 
-	let adjustedX = x;
-	let adjustedY = y;
+	// Set by the reactive block below before any subscriber reads them.
+	let adjustedX = 0;
+	let adjustedY = 0;
 
 	$: {
 		// Constrain X position to prevent bleeding off screen
